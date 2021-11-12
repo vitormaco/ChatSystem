@@ -1,4 +1,7 @@
-#Fri Nov 12 15:56:08 CET 2021
-org.modelio.app.diagram.editor.OpenedDiagrams2='Interaction Sequence diagram' {851c9f3c-e4d0-4e80-a6ab-f6cedd98f5f6} Standard.SequenceDiagram
-org.modelio.app.diagram.editor.OpenedDiagrams1='Diagramme de classe chat' {d7ce6759-203e-4889-9100-cc7c9acbdb83} Standard.ClassDiagram
+#Fri Nov 12 16:47:56 CET 2021
+org.modelio.app.diagram.editor.OpenedDiagrams5='Diagramme de s\u00E9quence Interaction' {ba61e717-8fef-48fb-bd04-eea53b4ad6d3} Standard.SequenceDiagram
+org.modelio.app.diagram.editor.OpenedDiagrams4='Diagramme de s\u00E9quence Interaction' {fed76690-9046-4158-9717-2419c4da9c7e} Standard.SequenceDiagram
+org.modelio.app.diagram.editor.OpenedDiagrams3='Diagramme de s\u00E9quence Interaction' {12c99ec4-7980-472b-888d-817738b0f6d9} Standard.SequenceDiagram
+org.modelio.app.diagram.editor.OpenedDiagrams2='Diagramme de classe chat' {d7ce6759-203e-4889-9100-cc7c9acbdb83} Standard.ClassDiagram
+org.modelio.app.diagram.editor.OpenedDiagrams1='Interaction Sequence diagram' {851c9f3c-e4d0-4e80-a6ab-f6cedd98f5f6} Standard.SequenceDiagram
 org.modelio.app.diagram.editor.OpenedDiagrams0='Diagramme de cas d'utilisation chat' {83f4b6f6-1b95-418e-ac3a-c373cb8ce290} Standard.UseCaseDiagram
