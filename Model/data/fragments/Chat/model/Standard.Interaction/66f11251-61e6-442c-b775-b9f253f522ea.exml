@@ -73,7 +73,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="059c2398-41f2-4534-b728-cd00d67d0db4"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">443</ATT>
+            <ATT name="LineNumber">411</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -128,7 +128,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="46ff4aa2-abd8-4d0a-acf0-277a655b1c78"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">443</ATT>
+            <ATT name="LineNumber">411</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -203,7 +203,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="4434accf-0769-4963-91a0-74604c38210a"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">409</ATT>
+            <ATT name="LineNumber">371</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -258,7 +258,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="68fbcaf6-8cfc-41a5-8edb-66482636c832"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">409</ATT>
+            <ATT name="LineNumber">371</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -284,7 +284,7 @@
                 <ID name="" mc="Standard.InteractionOperand" uid="c6174829-5a6e-430f-be10-48f1071cda80"/>
                 <ATTRIBUTES>
                   <ATT name="Guard"><![CDATA[While nickname is not valid]]></ATT>
-                  <ATT name="EndLineNumber">661</ATT>
+                  <ATT name="EndLineNumber">651</ATT>
                   <ATT name="LineNumber">88</ATT>
                   <ATT name="Name"></ATT>
                   <ATT name="status">1970354901745664</ATT>
@@ -319,7 +319,7 @@
                 <ID name="" mc="Standard.InteractionOperand" uid="594a6cd9-43e1-4415-8541-30714cb77b41"/>
                 <ATTRIBUTES>
                   <ATT name="Guard"><![CDATA[If nickname is valid]]></ATT>
-                  <ATT name="EndLineNumber">458</ATT>
+                  <ATT name="EndLineNumber">457</ATT>
                   <ATT name="LineNumber">288</ATT>
                   <ATT name="Name"></ATT>
                   <ATT name="status">1970354901745664</ATT>
@@ -330,8 +330,8 @@
                 <ID name="InteractionOperand" mc="Standard.InteractionOperand" uid="6ffc68e1-3f90-4e6a-8e12-15dc591bfd3f"/>
                 <ATTRIBUTES>
                   <ATT name="Guard"><![CDATA[Else]]></ATT>
-                  <ATT name="EndLineNumber">638</ATT>
-                  <ATT name="LineNumber">459</ATT>
+                  <ATT name="EndLineNumber">613</ATT>
+                  <ATT name="LineNumber">458</ATT>
                   <ATT name="Name"><![CDATA[InteractionOperand]]></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
@@ -364,7 +364,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="3aa9b3d3-064c-45b7-bf17-e75bd4da3ac1"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">613</ATT>
+            <ATT name="LineNumber">581</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -399,7 +399,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="929e87f7-8a63-4e47-ae4e-1a82ddb96fa3"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">487</ATT>
+            <ATT name="LineNumber">492</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -419,7 +419,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="7135c35d-73a0-4dc4-bd8e-4dc0c95b13b0"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">613</ATT>
+            <ATT name="LineNumber">535</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -434,7 +434,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionSpecification" uid="82be9c8a-7104-40df-8501-0120128600ac"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">487</ATT>
+            <ATT name="LineNumber">492</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -454,7 +454,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="b06735fe-a3e6-4574-b0bc-b19a56993592"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">503</ATT>
+            <ATT name="LineNumber">532</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -489,7 +489,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="c0bc769a-0494-465b-94ce-220635d2ccab"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">503</ATT>
+            <ATT name="LineNumber">532</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -504,7 +504,7 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="95fb3aee-aed8-46dd-91e0-501b585d652f"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">533</ATT>
+            <ATT name="LineNumber">578</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
@@ -544,51 +544,11 @@
         <OBJECT>
           <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="0062522e-1ecd-4dfe-a5eb-39826933e459"/>
           <ATTRIBUTES>
-            <ATT name="LineNumber">533</ATT>
+            <ATT name="LineNumber">578</ATT>
             <ATT name="Name"></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
-            <LINK relation="Started">
-              <REFOBJ>
-                <ID name="" mc="Standard.ExecutionSpecification" uid="f1dc97c4-4fa6-420b-8de1-f1df3437b76e"/>
-              </REFOBJ>
-            </LINK>
-            <LINK relation="Covered">
-              <REFOBJ>
-                <ID name="User" mc="Standard.Lifeline" uid="5f9ca520-7812-4c46-a867-22b34cee835c"/>
-              </REFOBJ>
-            </LINK>
-          </DEPENDENCIES>
-        </OBJECT>
-        <OBJECT>
-          <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="6ef09d3d-661f-4d13-9cbf-06fe293cb45c"/>
-          <ATTRIBUTES>
-            <ATT name="LineNumber">593</ATT>
-            <ATT name="Name"></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Covered">
-              <REFOBJ>
-                <ID name="User" mc="Standard.Lifeline" uid="5f9ca520-7812-4c46-a867-22b34cee835c"/>
-              </REFOBJ>
-            </LINK>
-          </DEPENDENCIES>
-        </OBJECT>
-        <OBJECT>
-          <ID name="" mc="Standard.ExecutionSpecification" uid="f1dc97c4-4fa6-420b-8de1-f1df3437b76e"/>
-          <ATTRIBUTES>
-            <ATT name="LineNumber">533</ATT>
-            <ATT name="Name"></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Finish">
-              <REFOBJ>
-                <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="6ef09d3d-661f-4d13-9cbf-06fe293cb45c"/>
-              </REFOBJ>
-            </LINK>
             <LINK relation="Covered">
               <REFOBJ>
                 <ID name="User" mc="Standard.Lifeline" uid="5f9ca520-7812-4c46-a867-22b34cee835c"/>
@@ -821,7 +781,7 @@
         </OBJECT>
       </COMP>
       <COMP relation="Product">
-        <COMPID name="Interaction Sequence diagram" mc="Standard.SequenceDiagram" uid="851c9f3c-e4d0-4e80-a6ab-f6cedd98f5f6"/>
+        <COMPID name="Sequence diagram choose or change nickname" mc="Standard.SequenceDiagram" uid="851c9f3c-e4d0-4e80-a6ab-f6cedd98f5f6"/>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

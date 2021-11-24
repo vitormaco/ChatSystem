@@ -688,7 +688,7 @@
         </OBJECT>
       </COMP>
       <COMP relation="Product">
-        <COMPID name="Diagramme de séquence Interaction" mc="Standard.SequenceDiagram" uid="fed76690-9046-4158-9717-2419c4da9c7e"/>
+        <COMPID name="Sequence diagram finish conversation" mc="Standard.SequenceDiagram" uid="fed76690-9046-4158-9717-2419c4da9c7e"/>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

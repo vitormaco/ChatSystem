@@ -148,6 +148,11 @@
           </DEPENDENCIES>
         </OBJECT>
       </COMP>
+      <COMP relation="OwnedEnd">
+        <REFOBJ>
+          <ID name="messageService" mc="Standard.AssociationEnd" uid="474f14b0-06b2-4146-88f6-174bf2b24e0b"/>
+        </REFOBJ>
+      </COMP>
     </DEPENDENCIES>
   </OBJECT>
 </EXT>
