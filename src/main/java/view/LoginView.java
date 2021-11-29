@@ -1,4 +1,5 @@
 package view;
+import services.MessageService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,17 +7,15 @@ import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame implements ActionListener {
 
+	private MessageService messageService;
+	////////////////////////////////////////
     Container container = getContentPane();
-    JLabel userLabel = new JLabel("USERNAME");
-    JLabel passwordLabel = new JLabel("PASSWORD");
+    JLabel userLabel = new JLabel("NICKNAME");
     JTextField userTextField = new JTextField();
-    JPasswordField passwordField = new JPasswordField();
     JButton loginButton = new JButton("LOGIN");
     JButton resetButton = new JButton("RESET");
-    JCheckBox showPassword = new JCheckBox("Show Password");
-
-    public LoginView() {
-
+    public LoginView(MessageService messageService) {
+    	this.messageService = messageService;
 
         this.setTitle("Login Form");
         this.setVisible(true);
@@ -29,52 +28,39 @@ public class LoginView extends JFrame implements ActionListener {
 
 
         userLabel.setBounds(50, 150, 100, 30);
-        passwordLabel.setBounds(50, 220, 100, 30);
         userTextField.setBounds(150, 150, 150, 30);
-        passwordField.setBounds(150, 220, 150, 30);
-        showPassword.setBounds(150, 250, 150, 30);
         loginButton.setBounds(50, 300, 100, 30);
         resetButton.setBounds(200, 300, 100, 30);
 
 
         container.add(userLabel);
-        container.add(passwordLabel);
         container.add(userTextField);
-        container.add(passwordField);
-        container.add(showPassword);
         container.add(loginButton);
         container.add(resetButton);
 
 
         loginButton.addActionListener(this);
         resetButton.addActionListener(this);
-        showPassword.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
             String userText;
-            String pwdText;
             userText = userTextField.getText();
-            pwdText = passwordField.getText();
-            if (userText.equalsIgnoreCase("admin") && pwdText.equalsIgnoreCase("123")) {
-                JOptionPane.showMessageDialog(this, "Login Successful");
+            
+            if (this.messageService.validateAndAssingUserNickname(userText)) {
+                // JOptionPane.showMessageDialog(this, "Login Successful");
+                new ChatView(this.messageService);
+                dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+                JOptionPane.showMessageDialog(this, "Invalid Username");
             }
 
         }
+        
         if (e.getSource() == resetButton) {
             userTextField.setText("");
-            passwordField.setText("");
-        }
-        if (e.getSource() == showPassword) {
-            if (showPassword.isSelected()) {
-                passwordField.setEchoChar((char) 0);
-            } else {
-                passwordField.setEchoChar('*');
-            }
         }
     }
 }
