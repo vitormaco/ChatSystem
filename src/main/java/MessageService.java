@@ -34,8 +34,8 @@ class ClientThread extends Thread {
     }
 }
 
-public class Server {
-	public Server() {
+public class MessageService {
+	public MessageService() {
 		try {
             int port = 8000;
             ServerSocket ss = new ServerSocket(port);
