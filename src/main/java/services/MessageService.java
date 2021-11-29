@@ -1,8 +1,13 @@
+package services;
+import models.*;
 import java.net.*;
+import java.util.*;
 import java.io.*;
+import java.lang.reflect.Array;
 
 class ClientThread extends Thread {
 
+	/*
     Socket serverClient;
     int clientNo;
 
@@ -32,10 +37,23 @@ class ClientThread extends Thread {
         }
 
     }
+    */
 }
 
+
 public class MessageService {
+	// Change to UserMessages Type
+	private UserMessages [] usersList;
+	private byte[] id;
+	private String nickname;
+	
 	public MessageService() {
+		try {
+			this.id = this.getMACAdress();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/*
 		try {
             int port = 8000;
             ServerSocket ss = new ServerSocket(port);
@@ -54,7 +72,37 @@ public class MessageService {
             System.out.print("Error: ");
             System.out.println(e.toString());
         }
+        */
 	}
 	
-
+	private byte[] getMACAdress() throws Exception {
+		InetAddress localIP = InetAddress.getByName("localhost");
+		NetworkInterface ni = NetworkInterface.getByInetAddress(localIP);
+		return ni.getHardwareAddress();
+	}
+	
+	/* PUBLIC METHODS */
+	
+	public HashSet<String> discoverUsers() {
+		HashSet<String> nicknames = new HashSet<String>();
+		for(UserMessages user : this.usersList) {
+			nicknames.add(user.getNickname());
+		}
+		return nicknames;
+	}
+	
+	public boolean validateAndAssingUserNickname(String nickname) {
+		Set<String> nicknames = this.discoverUsers();
+		if(!nicknames.contains(nickname)) {
+			this.nickname = nickname;
+			this.notifyUserStateChanged("connected");
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	public void notifyUserStateChanged(String state) {
+	
+	}
 }

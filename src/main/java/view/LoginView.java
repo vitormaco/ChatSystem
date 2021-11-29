@@ -1,4 +1,5 @@
 package view;
+import services.MessageService;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -6,6 +7,8 @@ import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame implements ActionListener {
 
+	MessageService messageService;
+	////////////////////////////////////////
     Container container = getContentPane();
     JLabel userLabel = new JLabel("USERNAME");
     JLabel passwordLabel = new JLabel("PASSWORD");
@@ -15,8 +18,8 @@ public class LoginView extends JFrame implements ActionListener {
     JButton resetButton = new JButton("RESET");
     JCheckBox showPassword = new JCheckBox("Show Password");
 
-    public LoginView() {
-
+    public LoginView(MessageService messageService) {
+    	this.messageService = messageService;
 
         this.setTitle("Login Form");
         this.setVisible(true);
@@ -60,7 +63,8 @@ public class LoginView extends JFrame implements ActionListener {
             pwdText = passwordField.getText();
             if (userText.equalsIgnoreCase("admin") && pwdText.equalsIgnoreCase("123")) {
                 JOptionPane.showMessageDialog(this, "Login Successful");
-                new ChatView();
+                // this.messageService
+                // new ChatView();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username or Password");
             }
