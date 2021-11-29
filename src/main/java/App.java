@@ -7,6 +7,7 @@ public class App
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new LoginView();
+                new Server();
             }
         });
     }
