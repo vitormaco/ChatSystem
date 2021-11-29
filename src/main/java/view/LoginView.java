@@ -60,6 +60,7 @@ public class LoginView extends JFrame implements ActionListener {
             pwdText = passwordField.getText();
             if (userText.equalsIgnoreCase("admin") && pwdText.equalsIgnoreCase("123")) {
                 JOptionPane.showMessageDialog(this, "Login Successful");
+                new ChatView();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username or Password");
             }
