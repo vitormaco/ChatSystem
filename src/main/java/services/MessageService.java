@@ -6,22 +6,41 @@ import java.util.*;
 import java.io.*;
 import java.lang.reflect.Array;
 
+
+class ServerThread extends Thread {
+	int sendPort = 8080;
+	int receivePort = 8081;
+	
+	public void run() {
+		ServerSocket ss;
+		try {
+			ss = new ServerSocket(receivePort);
+			Socket cl = ss.accept();
+			new ClientThread(cl).start();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
 class ClientThread extends Thread {
 
-	/*
+	
     Socket serverClient;
-    int clientNo;
 
-    ClientThread(Socket s, int id){
+    ClientThread(Socket s){
         serverClient = s;
-        clientNo = id;
     }
 
     public void run(){
         try {
-            DataInputStream in = new DataInputStream(serverClient.getInputStream());
-            DataOutputStream out = new DataOutputStream(serverClient.getOutputStream());
-            String clientMessage = "", serverMessage = "";
+            DataInputStream in = 
+            		new DataInputStream(serverClient.getInputStream());
+            
+            DataOutputStream out = 
+            		new DataOutputStream(serverClient.getOutputStream());
+            
+            /*
             while(!clientMessage.equals("bye")){
                 clientMessage = in.readUTF();
                 System.out.println("Client: " + clientNo +  " Message: " + clientMessage);
@@ -30,15 +49,14 @@ class ClientThread extends Thread {
             }
             in.close();
             out.close();
+            */
+            
             serverClient.close();
         } catch (Exception e) {
-            System.out.println("client error " + e.getMessage());
-        } finally {
-            System.out.println("Client: " + clientNo +  " exit!!");
+            System.out.println("Client error " + e.getMessage());
         }
 
     }
-    */
 }
 
 
@@ -139,6 +157,6 @@ public class MessageService {
 	}
 	
 	public void notifyUserStateChanged(String state) {
-	
+		
 	}
 }

@@ -18,7 +18,7 @@ public class ChatView extends JFrame implements ActionListener {
 	public ChatView(MessageService messageService) {
 		this.messageService = messageService;
 		
-		this.setTitle(this.messageService.getId());
+		this.setTitle(this.messageService.getNickname());
         this.setVisible(true);
         this.setBounds(10, 10, 370, 600);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

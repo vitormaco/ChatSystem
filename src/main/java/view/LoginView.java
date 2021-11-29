@@ -42,10 +42,6 @@ public class LoginView extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
         resetButton.addActionListener(this);
     }
-    
-    private void close() {
-    
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -56,6 +52,7 @@ public class LoginView extends JFrame implements ActionListener {
             if (this.messageService.validateAndAssingUserNickname(userText)) {
                 // JOptionPane.showMessageDialog(this, "Login Successful");
                 new ChatView(this.messageService);
+                dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username");
             }
