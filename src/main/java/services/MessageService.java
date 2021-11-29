@@ -1,6 +1,7 @@
 package services;
 import models.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.io.*;
 import java.lang.reflect.Array;
@@ -43,8 +44,8 @@ class ClientThread extends Thread {
 
 public class MessageService {
 	// Change to UserMessages Type
-	private UserMessages [] usersList;
-	private byte[] id;
+	private ArrayList <UserMessages> usersList;
+	private String id;
 	private String nickname;
 	
 	public MessageService() {
@@ -53,6 +54,9 @@ public class MessageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		this.usersList = new ArrayList<UserMessages>();
+		
 		/*
 		try {
             int port = 8000;
@@ -75,10 +79,42 @@ public class MessageService {
         */
 	}
 	
-	private byte[] getMACAdress() throws Exception {
-		InetAddress localIP = InetAddress.getByName("localhost");
-		NetworkInterface ni = NetworkInterface.getByInetAddress(localIP);
-		return ni.getHardwareAddress();
+	private String getMACAdress() throws Exception {
+		byte[] mac;
+		StringBuilder sb = new StringBuilder();
+		
+		try {
+
+	        Enumeration<NetworkInterface> networkInterfaces = 
+	        		NetworkInterface.getNetworkInterfaces();
+	        
+	        while(networkInterfaces.hasMoreElements())
+	        {
+	            NetworkInterface network = networkInterfaces.nextElement();
+	            mac = network.getHardwareAddress();
+	            if(mac != null)
+	            {
+	                sb = new StringBuilder();
+	                for (int i = 0; i < mac.length; i++)
+	                {
+	                    sb.append(String.format("%02X%s", 
+	                    		mac[i], (i < mac.length - 1) ? "-" : ""));        
+	                }  
+	            }
+	        }
+	    } catch (SocketException e){
+	        e.printStackTrace();
+	    }
+
+		return sb.toString();
+	}
+	
+	public String getNickname() {
+		return this.nickname;
+	}
+	
+	public String getId() {
+		return this.id;
 	}
 	
 	/* PUBLIC METHODS */
