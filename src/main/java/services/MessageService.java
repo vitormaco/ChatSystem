@@ -80,49 +80,4 @@ public class MessageService {
 
 	}
 
-	private static DatagramSocket socket = null;
-
-
-    public static void broadcast() throws IOException {
-        socket = new DatagramSocket();
-        socket.setBroadcast(true);
-
-        byte[] buffer = "Hello".getBytes();
-
-        DatagramPacket packet
-          = new DatagramPacket(buffer, buffer.length, InetAddress.getByName("255.255.255.255"), 4445);
-        socket.send(packet);
-        socket.close();
-    }
-
-
-    private DatagramSocket socket2;
-    private boolean running;
-    private byte[] buf = new byte[256];
-
-
-    public void receiveMessage() throws Exception {
-		running = true;
-		socket2 = new DatagramSocket(4445);
-
-        while (running) {
-            DatagramPacket packet
-              = new DatagramPacket(buf, buf.length);
-            socket2.receive(packet);
-
-            InetAddress address = packet.getAddress();
-            int port = packet.getPort();
-            packet = new DatagramPacket(buf, buf.length, address, port);
-            String received
-              = new String(packet.getData(), 0, packet.getLength());
-
-            if (received.equals("end")) {
-                running = false;
-                continue;
-            }
-            socket2.send(packet);
-        }
-        socket2.close();
-    }
-
 }

@@ -5,8 +5,10 @@ public class App {
     public static void main(String[] args) {
         final MessageService messageService = new MessageService();
         try {
-            MessageService.broadcast();
-            messageService.receiveMessage();
+            EchoClient client = new EchoClient();
+            client.sendEcho("test");
+            EchoServer server = new EchoServer();
+            server.run();
         } catch (Exception e) {
             //TODO: handle exception
         }
