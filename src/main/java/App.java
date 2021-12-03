@@ -11,12 +11,14 @@ public class App {
             server.run();
         } catch (Exception e) {
             //TODO: handle exception
+			e.printStackTrace();
         }
-
-        // javax.swing.SwingUtilities.invokeLater(new Runnable() {
-        //     public void run() {
-        //         new LoginView(messageService);
-        //     }
-        // });
+/*
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+             public void run() {
+                new LoginView(messageService);
+             }
+        });
+        */
     }
 }

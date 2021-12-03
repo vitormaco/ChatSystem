@@ -9,13 +9,14 @@ public class EchoClient {
 
     public EchoClient() throws Exception {
         socket = new DatagramSocket();
-        address = InetAddress.getByName("0.0.0.0");
+        socket.setBroadcast(true);
+        address = InetAddress.getByName("255.255.255.255");
     }
 
     public String sendEcho(String msg) throws Exception {
         buf = msg.getBytes();
         DatagramPacket packet
-          = new DatagramPacket(buf, buf.length, address, 4445);
+          = new DatagramPacket(buf, buf.length, address, 4446);
         socket.send(packet);
         packet = new DatagramPacket(buf, buf.length);
         socket.receive(packet);

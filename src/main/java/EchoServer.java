@@ -6,7 +6,7 @@ public class EchoServer extends Thread {
     private byte[] buf = new byte[256];
 
     public EchoServer() throws Exception {
-        socket = new DatagramSocket(4445);
+        socket = new DatagramSocket(4446);
     }
 
     public void run() {
