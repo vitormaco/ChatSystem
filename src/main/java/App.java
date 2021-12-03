@@ -6,7 +6,7 @@ public class App {
         final MessageService messageService = new MessageService();
         try {
             EchoClient client = new EchoClient();
-            client.sendEcho("test");
+            client.sendEcho("funciona");
             EchoServer server = new EchoServer();
             server.run();
         } catch (Exception e) {

@@ -10,6 +10,9 @@ public class EchoServer extends Thread {
     }
 
     public void run() {
+
+        System.out.println("started server");
+
         running = true;
 
         while (running) {
@@ -21,11 +24,15 @@ public class EchoServer extends Thread {
                   //TODO: handle exception
               }
 
+            System.out.println("received message");
+
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
             String received
-              = new String(packet.getData(), 0, packet.getLength());
+            = new String(packet.getData(), 0, packet.getLength());
+
+            System.out.println(received);
 
             if (received.equals("end")) {
                 running = false;

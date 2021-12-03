@@ -9,7 +9,7 @@ public class EchoClient {
 
     public EchoClient() throws Exception {
         socket = new DatagramSocket();
-        address = InetAddress.getByName("localhost");
+        address = InetAddress.getByName("0.0.0.0");
     }
 
     public String sendEcho(String msg) throws Exception {
