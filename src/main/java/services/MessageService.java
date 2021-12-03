@@ -80,13 +80,18 @@ public class MessageService {
 
 	}
 
-	public void sendBroadcastMessage(String msg) throws Exception {
-        DatagramSocket socket = new DatagramSocket();
-        InetAddress address = InetAddress.getByName("0.0.0.0");
-        byte[] buf = msg.getBytes();
-        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 4445);
-        socket.send(packet);
-        socket.close();
+	public void sendBroadcastMessage(String msg, int port) {
+		try {
+			DatagramSocket socket = new DatagramSocket();
+			InetAddress address = InetAddress.getByName("0.0.0.0");
+			byte[] buf = msg.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			socket.send(packet);
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception thrown when sending broadcast message");
+		}
     }
 
 }
