@@ -1,11 +1,12 @@
+package services;
 import java.net.*;
 
-public class EchoServer extends Thread {
+public class NetworkListener extends Thread {
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[256];
 
-    public EchoServer() throws Exception {
+    public NetworkListener() throws Exception {
         socket = new DatagramSocket(4446);
     }
 

@@ -1,3 +1,4 @@
+import services.EchoClient;
 import services.MessageService;
 import view.LoginView;
 
@@ -7,8 +8,8 @@ public class App {
         try {
             EchoClient client = new EchoClient();
             client.sendEcho("funciona");
-            EchoServer server = new EchoServer();
-            server.run();
+            //EchoServer server = new EchoServer();
+            //server.run();
         } catch (Exception e) {
             //TODO: handle exception
 			e.printStackTrace();
