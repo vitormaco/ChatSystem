@@ -1,10 +1,12 @@
 package services;
 import java.net.*;
 
+import models.MessagePDU;
+
 public class NetworkListener extends Thread {
     private DatagramSocket socket;
     private boolean running;
-    private byte[] buf = new byte[256];
+    private byte[] buf = new byte[65536];
 
     public NetworkListener(int port) {
         try {
@@ -32,7 +34,8 @@ public class NetworkListener extends Thread {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
             String package_received = new String(packet.getData(), 0, packet.getLength());
-            System.out.println("listener received: " + package_received);
+    		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
+            System.out.println("listener received: " + deserializedObject.getSourceNickname());
         }
 
         socket.close();
