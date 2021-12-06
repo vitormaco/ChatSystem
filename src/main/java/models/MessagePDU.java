@@ -40,6 +40,11 @@ public class MessagePDU implements Serializable {
 		this.sourceNickname = sourceNickname;
 		return this;
 	}
+	
+	public MessagePDU withSourceID(String sourceID) {
+		this.sourceID = sourceID;
+		return this;
+	}
 
 	public String getMessageContent() {
 		return this.messageContent;

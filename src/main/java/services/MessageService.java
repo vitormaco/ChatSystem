@@ -10,6 +10,7 @@ public class MessageService {
 	private ArrayList<UserMessages> usersList;
 	private String id;
 	private String nickname;
+    private NetworkListener listener;
 
 	public MessageService() {
 		try {
@@ -17,8 +18,12 @@ public class MessageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		this.usersList = new ArrayList<UserMessages>();
+		
+		this.listener = new NetworkListener(4446);
+	    this.listener.run();
+		
 	}
 
 	private String getMACAdress() throws Exception {
@@ -47,14 +52,32 @@ public class MessageService {
 		return sb.toString();
 	}
 
-	public String getNickname() {
-		return this.nickname;
+	private void notifyUserStateChanged(String state) {
+		String serializedObject = new MessagePDU()
+				.withMessageContent("")
+				.withStatus(MessagePDU.Status.CONNECTION)
+				.withSourceNickname(this.nickname)
+				.withSourceID(this.id)
+				.serialize();
+
+	    this.sendBroadcastMessage(serializedObject, 4446);
+		System.out.println(serializedObject);
 	}
 
-	public String getId() {
-		return this.id;
-	}
-
+	private void sendBroadcastMessage(String msg, int port) {
+		try {
+			DatagramSocket socket = new DatagramSocket();
+			InetAddress address = InetAddress.getByName("255.255.255.255");
+			byte[] buf = msg.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			socket.send(packet);
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception thrown when sending broadcast message");
+		}
+    }
+	
 	/* PUBLIC METHODS */
 
 	public HashSet<String> discoverUsers() {
@@ -75,23 +98,15 @@ public class MessageService {
 			return false;
 		}
 	}
+	
 
-	public void notifyUserStateChanged(String state) {
-
+	public String getNickname() {
+		return this.nickname;
 	}
 
-	public void sendBroadcastMessage(String msg, int port) {
-		try {
-			DatagramSocket socket = new DatagramSocket();
-			InetAddress address = InetAddress.getByName("255.255.255.255");
-			byte[] buf = msg.getBytes();
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-			socket.send(packet);
-			socket.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Exception thrown when sending broadcast message");
-		}
-    }
+	public String getId() {
+		return this.id;
+	}
+
 
 }
