@@ -14,6 +14,7 @@ public class MessageService {
     private NetworkListener listener;
     private ChatView chatView = null;
 
+
 	public MessageService() {
 		try {
 			this.id = this.getMACAdress();
@@ -111,12 +112,12 @@ public class MessageService {
 		return nicknames;
 	}
 
-	public boolean validateAndAssingUserNickname(String nickname) {
+	public boolean validateAndAssingUserNickname(String nickname, String state) {
 		Set<String> nicknames = this.discoverUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
-			this.notifyUserStateChanged("connected");
-		    this.listener.start();
+		  this.listener.start();
+			this.notifyUserStateChanged(state);
 			return true;
 		} else {
 			return false;
