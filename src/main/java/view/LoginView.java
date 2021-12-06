@@ -48,7 +48,7 @@ public class LoginView extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) {
             String userText;
             userText = userTextField.getText();
-            
+
             if (this.messageService.validateAndAssingUserNickname(userText)) {
                 // JOptionPane.showMessageDialog(this, "Login Successful");
                 new ChatView(this.messageService);
@@ -56,9 +56,8 @@ public class LoginView extends JFrame implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username");
             }
-
         }
-        
+
         if (e.getSource() == resetButton) {
             userTextField.setText("");
         }
