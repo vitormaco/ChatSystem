@@ -23,9 +23,7 @@ public class MessageService {
 		
 		this.usersList = new ArrayList<UserMessages>();
 		
-		this.listener = new NetworkListener(4446, this);
-	    this.listener.start();
-		
+		this.listener = new NetworkListener(4446, this);	
 	}
 
 	private String getMACAdress() throws Exception {
@@ -106,6 +104,7 @@ public class MessageService {
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
 			this.notifyUserStateChanged("connected");
+		    this.listener.start();
 			return true;
 		} else {
 			return false;
