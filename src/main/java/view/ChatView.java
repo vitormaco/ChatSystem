@@ -31,9 +31,9 @@ public class ChatView extends JFrame implements ActionListener {
 
 		container.setLayout(null);
 		
-		list.setBounds(10, 40, 300, 300);
+		list.setBounds(10, 100, 300, 300);
 		logoutButton.setBounds(10, 10, 100, 30);
-    changeNickname.setBounds(10, 10, 200, 30);
+		changeNickname.setBounds(130, 10, 200, 30);
 
 		container.add(list);
 		container.add(logoutButton);
