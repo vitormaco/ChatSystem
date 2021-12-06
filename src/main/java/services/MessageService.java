@@ -22,7 +22,7 @@ public class MessageService {
 		this.usersList = new ArrayList<UserMessages>();
 		
 		this.listener = new NetworkListener(4446);
-	    this.listener.run();
+	    this.listener.start();
 		
 	}
 
