@@ -50,6 +50,10 @@ public class MessagePDU implements Serializable {
 		return this.messageContent;
 	}
 	
+	public String getSourceNickname() {
+		return this.sourceNickname;
+	}
+	
 	public String serialize() {
 		try {
 	    	ByteArrayOutputStream bo = new ByteArrayOutputStream();
