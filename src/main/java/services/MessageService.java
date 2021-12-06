@@ -12,6 +12,7 @@ public class MessageService {
 	private String nickname;
     private NetworkListener listener;
 
+
 	public MessageService() {
 		try {
 			this.id = this.getMACAdress();
@@ -88,7 +89,7 @@ public class MessageService {
 		return nicknames;
 	}
 
-	public boolean validateAndAssingUserNickname(String nickname) {
+	public boolean validateAndAssingUserNickname(String nickname, String state) {
 		Set<String> nicknames = this.discoverUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
