@@ -131,7 +131,7 @@ public class MessageService {
 		}
 	}
 	
-	private void sendMyNickname(byte[] adress) {
+	private void sendMyNickname(byte[] address) {
 		String serializedObject = new MessagePDU()
 				.withMessageContent("")
 				.withStatus(MessagePDU.Status.CONNECTION)
@@ -139,7 +139,7 @@ public class MessageService {
 				.withSourceID(this.id)
 				.serialize();
 		
-		this.sendUnicastMessage(serializedObject, this.port , adress);
+		this.sendUnicastMessage(serializedObject, this.port , address);
 	}
 	
 	/* PUBLIC METHODS */
