@@ -77,6 +77,13 @@ public class MessageService {
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
+		}else if(state == "discover") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.DISCOVER)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
 		}
 
 	    this.sendBroadcastMessage(serializedObject, 4446);
@@ -97,6 +104,22 @@ public class MessageService {
 		}
     }
 	
+	private void sendUnicastMessage(String msg, int port, String address) {
+		/*
+		try {
+			DatagramSocket socket = new DatagramSocket();
+			InetAddress address = InetAddress.getHostAddress(address);
+			byte[] buf = msg.getBytes();
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			socket.send(packet);
+			socket.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception thrown when sending broadcast message");
+		}
+		*/
+    }
+	
 	private void addNewLoggedUser(String nickname) {
 		if(this.chatView != null) {
 			
@@ -110,8 +133,12 @@ public class MessageService {
 	}
 	
 	/* PUBLIC METHODS */
+	
+	public void discoverUsers() {
+		this.notifyUserStateChanged("discover");
+	}
 
-	public HashSet<String> discoverUsers() {
+	public HashSet<String> getNicknamesofActiveUsers() {
 		HashSet<String> nicknames = new HashSet<String>();
 		for (UserMessages user : this.usersList) {
 			nicknames.add(user.getNickname());
@@ -120,7 +147,8 @@ public class MessageService {
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
-		Set<String> nicknames = this.discoverUsers();
+		this.discoverUsers();
+		Set<String> nicknames = this.getNicknamesofActiveUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
 			if(state == "connected") {
@@ -146,6 +174,8 @@ public class MessageService {
         	this.addNewLoggedUser(message.getSourceNickname());
         }else if(status == MessagePDU.Status.DECONNECTION) {
         	this.deleteLoggedoutUser(message.getSourceNickname());
+        }else if(status == MessagePDU.Status.DISCOVER) {
+        
         }
 	}
 	

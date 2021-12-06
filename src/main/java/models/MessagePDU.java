@@ -12,7 +12,8 @@ public class MessagePDU implements Serializable {
 		ACTIVE,
 		CONNECTION,
 		DECONNECTION,
-		NICKNAME_CHANGED
+		NICKNAME_CHANGED,
+		DISCOVER,
 	}
 	
 	enum MessageType {
@@ -24,6 +25,7 @@ public class MessagePDU implements Serializable {
 	private String messageContent = "";
 	private String sourceNickname = "";
 	private String sourceID = "";
+	private byte[] sourceAdress;
 	private String destinationNickname = "";
 	private String destinationID = "";
 
@@ -57,6 +59,10 @@ public class MessagePDU implements Serializable {
 	
 	public Status getStatus() {
 		return this.status;
+	}
+	
+	public void setSourceAddress(byte[] sourceAdress) {
+		this.sourceAdress = sourceAdress;
 	}
 	
 	public String serialize() {

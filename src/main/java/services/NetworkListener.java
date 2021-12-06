@@ -37,7 +37,8 @@ public class NetworkListener extends Thread {
             socket.receive(packet);
             String package_received = new String(packet.getData(), 0, packet.getLength());
     		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-        
+    		deserializedObject.setSourceAddress(packet.getAddress().getAddress());
+
     		this.messageService.messageReceived(deserializedObject);
         }
 
