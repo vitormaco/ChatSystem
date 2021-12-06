@@ -4,6 +4,7 @@ import models.*;
 import java.net.*;
 import java.util.*;
 import java.io.*;
+import view.ChatView;
 
 public class MessageService {
 	// Change to UserMessages Type
@@ -11,6 +12,7 @@ public class MessageService {
 	private String id;
 	private String nickname;
     private NetworkListener listener;
+    private ChatView chatView = null;
 
 
 	public MessageService() {
@@ -22,9 +24,7 @@ public class MessageService {
 		
 		this.usersList = new ArrayList<UserMessages>();
 		
-		this.listener = new NetworkListener(4446);
-	    this.listener.start();
-		
+		this.listener = new NetworkListener(4446, this);	
 	}
 
 	private String getMACAdress() throws Exception {
@@ -53,13 +53,24 @@ public class MessageService {
 		return sb.toString();
 	}
 
-	private void notifyUserStateChanged(String state) {
-		String serializedObject = new MessagePDU()
-				.withMessageContent("")
-				.withStatus(MessagePDU.Status.CONNECTION)
-				.withSourceNickname(this.nickname)
-				.withSourceID(this.id)
-				.serialize();
+	public void notifyUserStateChanged(String state) {
+		String serializedObject = "";
+		
+		if(state == "connected") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.CONNECTION)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
+		}else if(state == "disconnected") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.DECONNECTION)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
+		}
 
 	    this.sendBroadcastMessage(serializedObject, 4446);
 		System.out.println(serializedObject);
@@ -79,6 +90,18 @@ public class MessageService {
 		}
     }
 	
+	private void addNewLoggedUser(String nickname) {
+		if(this.chatView != null) {
+			
+		}
+	}
+	
+	private void deleteLoggedoutUser(String nickname) {
+		if(this.chatView != null) {
+			
+		}
+	}
+	
 	/* PUBLIC METHODS */
 
 	public HashSet<String> discoverUsers() {
@@ -93,11 +116,28 @@ public class MessageService {
 		Set<String> nicknames = this.discoverUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
+		  this.listener.start();
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
 			return false;
 		}
+	}
+	
+	public void disconnectServer() {
+		this.listener.setRunning(false);
+	}
+	
+	public void messageReceived(MessagePDU message) {
+        System.out.println("listener received: " + message.getSourceNickname());
+        
+        MessagePDU.Status status = message.getStatus();
+        
+        if(status == MessagePDU.Status.CONNECTION) {
+        	this.addNewLoggedUser(message.getSourceNickname());
+        }else if(status == MessagePDU.Status.DECONNECTION) {
+        	this.deleteLoggedoutUser(message.getSourceNickname());
+        }
 	}
 	
 
@@ -108,6 +148,9 @@ public class MessageService {
 	public String getId() {
 		return this.id;
 	}
-
+	
+	public void setChatView(ChatView chatView) {
+		this.chatView = chatView;
+	}
 
 }

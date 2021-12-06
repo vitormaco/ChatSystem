@@ -51,7 +51,7 @@ public class LoginView extends JFrame implements ActionListener {
 
             if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
                 // JOptionPane.showMessageDialog(this, "Login Successful");
-                new ChatView(this.messageService);
+                this.messageService.setChatView(new ChatView(this.messageService));
                 dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Invalid Username");
