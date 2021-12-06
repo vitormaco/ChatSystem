@@ -49,7 +49,7 @@ public class LoginView extends JFrame implements ActionListener {
             String userText;
             userText = userTextField.getText();
 
-            if (this.messageService.validateAndAssingUserNickname(userText)) {
+            if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
                 // JOptionPane.showMessageDialog(this, "Login Successful");
                 new ChatView(this.messageService);
                 dispose();

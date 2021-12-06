@@ -39,12 +39,17 @@ public class ChatView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == changeNickname) {
-			String text = JOptionPane.showInputDialog(container, "Do you want to change the nickname?");
+			String text = JOptionPane.showInputDialog(container, "Insert the new nickname.");
 		    if (text != null) {
 		      System.out.println(text);
-		      if(messageService.validateAndAssingUserNickname(text)) {
+		      if(messageService.validateAndAssingUserNickname(text,"nicknameChanged")) {
 		    	  this.setTitle(this.messageService.getNickname());  
-		      }		      
+		    	  JOptionPane.showMessageDialog(container, "Nickname updated.");
+		      }else {
+		    	  JOptionPane.showMessageDialog(container, "Nickname not updated.");
+		      }
+		    }else {
+		    	JOptionPane.showMessageDialog(container, "Nickname not updated.");
 		    }
 		}
 

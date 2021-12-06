@@ -93,7 +93,7 @@ public class MessageService {
 		Set<String> nicknames = this.discoverUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
-			this.notifyUserStateChanged("connected");
+			this.notifyUserStateChanged(state);
 			return true;
 		} else {
 			return false;
