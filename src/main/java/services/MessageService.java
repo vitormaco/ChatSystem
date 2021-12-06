@@ -89,6 +89,18 @@ public class MessageService {
 		}
     }
 	
+	private void addNewLoggedUser(String nickname) {
+		if(this.chatView != null) {
+			
+		}
+	}
+	
+	private void deleteLoggedoutUser(String nickname) {
+		if(this.chatView != null) {
+			
+		}
+	}
+	
 	/* PUBLIC METHODS */
 
 	public HashSet<String> discoverUsers() {
@@ -117,6 +129,14 @@ public class MessageService {
 	
 	public void messageReceived(MessagePDU message) {
         System.out.println("listener received: " + message.getSourceNickname());
+        
+        MessagePDU.Status status = message.getStatus();
+        
+        if(status == MessagePDU.Status.CONNECTION) {
+        	this.addNewLoggedUser(message.getSourceNickname());
+        }else if(status == MessagePDU.Status.DECONNECTION) {
+        	this.deleteLoggedoutUser(message.getSourceNickname());
+        }
 	}
 	
 
