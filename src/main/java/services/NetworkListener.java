@@ -7,10 +7,12 @@ public class NetworkListener extends Thread {
     private DatagramSocket socket;
     private boolean running;
     private byte[] buf = new byte[65536];
+    private MessageService messageService;
 
-    public NetworkListener(int port) {
+    public NetworkListener(int port, MessageService messageService) {
         try {
             socket = new DatagramSocket(port);
+            this.messageService = messageService;
         } catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Exception thrown when creating network listener");
@@ -35,7 +37,8 @@ public class NetworkListener extends Thread {
             socket.receive(packet);
             String package_received = new String(packet.getData(), 0, packet.getLength());
     		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-            System.out.println("listener received: " + deserializedObject.getSourceNickname());
+        
+    		this.messageService.messageReceived(deserializedObject);
         }
 
         socket.close();

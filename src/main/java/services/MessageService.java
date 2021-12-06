@@ -12,7 +12,7 @@ public class MessageService {
 	private String id;
 	private String nickname;
     private NetworkListener listener;
-    private ChatView chatView;
+    private ChatView chatView = null;
 
 	public MessageService() {
 		try {
@@ -23,7 +23,7 @@ public class MessageService {
 		
 		this.usersList = new ArrayList<UserMessages>();
 		
-		this.listener = new NetworkListener(4446);
+		this.listener = new NetworkListener(4446, this);
 	    this.listener.start();
 		
 	}
@@ -114,6 +114,10 @@ public class MessageService {
 	
 	public void disconnectServer() {
 		this.listener.setRunning(false);
+	}
+	
+	public void messageReceived(MessagePDU message) {
+        System.out.println("listener received: " + message.getSourceNickname());
 	}
 	
 
