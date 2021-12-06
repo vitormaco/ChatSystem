@@ -11,7 +11,8 @@ public class MessagePDU implements Serializable {
 	public enum Status {
 		ACTIVE,
 		CONNECTION,
-		DECONNECTION
+		DECONNECTION,
+		NICKNAME_CHANGED
 	}
 	
 	enum MessageType {

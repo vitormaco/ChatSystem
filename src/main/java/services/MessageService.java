@@ -70,6 +70,13 @@ public class MessageService {
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
+		}else if(state == "nicknameChanged") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
 		}
 
 	    this.sendBroadcastMessage(serializedObject, 4446);
@@ -116,7 +123,9 @@ public class MessageService {
 		Set<String> nicknames = this.discoverUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
-		  this.listener.start();
+			if(state == "connected") {
+				this.listener.start();
+			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
