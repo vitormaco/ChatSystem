@@ -15,6 +15,7 @@ public class ChatView extends JFrame implements ActionListener {
 			"User4", "User5", "User6", "User7", "User8",
 			"User9", "User10", "User11", "User12" };
 	JList list = new JList(users);
+	JButton logoutButton = new JButton("Logout");
 
 	public ChatView(MessageService messageService) {
 		this.messageService = messageService;
@@ -26,15 +27,21 @@ public class ChatView extends JFrame implements ActionListener {
 		this.setResizable(false);
 
 		container.setLayout(null);
-		list.setBounds(10, 10, 300, 500);
+		
+		list.setBounds(10, 40, 300, 300);
+		logoutButton.setBounds(10, 10, 100, 30);
 
 		container.add(list);
+		container.add(logoutButton);
+		
+		logoutButton.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-
+		if(e.getSource() == this.logoutButton) {
+			System.out.println("Logout");
+		}
 	}
 
 }
