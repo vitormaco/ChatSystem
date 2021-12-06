@@ -4,6 +4,7 @@ import models.*;
 import java.net.*;
 import java.util.*;
 import java.io.*;
+import view.ChatView;
 
 public class MessageService {
 	// Change to UserMessages Type
@@ -11,6 +12,7 @@ public class MessageService {
 	private String id;
 	private String nickname;
     private NetworkListener listener;
+    private ChatView chatView;
 
 	public MessageService() {
 		try {
@@ -107,6 +109,9 @@ public class MessageService {
 	public String getId() {
 		return this.id;
 	}
-
+	
+	public void setChatView(ChatView chatView) {
+		this.chatView = chatView;
+	}
 
 }
