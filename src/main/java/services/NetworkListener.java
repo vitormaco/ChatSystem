@@ -6,7 +6,7 @@ import models.MessagePDU;
 public class NetworkListener extends Thread {
     private DatagramSocket socket;
     private boolean running;
-    private byte[] buf = new byte[256];
+    private byte[] buf = new byte[65536];
 
     public NetworkListener(int port) {
         try {

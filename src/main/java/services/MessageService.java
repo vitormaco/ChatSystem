@@ -83,7 +83,7 @@ public class MessageService {
 	public void sendBroadcastMessage(String msg, int port) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
-			InetAddress address = InetAddress.getByName("0.0.0.0");
+			InetAddress address = InetAddress.getByName("255.255.255.255");
 			byte[] buf = msg.getBytes();
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 			socket.send(packet);
