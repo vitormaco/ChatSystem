@@ -13,6 +13,7 @@ public class MessageService {
 	private String nickname;
     private NetworkListener listener;
     private ChatView chatView = null;
+    private int port = 4446;
 
 
 	public MessageService() {
@@ -86,7 +87,7 @@ public class MessageService {
 					.serialize();
 		}
 
-	    this.sendBroadcastMessage(serializedObject, 4446);
+	    this.sendBroadcastMessage(serializedObject, this.port);
 		System.out.println(serializedObject);
 	}
 
@@ -104,11 +105,10 @@ public class MessageService {
 		}
     }
 	
-	private void sendUnicastMessage(String msg, int port, String address) {
-		/*
+	private void sendUnicastMessage(String msg, int port, byte[] ip) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
-			InetAddress address = InetAddress.getHostAddress(address);
+			InetAddress address = InetAddress.getByAddress(ip);
 			byte[] buf = msg.getBytes();
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 			socket.send(packet);
@@ -117,7 +117,6 @@ public class MessageService {
 			e.printStackTrace();
 			System.out.println("Exception thrown when sending broadcast message");
 		}
-		*/
     }
 	
 	private void addNewLoggedUser(String nickname) {
@@ -130,6 +129,17 @@ public class MessageService {
 		if(this.chatView != null) {
 			
 		}
+	}
+	
+	private void sendMyNickname(byte[] adress) {
+		String serializedObject = new MessagePDU()
+				.withMessageContent("")
+				.withStatus(MessagePDU.Status.CONNECTION)
+				.withSourceNickname(this.nickname)
+				.withSourceID(this.id)
+				.serialize();
+		
+		this.sendUnicastMessage(serializedObject, this.port , adress);
 	}
 	
 	/* PUBLIC METHODS */
@@ -175,7 +185,7 @@ public class MessageService {
         }else if(status == MessagePDU.Status.DECONNECTION) {
         	this.deleteLoggedoutUser(message.getSourceNickname());
         }else if(status == MessagePDU.Status.DISCOVER) {
-        
+        	this.sendMyNickname(message.getSourceAddress());
         }
 	}
 	

@@ -25,7 +25,7 @@ public class MessagePDU implements Serializable {
 	private String messageContent = "";
 	private String sourceNickname = "";
 	private String sourceID = "";
-	private byte[] sourceAdress;
+	private byte[] sourceAdress = null;
 	private String destinationNickname = "";
 	private String destinationID = "";
 
@@ -63,6 +63,10 @@ public class MessagePDU implements Serializable {
 	
 	public void setSourceAddress(byte[] sourceAdress) {
 		this.sourceAdress = sourceAdress;
+	}
+	
+	public byte[] getSourceAddress() {
+		return this.sourceAdress;
 	}
 	
 	public String serialize() {
