@@ -54,13 +54,24 @@ public class MessageService {
 		return sb.toString();
 	}
 
-	private void notifyUserStateChanged(String state) {
-		String serializedObject = new MessagePDU()
-				.withMessageContent("")
-				.withStatus(MessagePDU.Status.CONNECTION)
-				.withSourceNickname(this.nickname)
-				.withSourceID(this.id)
-				.serialize();
+	public void notifyUserStateChanged(String state) {
+		String serializedObject = "";
+		
+		if(state == "connected") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.CONNECTION)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
+		}else if(state == "disconnected") {
+			serializedObject = new MessagePDU()
+					.withMessageContent("")
+					.withStatus(MessagePDU.Status.DECONNECTION)
+					.withSourceNickname(this.nickname)
+					.withSourceID(this.id)
+					.serialize();
+		}
 
 	    this.sendBroadcastMessage(serializedObject, 4446);
 		System.out.println(serializedObject);
@@ -99,6 +110,10 @@ public class MessageService {
 		} else {
 			return false;
 		}
+	}
+	
+	public void disconnectServer() {
+		this.listener.setRunning(false);
 	}
 	
 

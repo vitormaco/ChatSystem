@@ -40,4 +40,8 @@ public class NetworkListener extends Thread {
 
         socket.close();
     }
+    
+    public void setRunning(boolean running) {
+    	this.running = running;
+    }
 }

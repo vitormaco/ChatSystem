@@ -40,7 +40,11 @@ public class ChatView extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.logoutButton) {
-			System.out.println("Logout");
+			this.messageService.notifyUserStateChanged("disconnected");
+			this.messageService.disconnectServer();
+			
+			new LoginView(new MessageService());
+			dispose();
 		}
 	}
 
