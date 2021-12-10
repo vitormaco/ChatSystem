@@ -43,7 +43,7 @@ public class MessageService {
 					sb = new StringBuilder();
 					for (int i = 0; i < mac.length; i++) {
 						sb.append(String.format("%02X%s",
-								mac[i], (i < mac.length - 1) ? "-" : ""));
+								mac[i], (i < mac.length - 1) ? ":" : ""));
 					}
 				}
 			}
@@ -96,7 +96,6 @@ public class MessageService {
 		}
 
 		this.sendBroadcastMessage(serializedObject);
-		System.out.println(serializedObject);
 	}
 
 	private void sendBroadcastMessage(String msg) {
