@@ -12,8 +12,8 @@ public class MessageService {
 	private ArrayList<UserMessages> usersList;
 	private String id;
 	private String nickname;
-    private NetworkListener listener;
-    private ChatView chatView = null;
+	private NetworkListener listener;
+	private ChatView chatView = null;
 	Dotenv dotenv = Dotenv.load();
 
 	public MessageService() {
@@ -57,33 +57,61 @@ public class MessageService {
 	public void notifyUserStateChanged(String state) {
 		String serializedObject = "";
 
-		if(state == "connected") {
-			serializedObject = new MessagePDU()
-					.withStatus(MessagePDU.Status.CONNECTION)
-					.withSourceNickname(this.nickname)
-					.withSourceID(this.id)
-					.serialize();
-		}else if(state == "disconnected") {
-			serializedObject = new MessagePDU()
-					.withStatus(MessagePDU.Status.DECONNECTION)
-					.withSourceNickname(this.nickname)
-					.withSourceID(this.id)
-					.serialize();
-		}else if(state == "nicknameChanged") {
-			serializedObject = new MessagePDU()
-					.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
-					.withSourceNickname(this.nickname)
-					.withSourceID(this.id)
-					.serialize();
-		}else if(state == "discover") {
-			serializedObject = new MessagePDU()
-					.withStatus(MessagePDU.Status.DISCOVER)
-					.withSourceNickname(this.nickname)
-					.withSourceID(this.id)
-					.serialize();
+		try {
+			switch (state) {
+				case "connected":
+					serializedObject = new MessagePDU()
+							.withStatus(MessagePDU.Status.CONNECTION)
+							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
+							.withSourceNickname(this.nickname)
+							.withSourceID(this.id)
+							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withDestinationNickname("*")
+							.withDestinationID("*")
+							.serialize();
+					break;
+				case "disconnected":
+					serializedObject = new MessagePDU()
+							.withStatus(MessagePDU.Status.DECONNECTION)
+							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
+							.withSourceNickname(this.nickname)
+							.withSourceID(this.id)
+							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withDestinationNickname("*")
+							.withDestinationID("*")
+							.serialize();
+					break;
+				case "nicknameChanged":
+					serializedObject = new MessagePDU()
+							.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
+							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
+							.withSourceNickname(this.nickname)
+							.withSourceID(this.id)
+							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withDestinationNickname("*")
+							.withDestinationID("*")
+							.serialize();
+					break;
+				case "discover":
+					serializedObject = new MessagePDU()
+							.withStatus(MessagePDU.Status.DISCOVER)
+							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
+							.withSourceNickname(this.nickname)
+							.withSourceID(this.id)
+							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withDestinationNickname("*")
+							.withDestinationID("*")
+							.serialize();
+					break;
+				default:
+					throw new Exception();
+			}
+		} catch (Exception e) {
+			System.out.println("Error creating PDU");
+			e.printStackTrace();
 		}
 
-	    this.sendBroadcastMessage(serializedObject);
+		this.sendBroadcastMessage(serializedObject);
 		System.out.println(serializedObject);
 	}
 
@@ -100,7 +128,7 @@ public class MessageService {
 			e.printStackTrace();
 			System.out.println("Exception thrown when sending broadcast message");
 		}
-    }
+	}
 
 	private void sendUnicastMessage(String msg, byte[] ip) {
 		try {
@@ -115,26 +143,28 @@ public class MessageService {
 			e.printStackTrace();
 			System.out.println("Exception thrown when sending broadcast message");
 		}
-    }
+	}
 
 	private void addNewLoggedUser(String nickname) {
-		if(this.chatView != null) {
+		if (this.chatView != null) {
 
 		}
 	}
 
 	private void deleteLoggedoutUser(String nickname) {
-		if(this.chatView != null) {
+		if (this.chatView != null) {
 
 		}
 	}
 
 	private void sendMyNickname(byte[] address) {
 		String serializedObject = new MessagePDU()
-				.withMessageContent("")
 				.withStatus(MessagePDU.Status.CONNECTION)
+				.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 				.withSourceNickname(this.nickname)
 				.withSourceID(this.id)
+				.withDestinationNickname("*")
+				.withDestinationID("*")
 				.serialize();
 
 		this.sendUnicastMessage(serializedObject, address);
@@ -159,7 +189,7 @@ public class MessageService {
 		Set<String> nicknames = this.getNicknamesofActiveUsers();
 		if (!nicknames.contains(nickname)) {
 			this.nickname = nickname;
-			if(state == "connected") {
+			if (state == "connected") {
 				this.listener.start();
 			}
 			this.notifyUserStateChanged(state);
@@ -174,17 +204,16 @@ public class MessageService {
 	}
 
 	public void messageReceived(MessagePDU message) {
-        MessagePDU.Status status = message.getStatus();
+		MessagePDU.Status status = message.getStatus();
 
-        if(status == MessagePDU.Status.CONNECTION) {
-        	this.addNewLoggedUser(message.getSourceNickname());
-        }else if(status == MessagePDU.Status.DECONNECTION) {
-        	this.deleteLoggedoutUser(message.getSourceNickname());
-        }else if(status == MessagePDU.Status.DISCOVER) {
-        	this.sendMyNickname(message.getSourceAddress());
-        }
+		if (status == MessagePDU.Status.CONNECTION) {
+			this.addNewLoggedUser(message.getSourceNickname());
+		} else if (status == MessagePDU.Status.DECONNECTION) {
+			this.deleteLoggedoutUser(message.getSourceNickname());
+		} else if (status == MessagePDU.Status.DISCOVER) {
+			this.sendMyNickname(message.getSourceAddress());
+		}
 	}
-
 
 	public String getNickname() {
 		return this.nickname;

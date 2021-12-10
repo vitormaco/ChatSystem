@@ -1,13 +1,11 @@
 package models;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Base64;
-
-import java.lang.Object;
-
 
 public class MessagePDU implements Serializable {
 	public enum Status {
@@ -18,22 +16,28 @@ public class MessagePDU implements Serializable {
 		DISCOVER,
 	}
 
-	enum MessageType {
+	public enum MessageType {
+		NOTIFICATION,
 		TEXT,
 	}
 
-	private Status status = Status.ACTIVE;
-	private MessageType type = MessageType.TEXT;
-	private String messageContent = "";
+	private Status status;
+	private MessageType type;
+	private String messageContent;
 	private String timestamp;
-	private String sourceNickname = "";
-	private String sourceID = "";
-	private byte[] sourceAdress = null;
+	private String sourceNickname;
+	private String sourceID;
+	private byte[] sourceAddress;
 	private String destinationNickname = "";
 	private String destinationID = "";
 
 	public MessagePDU withMessageContent(String messageContent) {
 		this.messageContent = messageContent;
+		return this;
+	}
+
+	public MessagePDU withMessageType(MessageType type) {
+		this.type = type;
 		return this;
 	}
 
@@ -52,6 +56,25 @@ public class MessagePDU implements Serializable {
 		return this;
 	}
 
+	public MessagePDU withSourceAddress(byte[] sourceAddress) {
+		this.sourceAddress = sourceAddress;
+		return this;
+	}
+
+	public byte[] getSourceAddress() {
+		return this.sourceAddress;
+	}
+
+	public MessagePDU withDestinationNickname(String destinationNickname) {
+		this.destinationNickname = destinationNickname;
+		return this;
+	}
+
+	public MessagePDU withDestinationID(String destinationID) {
+		this.destinationID = destinationID;
+		return this;
+	}
+
 	public String getMessageContent() {
 		return this.messageContent;
 	}
@@ -64,18 +87,10 @@ public class MessagePDU implements Serializable {
 		return this.status;
 	}
 
-	public void setSourceAddress(byte[] sourceAdress) {
-		this.sourceAdress = sourceAdress;
-	}
-
-	public byte[] getSourceAddress() {
-		return this.sourceAdress;
-	}
-
 	public String serialize() {
 		try {
-	    	ByteArrayOutputStream bo = new ByteArrayOutputStream();
-	    	String serializedObject = "";
+			ByteArrayOutputStream bo = new ByteArrayOutputStream();
+			String serializedObject = "";
 			ObjectOutputStream so = new ObjectOutputStream(bo);
 			so.writeObject(this);
 			so.flush();
@@ -100,18 +115,16 @@ public class MessagePDU implements Serializable {
 	}
 
 	@Override
-	public String toString()
-	{
-		return
-		"status: " + status + "\n" +
-		"type: " + type + "\n" +
-		"messageContent: " + messageContent + "\n" +
-		"timestamp: " + timestamp + "\n" +
-		"sourceNickname: " + sourceNickname + "\n" +
-		"sourceID: " + sourceID + "\n" +
-		"sourceAdress: " + sourceAdress + "\n" +
-		"destinationNickname: " + destinationNickname + "\n" +
-		"destinationID: " + destinationID + "\n";
+	public String toString() {
+		return "status: " + status + "\n" +
+				"type: " + type + "\n" +
+				"messageContent: " + messageContent + "\n" +
+				"timestamp: " + timestamp + "\n" +
+				"sourceNickname: " + sourceNickname + "\n" +
+				"sourceID: " + sourceID + "\n" +
+				"sourceAddress: " + sourceAddress + "\n" +
+				"destinationNickname: " + destinationNickname + "\n" +
+				"destinationID: " + destinationID + "\n";
 	}
 
 }
