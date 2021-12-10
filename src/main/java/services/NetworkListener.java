@@ -31,19 +31,26 @@ public class NetworkListener extends Thread {
         System.out.println("NetworkListener up");
 
         running = true;
+        int message_counter = 0;
 
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             socket.receive(packet);
             String package_received = new String(packet.getData(), 0, packet.getLength());
     		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-        
+            System.out.println(
+                "message " + message_counter++ + ":\n" +
+                "-------------------------\n" +
+                deserializedObject.toString() +
+                "-------------------------" +
+                "\n\n"
+                );
     		this.messageService.messageReceived(deserializedObject);
         }
 
         socket.close();
     }
-    
+
     public void setRunning(boolean running) {
     	this.running = running;
     }
