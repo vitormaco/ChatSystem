@@ -3,7 +3,6 @@ package services;
 import models.*;
 import java.net.*;
 import java.util.*;
-import java.io.*;
 import view.ChatView;
 
 public class MessageService {
@@ -22,10 +21,10 @@ public class MessageService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		this.usersList = new ArrayList<UserMessages>();
-		
-		this.listener = new NetworkListener(4446, this);	
+
+		this.listener = new NetworkListener(4446, this);
 	}
 
 	private String getMACAdress() throws Exception {
@@ -56,7 +55,7 @@ public class MessageService {
 
 	public void notifyUserStateChanged(String state) {
 		String serializedObject = "";
-		
+
 		if(state == "connected") {
 			serializedObject = new MessagePDU()
 					.withMessageContent("")
@@ -104,7 +103,7 @@ public class MessageService {
 			System.out.println("Exception thrown when sending broadcast message");
 		}
     }
-	
+
 	private void sendUnicastMessage(String msg, int port, byte[] ip) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
@@ -118,19 +117,19 @@ public class MessageService {
 			System.out.println("Exception thrown when sending broadcast message");
 		}
     }
-	
+
 	private void addNewLoggedUser(String nickname) {
 		if(this.chatView != null) {
-			
+
 		}
 	}
-	
+
 	private void deleteLoggedoutUser(String nickname) {
 		if(this.chatView != null) {
-			
+
 		}
 	}
-	
+
 	private void sendMyNickname(byte[] address) {
 		String serializedObject = new MessagePDU()
 				.withMessageContent("")
@@ -138,12 +137,12 @@ public class MessageService {
 				.withSourceNickname(this.nickname)
 				.withSourceID(this.id)
 				.serialize();
-		
+
 		this.sendUnicastMessage(serializedObject, this.port , address);
 	}
-	
+
 	/* PUBLIC METHODS */
-	
+
 	public void discoverUsers() {
 		this.notifyUserStateChanged("discover");
 	}
@@ -170,16 +169,14 @@ public class MessageService {
 			return false;
 		}
 	}
-	
+
 	public void disconnectServer() {
 		this.listener.setRunning(false);
 	}
-	
+
 	public void messageReceived(MessagePDU message) {
-        System.out.println("listener received: " + message.getSourceNickname());
-        
         MessagePDU.Status status = message.getStatus();
-        
+
         if(status == MessagePDU.Status.CONNECTION) {
         	this.addNewLoggedUser(message.getSourceNickname());
         }else if(status == MessagePDU.Status.DECONNECTION) {
@@ -188,7 +185,7 @@ public class MessageService {
         	this.sendMyNickname(message.getSourceAddress());
         }
 	}
-	
+
 
 	public String getNickname() {
 		return this.nickname;
@@ -197,7 +194,7 @@ public class MessageService {
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public void setChatView(ChatView chatView) {
 		this.chatView = chatView;
 	}

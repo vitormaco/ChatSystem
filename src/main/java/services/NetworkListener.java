@@ -39,12 +39,13 @@ public class NetworkListener extends Thread {
     		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
     		deserializedObject.setSourceAddress(packet.getAddress().getAddress());
 
+            System.out.println("listener received: " + deserializedObject.toString());
     		this.messageService.messageReceived(deserializedObject);
         }
 
         socket.close();
     }
-    
+
     public void setRunning(boolean running) {
     	this.running = running;
     }

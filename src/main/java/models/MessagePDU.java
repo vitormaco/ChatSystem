@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Base64;
 
+import java.lang.Object;
+
 
 public class MessagePDU implements Serializable {
 	public enum Status {
@@ -15,14 +17,15 @@ public class MessagePDU implements Serializable {
 		NICKNAME_CHANGED,
 		DISCOVER,
 	}
-	
+
 	enum MessageType {
 		TEXT,
 	}
-	
-	private Status status = Status.ACTIVE; 
+
+	private Status status = Status.ACTIVE;
 	private MessageType type = MessageType.TEXT;
 	private String messageContent = "";
+	private String timestamp;
 	private String sourceNickname = "";
 	private String sourceID = "";
 	private byte[] sourceAdress = null;
@@ -43,7 +46,7 @@ public class MessagePDU implements Serializable {
 		this.sourceNickname = sourceNickname;
 		return this;
 	}
-	
+
 	public MessagePDU withSourceID(String sourceID) {
 		this.sourceID = sourceID;
 		return this;
@@ -52,28 +55,28 @@ public class MessagePDU implements Serializable {
 	public String getMessageContent() {
 		return this.messageContent;
 	}
-	
+
 	public String getSourceNickname() {
 		return this.sourceNickname;
 	}
-	
+
 	public Status getStatus() {
 		return this.status;
 	}
-	
+
 	public void setSourceAddress(byte[] sourceAdress) {
 		this.sourceAdress = sourceAdress;
 	}
-	
+
 	public byte[] getSourceAddress() {
 		return this.sourceAdress;
 	}
-	
+
 	public String serialize() {
 		try {
 	    	ByteArrayOutputStream bo = new ByteArrayOutputStream();
 	    	String serializedObject = "";
-			ObjectOutputStream so = new ObjectOutputStream(bo); 
+			ObjectOutputStream so = new ObjectOutputStream(bo);
 			so.writeObject(this);
 			so.flush();
 			serializedObject = new String(Base64.getEncoder().encode(bo.toByteArray()));
@@ -83,7 +86,7 @@ public class MessagePDU implements Serializable {
 			return "";
 		}
 	}
-	
+
 	public static MessagePDU deserialize(String serializedObject) {
 		try {
 			byte b[] = Base64.getDecoder().decode(serializedObject.getBytes());
