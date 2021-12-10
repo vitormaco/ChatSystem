@@ -3,6 +3,8 @@ package services;
 import models.*;
 import java.net.*;
 import java.util.*;
+
+import io.github.cdimascio.dotenv.Dotenv;
 import view.ChatView;
 
 public class MessageService {
@@ -12,8 +14,7 @@ public class MessageService {
 	private String nickname;
     private NetworkListener listener;
     private ChatView chatView = null;
-    private int port = 4446;
-
+	Dotenv dotenv = Dotenv.load();
 
 	public MessageService() {
 		try {
@@ -23,8 +24,8 @@ public class MessageService {
 		}
 
 		this.usersList = new ArrayList<UserMessages>();
-
-		this.listener = new NetworkListener(4446, this);
+		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+		this.listener = new NetworkListener(broadcastPort, this);
 	}
 
 	private String getMACAdress() throws Exception {
@@ -58,44 +59,41 @@ public class MessageService {
 
 		if(state == "connected") {
 			serializedObject = new MessagePDU()
-					.withMessageContent("")
 					.withStatus(MessagePDU.Status.CONNECTION)
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
 		}else if(state == "disconnected") {
 			serializedObject = new MessagePDU()
-					.withMessageContent("")
 					.withStatus(MessagePDU.Status.DECONNECTION)
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
 		}else if(state == "nicknameChanged") {
 			serializedObject = new MessagePDU()
-					.withMessageContent("")
 					.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
 		}else if(state == "discover") {
 			serializedObject = new MessagePDU()
-					.withMessageContent("")
 					.withStatus(MessagePDU.Status.DISCOVER)
 					.withSourceNickname(this.nickname)
 					.withSourceID(this.id)
 					.serialize();
 		}
 
-	    this.sendBroadcastMessage(serializedObject, this.port);
+	    this.sendBroadcastMessage(serializedObject);
 		System.out.println(serializedObject);
 	}
 
-	private void sendBroadcastMessage(String msg, int port) {
+	private void sendBroadcastMessage(String msg) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
 			InetAddress address = InetAddress.getByName("255.255.255.255");
 			byte[] buf = msg.getBytes();
-			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
+			int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, broadcastPort);
 			socket.send(packet);
 			socket.close();
 		} catch (Exception e) {
@@ -104,11 +102,12 @@ public class MessageService {
 		}
     }
 
-	private void sendUnicastMessage(String msg, int port, byte[] ip) {
+	private void sendUnicastMessage(String msg, byte[] ip) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
 			InetAddress address = InetAddress.getByAddress(ip);
 			byte[] buf = msg.getBytes();
+			int port = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
 			socket.send(packet);
 			socket.close();
@@ -138,7 +137,7 @@ public class MessageService {
 				.withSourceID(this.id)
 				.serialize();
 
-		this.sendUnicastMessage(serializedObject, this.port , address);
+		this.sendUnicastMessage(serializedObject, address);
 	}
 
 	/* PUBLIC METHODS */
