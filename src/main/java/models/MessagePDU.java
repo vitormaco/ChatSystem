@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Base64;
 
+import services.MessageService;
+
 public class MessagePDU implements Serializable {
 	public enum Status {
 		ACTIVE,
@@ -28,8 +30,17 @@ public class MessagePDU implements Serializable {
 	private String sourceNickname;
 	private String sourceID;
 	private String sourceAddress;
-	private String destinationNickname = "";
-	private String destinationID = "";
+	private String destinationNickname;
+	private String destinationID;
+	private String destinationAddress;
+
+	private MessagePDU() {};
+
+	public MessagePDU(MessageService service) {
+		this.sourceNickname = service.getNickname();
+		this.sourceID = service.getId();
+		this.sourceAddress = service.getIP();
+	}
 
 	public MessagePDU withMessageContent(String messageContent) {
 		this.messageContent = messageContent;
@@ -46,16 +57,6 @@ public class MessagePDU implements Serializable {
 		return this;
 	}
 
-	public MessagePDU withSourceNickname(String sourceNickname) {
-		this.sourceNickname = sourceNickname;
-		return this;
-	}
-
-	public MessagePDU withSourceID(String sourceID) {
-		this.sourceID = sourceID;
-		return this;
-	}
-
 	public MessagePDU withSourceAddress(String sourceAddress) {
 		this.sourceAddress = sourceAddress;
 		return this;
@@ -65,13 +66,17 @@ public class MessagePDU implements Serializable {
 		return this.sourceAddress;
 	}
 
-	public MessagePDU withDestinationNickname(String destinationNickname) {
-		this.destinationNickname = destinationNickname;
+	public MessagePDU withDestination(String nickname, String id, String address) {
+		this.destinationNickname = nickname;
+		this.destinationID = id;
+		this.destinationAddress = address;
 		return this;
 	}
 
-	public MessagePDU withDestinationID(String destinationID) {
-		this.destinationID = destinationID;
+	public MessagePDU withDestinationBroadcast() {
+		this.destinationNickname = "*";
+		this.destinationID = "*";
+		this.destinationAddress = "*";
 		return this;
 	}
 
@@ -124,7 +129,8 @@ public class MessagePDU implements Serializable {
 				"sourceID: " + sourceID + "\n" +
 				"sourceAddress: " + sourceAddress + "\n" +
 				"destinationNickname: " + destinationNickname + "\n" +
-				"destinationID: " + destinationID + "\n";
+				"destinationID: " + destinationID + "\n" +
+				"destinationAddress: " + destinationAddress + "\n";
 	}
 
 }

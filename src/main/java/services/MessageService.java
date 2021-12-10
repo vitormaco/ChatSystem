@@ -60,47 +60,31 @@ public class MessageService {
 		try {
 			switch (state) {
 				case "connected":
-					serializedObject = new MessagePDU()
+					serializedObject = new MessagePDU(this)
 							.withStatus(MessagePDU.Status.CONNECTION)
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-							.withSourceNickname(this.nickname)
-							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
-							.withDestinationNickname("*")
-							.withDestinationID("*")
+							.withDestinationBroadcast()
 							.serialize();
 					break;
 				case "disconnected":
-					serializedObject = new MessagePDU()
+					serializedObject = new MessagePDU(this)
 							.withStatus(MessagePDU.Status.DECONNECTION)
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-							.withSourceNickname(this.nickname)
-							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
-							.withDestinationNickname("*")
-							.withDestinationID("*")
+							.withDestinationBroadcast()
 							.serialize();
 					break;
 				case "nicknameChanged":
-					serializedObject = new MessagePDU()
+					serializedObject = new MessagePDU(this)
 							.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-							.withSourceNickname(this.nickname)
-							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
-							.withDestinationNickname("*")
-							.withDestinationID("*")
+							.withDestinationBroadcast()
 							.serialize();
 					break;
 				case "discover":
-					serializedObject = new MessagePDU()
+					serializedObject = new MessagePDU(this)
 							.withStatus(MessagePDU.Status.DISCOVER)
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-							.withSourceNickname(this.nickname)
-							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
-							.withDestinationNickname("*")
-							.withDestinationID("*")
+							.withDestinationBroadcast()
 							.serialize();
 					break;
 				default:
@@ -158,19 +142,24 @@ public class MessageService {
 	}
 
 	private void sendMyNickname(String address) {
-		String serializedObject = new MessagePDU()
+		String serializedObject = new MessagePDU(this)
 				.withStatus(MessagePDU.Status.CONNECTION)
 				.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-				.withSourceNickname(this.nickname)
-				.withSourceID(this.id)
-				.withDestinationNickname("*")
-				.withDestinationID("*")
+				.withDestination("nickname", "id", address)
 				.serialize();
 
 		this.sendUnicastMessage(serializedObject, address);
 	}
 
 	/* PUBLIC METHODS */
+
+	public String getIP() {
+		try {
+			return InetAddress.getLocalHost().getHostAddress();
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 	public void discoverUsers() {
 		this.notifyUserStateChanged("discover");
