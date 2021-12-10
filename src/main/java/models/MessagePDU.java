@@ -98,4 +98,20 @@ public class MessagePDU implements Serializable {
 			return new MessagePDU();
 		}
 	}
+
+	@Override
+	public String toString()
+	{
+		return
+		"status: " + status + "\n" +
+		"type: " + type + "\n" +
+		"messageContent: " + messageContent + "\n" +
+		"timestamp: " + timestamp + "\n" +
+		"sourceNickname: " + sourceNickname + "\n" +
+		"sourceID: " + sourceID + "\n" +
+		"sourceAdress: " + sourceAdress + "\n" +
+		"destinationNickname: " + destinationNickname + "\n" +
+		"destinationID: " + destinationID + "\n";
+	}
+
 }
