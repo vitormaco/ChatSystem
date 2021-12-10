@@ -65,7 +65,7 @@ public class MessageService {
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 							.withSourceNickname(this.nickname)
 							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
 							.withDestinationNickname("*")
 							.withDestinationID("*")
 							.serialize();
@@ -76,7 +76,7 @@ public class MessageService {
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 							.withSourceNickname(this.nickname)
 							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
 							.withDestinationNickname("*")
 							.withDestinationID("*")
 							.serialize();
@@ -87,7 +87,7 @@ public class MessageService {
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 							.withSourceNickname(this.nickname)
 							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
 							.withDestinationNickname("*")
 							.withDestinationID("*")
 							.serialize();
@@ -98,7 +98,7 @@ public class MessageService {
 							.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 							.withSourceNickname(this.nickname)
 							.withSourceID(this.id)
-							.withSourceAddress(InetAddress.getLocalHost().getAddress())
+							.withSourceAddress(InetAddress.getLocalHost().getHostAddress())
 							.withDestinationNickname("*")
 							.withDestinationID("*")
 							.serialize();
@@ -130,10 +130,10 @@ public class MessageService {
 		}
 	}
 
-	private void sendUnicastMessage(String msg, byte[] ip) {
+	private void sendUnicastMessage(String msg, String ip) {
 		try {
 			DatagramSocket socket = new DatagramSocket();
-			InetAddress address = InetAddress.getByAddress(ip);
+			InetAddress address = InetAddress.getByName(ip);
 			byte[] buf = msg.getBytes();
 			int port = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
@@ -157,7 +157,7 @@ public class MessageService {
 		}
 	}
 
-	private void sendMyNickname(byte[] address) {
+	private void sendMyNickname(String address) {
 		String serializedObject = new MessagePDU()
 				.withStatus(MessagePDU.Status.CONNECTION)
 				.withMessageType(MessagePDU.MessageType.NOTIFICATION)
