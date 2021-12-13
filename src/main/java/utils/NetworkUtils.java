@@ -34,8 +34,22 @@ public class NetworkUtils {
 
 	public static String getIPAddress() {
 		try {
+			Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+			while (n.hasMoreElements()) {
+				NetworkInterface e = n.nextElement();
+
+				Enumeration<InetAddress> a = e.getInetAddresses();
+				while (a.hasMoreElements()) {
+					InetAddress addr = a.nextElement();
+					String ip = addr.getHostAddress();
+					if (ip.startsWith(dotenv.get("BASE_IP"))) {
+						return ip;
+					}
+				}
+			}
+
 			return InetAddress.getLocalHost().getHostAddress();
-		} catch (Exception e) {
+		} catch (Exception ex) {
 			return null;
 		}
 	}
