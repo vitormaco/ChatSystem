@@ -55,7 +55,7 @@ public class NetworkUtils {
 	}
 
 	public static void sendBroadcastMessage(String msg) {
-		sendUDPMessage(msg, "255.255.255.255");
+		sendUDPMessage(msg, dotenv.get("BASE_IP") + ".255");
 	}
 
 	public static void sendUnicastMessage(String msg, String ip) {
