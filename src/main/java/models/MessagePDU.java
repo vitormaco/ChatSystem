@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Base64;
 
 import services.MessageService;
+import utils.NetworkUtils;
 
 public class MessagePDU implements Serializable {
 	public enum Status {
@@ -28,18 +29,18 @@ public class MessagePDU implements Serializable {
 	private String messageContent;
 	private String timestamp;
 	private String sourceNickname;
-	private String sourceID;
+	private String sourceMAC;
 	private String sourceAddress;
 	private String destinationNickname;
-	private String destinationID;
+	private String destinationMAC;
 	private String destinationAddress;
 
 	private MessagePDU() {};
 
-	public MessagePDU(MessageService service) {
-		this.sourceNickname = service.getNickname();
-		this.sourceID = service.getId();
-		this.sourceAddress = service.getIP();
+	public MessagePDU(String nickname) {
+		this.sourceNickname = nickname;
+		this.sourceMAC = NetworkUtils.getLocalMACAdress();
+		this.sourceAddress = NetworkUtils.getIPAddress();
 	}
 
 	public MessagePDU withMessageContent(String messageContent) {
@@ -68,14 +69,14 @@ public class MessagePDU implements Serializable {
 
 	public MessagePDU withDestination(String nickname, String id, String address) {
 		this.destinationNickname = nickname;
-		this.destinationID = id;
+		this.destinationMAC = id;
 		this.destinationAddress = address;
 		return this;
 	}
 
 	public MessagePDU withDestinationBroadcast() {
 		this.destinationNickname = "*";
-		this.destinationID = "*";
+		this.destinationMAC = "*";
 		this.destinationAddress = "*";
 		return this;
 	}
@@ -126,11 +127,10 @@ public class MessagePDU implements Serializable {
 				"messageContent: " + messageContent + "\n" +
 				"timestamp: " + timestamp + "\n" +
 				"sourceNickname: " + sourceNickname + "\n" +
-				"sourceID: " + sourceID + "\n" +
+				"sourceMAC: " + sourceMAC + "\n" +
 				"sourceAddress: " + sourceAddress + "\n" +
 				"destinationNickname: " + destinationNickname + "\n" +
-				"destinationID: " + destinationID + "\n" +
+				"destinationMAC: " + destinationMAC + "\n" +
 				"destinationAddress: " + destinationAddress + "\n";
 	}
-
 }
