@@ -7,6 +7,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class NetworkUtils {
 	static Dotenv dotenv = Dotenv.load();
+	static String networkIP = null;
 
 	public static String getLocalMACAdress() {
 		byte[] mac;
@@ -33,6 +34,9 @@ public class NetworkUtils {
 	}
 
 	public static String getIPAddress() {
+		if (networkIP != null) {
+			return networkIP;
+		}
 		try {
 			Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
 			while (n.hasMoreElements()) {
@@ -43,6 +47,7 @@ public class NetworkUtils {
 					InetAddress addr = a.nextElement();
 					String ip = addr.getHostAddress();
 					if (ip.startsWith(dotenv.get("BASE_IP"))) {
+						networkIP = ip;
 						return ip;
 					}
 				}
