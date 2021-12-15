@@ -62,7 +62,7 @@ public class ChatView extends JFrame implements ActionListener {
 		this.messageService.notifyUserStateChanged("disconnected");
 		this.messageService.disconnectServer();
 		new LoginView(new MessageService());
-		dispose();
+		super.dispose();
 	}
 
 	private void handleChangeNicknameButton() {
@@ -87,5 +87,12 @@ public class ChatView extends JFrame implements ActionListener {
 
 	public void updateList(Set<String> list) {
 		this.list.setListData((String[]) (list.toArray()));
+	}
+	
+	@Override
+	public void dispose() {
+		this.messageService.notifyUserStateChanged("disconnected");
+		this.messageService.disconnectServer();
+		super.dispose();
 	}
 }
