@@ -1,6 +1,7 @@
 package view;
 
 import javax.swing.*;
+import java.util.*;
 
 import services.MessageService;
 
@@ -11,10 +12,8 @@ import java.awt.event.ActionListener;
 public class ChatView extends JFrame implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
-	String users[] = { "User1", "User2", "User3",
-			"User4", "User5", "User6", "User7", "User8",
-			"User9", "User10", "User11", "User12" };
-	JList<String> list = new JList<String>(users);
+
+	JList list = new JList();
 	JButton logoutButton = new JButton("Logout");
 	JButton changeNicknameButton = new JButton("Change Nickname");
     JTextField writeMessageField = new JTextField();
@@ -84,5 +83,9 @@ public class ChatView extends JFrame implements ActionListener {
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
 		messageService.sendMessageToUser(text);
+  }
+	
+	public void updateList(Set<String> list) {
+		this.list.setListData(list.toArray());
 	}
 }
