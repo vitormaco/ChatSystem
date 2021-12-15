@@ -10,14 +10,14 @@ import io.github.cdimascio.dotenv.Dotenv;
 import view.ChatView;
 
 public class MessageService {
-	private ArrayList<UserMessages> usersList;
+	private HashMap<String, UserMessages> usersList;
 	private String nickname;
 	private NetworkListener listener;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 
 	public MessageService() {
-		this.usersList = new ArrayList<UserMessages>();
+		this.usersList = new HashMap<String, UserMessages>();
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		this.listener = new NetworkListener(broadcastPort, this);
 	}
@@ -64,13 +64,18 @@ public class MessageService {
 
 	private void addNewLoggedUser(String nickname) {
 		if (this.chatView != null) {
-
+			if(!usersList.containsKey(nickname)) {
+				usersList.put(nickname, new UserMessages(nickname));
+				this.chatView.updateList(usersList.keySet());
+			}
 		}
 	}
 
 	private void deleteLoggedoutUser(String nickname) {
 		if (this.chatView != null) {
-
+			if(usersList.containsKey(nickname)) {
+				usersList.remove(nickname);
+			}
 		}
 	}
 
@@ -90,18 +95,9 @@ public class MessageService {
 		this.notifyUserStateChanged("discover");
 	}
 
-	public HashSet<String> getNicknamesofActiveUsers() {
-		HashSet<String> nicknames = new HashSet<String>();
-		for (UserMessages user : this.usersList) {
-			nicknames.add(user.getNickname());
-		}
-		return nicknames;
-	}
-
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
 		this.discoverUsers();
-		Set<String> nicknames = this.getNicknamesofActiveUsers();
-		if (!nicknames.contains(nickname)) {
+		if (!usersList.containsKey(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
 				this.listener.start();
