@@ -5,6 +5,10 @@ public class UserMessages {
 	private Message[] messages;
 	private String nickname;
 	
+	public UserMessages(String nickname) {
+		this.nickname = nickname;
+	}
+	
 	public String getUserId() {
 		return userId;
 	}
