@@ -13,7 +13,7 @@ public class ChatView extends JFrame implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
 
-	JList list = new JList();
+	JList<String> list = new JList<String>();
 	JButton logoutButton = new JButton("Logout");
 	JButton changeNicknameButton = new JButton("Change Nickname");
     JTextField writeMessageField = new JTextField();
@@ -84,8 +84,8 @@ public class ChatView extends JFrame implements ActionListener {
 		String text = writeMessageField.getText();
 		messageService.sendMessageToUser(text);
   }
-	
+
 	public void updateList(Set<String> list) {
-		this.list.setListData(list.toArray());
+		this.list.setListData((String[]) (list.toArray()));
 	}
 }
