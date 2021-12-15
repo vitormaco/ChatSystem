@@ -16,37 +16,46 @@ public class ChatView extends JFrame implements ActionListener {
 			"User9", "User10", "User11", "User12" };
 	JList<String> list = new JList<String>(users);
 	JButton logoutButton = new JButton("Logout");
-	JButton changeNickname = new JButton("Change Nickname");
+	JButton changeNicknameButton = new JButton("Change Nickname");
+    JTextField writeMessageField = new JTextField();
+	JButton sendMessageButton = new JButton("Send Message");
 
 	public ChatView(MessageService messageService) {
 		this.messageService = messageService;
 
 		this.setTitle(this.messageService.getNickname());
 		this.setVisible(true);
-		this.setBounds(10, 10, 370, 600);
+		this.setBounds(10, 10, 350, 600);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 
 		container.setLayout(null);
 
-		list.setBounds(10, 100, 300, 300);
-		logoutButton.setBounds(10, 10, 100, 30);
-		changeNickname.setBounds(130, 10, 200, 30);
+		logoutButton.setBounds(50, 30, 100, 30);
+		changeNicknameButton.setBounds(200, 30, 100, 30);
+		list.setBounds(10, 100, 300, 100);
+		writeMessageField.setBounds(10, 300, 300, 100);
+		sendMessageButton.setBounds(10, 450, 300, 100);
 
 		container.add(list);
 		container.add(logoutButton);
-		container.add(changeNickname);
+		container.add(changeNicknameButton);
+		container.add(writeMessageField);
+		container.add(sendMessageButton);
 
 		logoutButton.addActionListener(this);
-		changeNickname.addActionListener(this);
+		changeNicknameButton.addActionListener(this);
+		sendMessageButton.addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == logoutButton) {
 			handleLogoutButton();
-		} else if (e.getSource() == changeNickname) {
+		} else if (e.getSource() == changeNicknameButton) {
 			handleChangeNicknameButton();
+		} else if (e.getSource() == sendMessageButton) {
+			handleSendMessageButton();
 		}
 	}
 
@@ -70,5 +79,10 @@ public class ChatView extends JFrame implements ActionListener {
 		} else {
 			JOptionPane.showMessageDialog(container, "Nickname not updated.");
 		}
+	}
+
+	private void handleSendMessageButton() {
+		String text = writeMessageField.getText();
+		messageService.sendMessageToUser(text);
 	}
 }
