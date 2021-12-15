@@ -38,17 +38,17 @@ public class NetworkListener extends Thread {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
             try {
                 socket.receive(packet);
+                String package_received = new String(packet.getData(), 0, packet.getLength());
+                MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
+                System.out.println(
+                    "message " + message_counter++ + ":\n" +
+                    "-------------------------\n" +
+                    deserializedObject.toString() +
+                    "-------------------------" +
+                    "\n\n"
+                    );
+                this.messageService.messageReceived(deserializedObject);
             } catch (SocketTimeoutException e) {};
-            String package_received = new String(packet.getData(), 0, packet.getLength());
-    		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-            System.out.println(
-                "message " + message_counter++ + ":\n" +
-                "-------------------------\n" +
-                deserializedObject.toString() +
-                "-------------------------" +
-                "\n\n"
-                );
-    		this.messageService.messageReceived(deserializedObject);
         }
 
         socket.close();

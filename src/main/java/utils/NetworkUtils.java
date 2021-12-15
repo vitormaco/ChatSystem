@@ -55,8 +55,8 @@ public class NetworkUtils {
 
 			throw new Exception("Configured network not found, please check if it's properly set up");
 		} catch (Exception e) {
-			e.printStackTrace();
-			return "";
+			System.out.println(e.toString());
+			return "127.0.0.1";
         }
 	}
 
