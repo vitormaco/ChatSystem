@@ -75,6 +75,7 @@ public class MessageService {
 		if (this.chatView != null) {
 			if(usersList.containsKey(nickname)) {
 				usersList.remove(nickname);
+				this.chatView.updateList(usersList.keySet());
 			}
 		}
 	}
