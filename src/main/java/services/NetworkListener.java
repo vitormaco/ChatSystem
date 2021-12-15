@@ -32,10 +32,13 @@ public class NetworkListener extends Thread {
 
         running = true;
         int message_counter = 0;
+        socket.setSoTimeout(1000);
 
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
-            socket.receive(packet);
+            try {
+                socket.receive(packet);
+            } catch (SocketTimeoutException e) {};
             String package_received = new String(packet.getData(), 0, packet.getLength());
     		MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
             System.out.println(
