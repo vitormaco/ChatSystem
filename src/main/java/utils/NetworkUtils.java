@@ -40,9 +40,9 @@ public class NetworkUtils {
 		try {
 			Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
 			while (n.hasMoreElements()) {
-				NetworkInterface e = n.nextElement();
+				NetworkInterface interf = n.nextElement();
 
-				Enumeration<InetAddress> a = e.getInetAddresses();
+				Enumeration<InetAddress> a = interf.getInetAddresses();
 				while (a.hasMoreElements()) {
 					InetAddress addr = a.nextElement();
 					String ip = addr.getHostAddress();
@@ -53,10 +53,11 @@ public class NetworkUtils {
 				}
 			}
 
-			return InetAddress.getLocalHost().getHostAddress();
-		} catch (Exception ex) {
-			return null;
-		}
+			throw new Exception("Configured network not found, please check if it's properly set up");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+        }
 	}
 
 	public static void sendBroadcastMessage(String msg) {
