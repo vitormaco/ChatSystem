@@ -91,6 +91,16 @@ public class MessageService {
 
 	/* PUBLIC METHODS */
 
+	public void sendMessageToUser(String message) {
+		String serializedObject;
+		serializedObject = new MessagePDU(this.nickname)
+				.withMessageType(MessagePDU.MessageType.TEXT)
+				.withMessageContent(message)
+				.withDestinationBroadcast()
+				.serialize();
+		NetworkUtils.sendBroadcastMessage(serializedObject);
+	}
+
 	public void discoverUsers() {
 		this.notifyUserStateChanged("discover");
 	}
