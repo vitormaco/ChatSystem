@@ -1,4 +1,5 @@
 package view;
+
 import services.MessageService;
 import javax.swing.*;
 import java.awt.*;
@@ -7,15 +8,15 @@ import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame implements ActionListener {
 
-	private MessageService messageService;
-	////////////////////////////////////////
+    private MessageService messageService;
     Container container = getContentPane();
     JLabel userLabel = new JLabel("NICKNAME");
     JTextField userTextField = new JTextField();
     JButton loginButton = new JButton("LOGIN");
     JButton resetButton = new JButton("RESET");
+
     public LoginView(MessageService messageService) {
-    	this.messageService = messageService;
+        this.messageService = messageService;
 
         this.setTitle("Login Form");
         this.setVisible(true);
@@ -23,21 +24,17 @@ public class LoginView extends JFrame implements ActionListener {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
 
-
         container.setLayout(null);
-
 
         userLabel.setBounds(50, 150, 100, 30);
         userTextField.setBounds(150, 150, 150, 30);
         loginButton.setBounds(50, 300, 100, 30);
         resetButton.setBounds(200, 300, 100, 30);
 
-
         container.add(userLabel);
         container.add(userTextField);
         container.add(loginButton);
         container.add(resetButton);
-
 
         loginButton.addActionListener(this);
         resetButton.addActionListener(this);
