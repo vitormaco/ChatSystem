@@ -47,7 +47,7 @@ public class ChatView extends JFrame implements ActionListener {
 		
 		addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing (java.awt.event.WindowEvent evt){
-            	handleLogoutButton();
+            	logoutProcess();
             }
         });
 	}
@@ -63,9 +63,13 @@ public class ChatView extends JFrame implements ActionListener {
 		}
 	}
 
-	private void handleLogoutButton() {
+	private void logoutProcess() {
 		this.messageService.notifyUserStateChanged("disconnected");
 		this.messageService.disconnectServer();
+	}
+	
+	private void handleLogoutButton() {
+		this.logoutProcess();
 		new LoginView(new MessageService());
 		dispose();
 	}
