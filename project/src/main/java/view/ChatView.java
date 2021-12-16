@@ -86,7 +86,9 @@ public class ChatView extends JFrame implements ActionListener {
   }
 
 	public void updateList(Set<String> list) {
-		this.list.setListData((String[]) (list.toArray()));
+		this.list.setListData(
+				Arrays.asList(list).toArray(new String[list.size()]));
+		//this.list.setListData((String[]) (list.toArray()));
 	}
 	
 	@Override
