@@ -71,7 +71,7 @@ public class ChatView extends JFrame implements ActionListener {
 	private void handleLogoutButton() {
 		this.logoutProcess();
 		new LoginView(new MessageService());
-		super.dispose();
+		dispose();
 	}
 
 	private void handleChangeNicknameButton() {
