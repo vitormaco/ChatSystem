@@ -67,7 +67,6 @@ public class ChatView extends JFrame implements ActionListener {
 		this.messageService.notifyUserStateChanged("disconnected");
 		this.messageService.disconnectServer();
 	}
-
 	private void handleLogoutButton() {
 		this.logoutProcess();
 		new LoginView(new MessageService());
