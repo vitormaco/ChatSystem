@@ -2,61 +2,79 @@ package view;
 
 import services.MessageService;
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LoginView extends JFrame implements ActionListener {
-
+public class LoginView extends BaseView implements ActionListener {
     private MessageService messageService;
     Container container = getContentPane();
+
+    JLabel welcomeMessage = new JLabel("Login with your chosen nickname");
     JLabel userLabel = new JLabel("NICKNAME");
     JTextField userTextField = new JTextField();
     JButton loginButton = new JButton("LOGIN");
-    JButton resetButton = new JButton("RESET");
 
     public LoginView(MessageService messageService) {
+        super();
+        this.setTitle("Login");
         this.messageService = messageService;
+        buildPanel();
+    }
 
-        this.setTitle("Login Form");
-        this.setVisible(true);
-        this.setBounds(10, 10, 370, 600);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(false);
+    private void buildPanel() {
+        JPanel centerPanel = new JPanel();
 
-        container.setLayout(null);
+        centerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+        centerPanel.setBackground(Color.PINK);
 
-        userLabel.setBounds(50, 150, 100, 30);
-        userTextField.setBounds(150, 150, 150, 30);
-        loginButton.setBounds(50, 300, 100, 30);
-        resetButton.setBounds(200, 300, 100, 30);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(0,0,10,0);  //top padding
+        welcomeMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(welcomeMessage, c);
 
-        container.add(userLabel);
-        container.add(userTextField);
-        container.add(loginButton);
-        container.add(resetButton);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 1;
+        userLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(userLabel, c);
 
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 2;
+        c.ipady = 40; // size
+        userTextField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(userTextField, c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 3;
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        centerPanel.add(loginButton, c);
+
+        container.add(centerPanel, BorderLayout.CENTER);
+
+        setActionListeners();
+    }
+
+    private void setActionListeners() {
         loginButton.addActionListener(this);
-        resetButton.addActionListener(this);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loginButton) {
-            String userText;
-            userText = userTextField.getText();
+        String userText;
+        userText = userTextField.getText();
 
-            if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
-                // JOptionPane.showMessageDialog(this, "Login Successful");
-                this.messageService.setChatView(new ChatView(this.messageService));
-                dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid Username");
-            }
-        }
-
-        if (e.getSource() == resetButton) {
-            userTextField.setText("");
+        if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
+            dispose();
+            this.messageService.setChatView(new ChatView(this.messageService));
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid Username");
         }
     }
 }

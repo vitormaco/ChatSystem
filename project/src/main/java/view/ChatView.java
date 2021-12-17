@@ -8,7 +8,7 @@ import services.MessageService;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ChatView extends JFrame implements ActionListener {
+public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
 
@@ -19,13 +19,11 @@ public class ChatView extends JFrame implements ActionListener {
 	JButton sendMessageButton = new JButton("Send Message");
 
 	public ChatView(MessageService messageService) {
-		this.messageService = messageService;
+		super();
 
-		this.setTitle(this.messageService.getNickname());
-		this.setVisible(true);
-		this.setBounds(10, 10, 350, 600);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+		this.setTitle(messageService.getNickname());
+
+		this.messageService = messageService;
 
 		container.setLayout(null);
 
