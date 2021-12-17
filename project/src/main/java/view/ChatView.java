@@ -44,7 +44,7 @@ public class ChatView extends JFrame implements ActionListener {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
 		sendMessageButton.addActionListener(this);
-		
+
 		addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing (java.awt.event.WindowEvent evt){
             	logoutProcess();
@@ -67,7 +67,7 @@ public class ChatView extends JFrame implements ActionListener {
 		this.messageService.notifyUserStateChanged("disconnected");
 		this.messageService.disconnectServer();
 	}
-	
+
 	private void handleLogoutButton() {
 		this.logoutProcess();
 		new LoginView(new MessageService());
@@ -97,7 +97,7 @@ public class ChatView extends JFrame implements ActionListener {
 	public void updateList(Set<String> list) {
 		this.list.setListData(list.toArray(new String[list.size()]));
 	}
-	
+
 	@Override
 	public void dispose() {
 		this.messageService.notifyUserStateChanged("disconnected");
