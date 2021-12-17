@@ -26,6 +26,13 @@ public class NetworkListener extends Thread {
             e.printStackTrace();
         }
     }
+    
+    private boolean isMyComputer(String ip) throws Exception {
+    	NetworkInterface ni = NetworkInterface.
+        		getByInetAddress(
+        				InetAddress.getByName(ip));
+    	return ni != null;
+    }
 
     private void listenToNetwork() throws Exception {
         System.out.println("NetworkListener up");
@@ -40,14 +47,17 @@ public class NetworkListener extends Thread {
                 socket.receive(packet);
                 String package_received = new String(packet.getData(), 0, packet.getLength());
                 MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-                System.out.println(
-                    "message " + message_counter++ + ":\n" +
-                    "-------------------------\n" +
-                    deserializedObject.toString() +
-                    "-------------------------" +
-                    "\n\n"
-                    );
-                this.messageService.messageReceived(deserializedObject);
+                
+                if(!this.isMyComputer(deserializedObject.getSourceAddress())) {
+	                System.out.println(
+	                    "message " + message_counter++ + ":\n" +
+	                    "-------------------------\n" +
+	                    deserializedObject.toString() +
+	                    "-------------------------" +
+	                    "\n\n"
+	                    );
+	                this.messageService.messageReceived(deserializedObject);
+                }
             } catch (SocketTimeoutException e) {};
         }
 

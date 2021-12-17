@@ -64,7 +64,7 @@ public class MessageService {
 
 	private void addNewLoggedUser(String nickname) {
 		if (this.chatView != null) {
-			if(!usersList.containsKey(nickname)) {
+			if(!usersList.containsKey(nickname) && this.nickname != nickname) {
 				usersList.put(nickname, new UserMessages(nickname));
 				this.chatView.updateList(usersList.keySet());
 			}

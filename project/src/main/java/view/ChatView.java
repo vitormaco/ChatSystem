@@ -6,8 +6,7 @@ import java.util.*;
 import services.MessageService;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class ChatView extends JFrame implements ActionListener {
 	private MessageService messageService;
@@ -16,7 +15,7 @@ public class ChatView extends JFrame implements ActionListener {
 	JList<String> list = new JList<String>();
 	JButton logoutButton = new JButton("Logout");
 	JButton changeNicknameButton = new JButton("Change Nickname");
-    JTextField writeMessageField = new JTextField();
+	JTextField writeMessageField = new JTextField();
 	JButton sendMessageButton = new JButton("Send Message");
 
 	public ChatView(MessageService messageService) {
@@ -45,6 +44,12 @@ public class ChatView extends JFrame implements ActionListener {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
 		sendMessageButton.addActionListener(this);
+
+		addWindowListener(new java.awt.event.WindowAdapter() {
+			public void windowClosing(java.awt.event.WindowEvent evt) {
+				logoutProcess();
+			}
+		});
 	}
 
 	@Override
@@ -58,9 +63,13 @@ public class ChatView extends JFrame implements ActionListener {
 		}
 	}
 
-	private void handleLogoutButton() {
+	private void logoutProcess() {
 		this.messageService.notifyUserStateChanged("disconnected");
 		this.messageService.disconnectServer();
+	}
+
+	private void handleLogoutButton() {
+		this.logoutProcess();
 		new LoginView(new MessageService());
 		dispose();
 	}
@@ -83,9 +92,9 @@ public class ChatView extends JFrame implements ActionListener {
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
 		messageService.sendMessageToUser(text);
-  }
+	}
 
 	public void updateList(Set<String> list) {
-		this.list.setListData((String[]) (list.toArray()));
+		this.list.setListData(list.toArray(new String[list.size()]));
 	}
 }

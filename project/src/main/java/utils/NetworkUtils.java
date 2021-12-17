@@ -32,13 +32,11 @@ public class NetworkUtils {
 
 		return sb.toString();
 	}
-
-	public static String getIPAddress() {
-		if (networkIP != null) {
-			return networkIP;
-		}
+	
+	private static InetAddress getInetAddress() {
+		Enumeration<NetworkInterface> n;
 		try {
-			Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+			n = NetworkInterface.getNetworkInterfaces();
 			while (n.hasMoreElements()) {
 				NetworkInterface interf = n.nextElement();
 
@@ -47,10 +45,49 @@ public class NetworkUtils {
 					InetAddress addr = a.nextElement();
 					String ip = addr.getHostAddress();
 					if (ip.startsWith(dotenv.get("BASE_IP"))) {
-						networkIP = ip;
-						return ip;
+						return addr;
 					}
 				}
+			}
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static String getBroadcastAddress() {
+		InetAddress addr = getInetAddress();
+		
+	    NetworkInterface networkInterface;
+		try {
+			networkInterface = NetworkInterface.getByInetAddress(addr);
+		    if (networkInterface.isLoopback())
+		        return "127.0.0.1";
+		    for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) 
+		    {
+		        InetAddress broadcast = interfaceAddress.getBroadcast();
+		        if (broadcast == null)
+		            continue;
+		        return broadcast.getHostAddress();
+		    }
+			
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
+
+		return "0.0.0.0";
+	}
+
+	public static String getIPAddress() {
+		if (networkIP != null) {
+			return networkIP;
+		}
+		try {
+			InetAddress addr = getInetAddress();
+			
+			if(addr != null) {
+				networkIP = addr.getHostAddress();
+				return networkIP;
 			}
 
 			throw new Exception("Configured network not found, please check if it's properly set up");
@@ -61,7 +98,7 @@ public class NetworkUtils {
 	}
 
 	public static void sendBroadcastMessage(String msg) {
-		sendUDPMessage(msg, dotenv.get("BASE_IP") + ".255");
+		sendUDPMessage(msg, getBroadcastAddress());
 	}
 
 	public static void sendUnicastMessage(String msg, String ip) {
