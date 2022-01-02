@@ -13,36 +13,75 @@ public class ChatView extends BaseView implements ActionListener {
 	Container container = getContentPane();
 
 	JList<String> list = new JList<String>();
-	JButton logoutButton = new JButton("Logout");
-	JButton changeNicknameButton = new JButton("Change Nickname");
+	JButton logoutButton = new JButton();
+	JButton changeNicknameButton = new JButton();
 	JTextField writeMessageField = new JTextField();
-	JButton sendMessageButton = new JButton("Send Message");
+	JButton sendMessageButton = new JButton();
 
 	public ChatView(MessageService messageService) {
 		super();
-
 		this.setTitle(messageService.getNickname());
-
 		this.messageService = messageService;
+		setLogoutButton();
+		setChangeNicknameButton();
+		setSendMessageButton();
+		buildPanel();
+		setActionListeners();
+		setWindowListeners();
+	}
 
-		container.setLayout(null);
+	private void setLogoutButton() {
+		logoutButton.setText("Logout");
+	}
 
-		logoutButton.setBounds(50, 30, 100, 30);
-		changeNicknameButton.setBounds(200, 30, 100, 30);
-		list.setBounds(10, 100, 300, 100);
-		writeMessageField.setBounds(10, 300, 300, 100);
-		sendMessageButton.setBounds(10, 450, 300, 100);
+	private void setChangeNicknameButton() {
+		changeNicknameButton.setText("Change Nickname");
+	}
 
-		container.add(list);
-		container.add(logoutButton);
-		container.add(changeNicknameButton);
-		container.add(writeMessageField);
-		container.add(sendMessageButton);
+	private void setSendMessageButton() {
+		sendMessageButton.setText("Send Message");
+	}
 
+	private void buildPanel() {
+		JPanel centerPanel = new JPanel();
+
+		centerPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		centerPanel.setBackground(Color.LIGHT_GRAY);
+
+		// common constraints
+		c.weightx = 1;
+		c.weighty = 1;
+		c.gridwidth = 1;
+		c.anchor = GridBagConstraints.CENTER;
+		c.fill = GridBagConstraints.BOTH;
+
+		// specific components
+		c.gridy = 0;
+		centerPanel.add(list, c);
+
+		c.gridy = 1;
+		centerPanel.add(logoutButton, c);
+
+		c.gridy = 2;
+		centerPanel.add(changeNicknameButton, c);
+
+		c.gridy = 3;
+		centerPanel.add(writeMessageField, c);
+
+		c.gridy = 4;
+		centerPanel.add(sendMessageButton, c);
+
+		container.add(centerPanel, BorderLayout.CENTER);
+	}
+
+	private void setActionListeners() {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
 		sendMessageButton.addActionListener(this);
+	}
 
+	private void setWindowListeners() {
 		addWindowListener(new java.awt.event.WindowAdapter() {
 			public void windowClosing(java.awt.event.WindowEvent evt) {
 				logoutProcess();

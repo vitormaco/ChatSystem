@@ -29,6 +29,7 @@ public class LoginView extends BaseView implements ActionListener {
         setLoginButton();
         setNicknameTextField();
         buildPanel();
+        setActionListeners();
     }
 
     private void seticonLabel() {
@@ -92,8 +93,6 @@ public class LoginView extends BaseView implements ActionListener {
         centerPanel.add(loginButton, c);
 
         container.add(centerPanel, BorderLayout.CENTER);
-
-        setActionListeners();
     }
 
     private void setActionListeners() {
