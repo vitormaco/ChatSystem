@@ -17,6 +17,7 @@ public class MessagePDU implements Serializable {
 		DECONNECTION,
 		NICKNAME_CHANGED,
 		DISCOVER,
+		MESSAGE,
 	}
 
 	public enum MessageType {
