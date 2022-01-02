@@ -13,9 +13,9 @@ public class ChatView extends BaseView implements ActionListener {
 	Container container = getContentPane();
 
 
-	DefaultListModel<String> usersListModel = new DefaultListModel<String>();
-	JList<String> usersList = new JList<String>(usersListModel);
-	JList<String> messagesList = new JList<String>();
+	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
+	JList<String> usersList = new JList<String>();
+	JList<String> messagesList = new JList<String>(usersMessagesModel);
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
 	JTextField writeMessageField = new JTextField();
@@ -190,6 +190,6 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	public void addMessage(String message) {
-		usersListModel.addElement(message);
+		usersMessagesModel.addElement(message);
 	}
 }
