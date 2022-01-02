@@ -63,18 +63,18 @@ public class MessageService {
 
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
-	
+
 	private Set<String> getNicknames(){
 		Set<String> nicknames = new HashSet<String>();
-		
+
 		for(UserMessages user : usersList.values()){
 			nicknames.add(user.getNickname());
 		}
-	
+
 		return nicknames;
 	}
-	 
-	private boolean isNicknameAvailable(String nickname) {	
+
+	private boolean isNicknameAvailable(String nickname) {
 		return !this.getNicknames().contains(nickname);
 	}
 
@@ -100,7 +100,7 @@ public class MessageService {
 			}
 		}
 	}
-  
+
   private void receiveUserMessage(MessagePDU message) {
 		if (this.chatView != null) {
 			this.chatView.addMessage(message.getMessageContent());
@@ -160,10 +160,10 @@ public class MessageService {
 		MessagePDU.Status status = message.getStatus();
 
 		if (status == MessagePDU.Status.CONNECTION) {
-			this.addNewLoggedUser(message.getSourceMAC(), 
+			this.addNewLoggedUser(message.getSourceMAC(),
 									message.getSourceNickname());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
-			this.deleteLoggedoutUser(message.getSourceMAC(), 
+			this.deleteLoggedoutUser(message.getSourceMAC(),
 										message.getSourceNickname());
 		} else if (status == MessagePDU.Status.MESSAGE) {
 			this.receiveUserMessage(message);
