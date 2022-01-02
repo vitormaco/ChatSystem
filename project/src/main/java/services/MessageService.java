@@ -13,6 +13,7 @@ public class MessageService {
 	private HashMap<String, UserMessages> usersList;
 	private String nickname;
 	private NetworkListener listener;
+	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 
@@ -20,6 +21,7 @@ public class MessageService {
 		this.usersList = new HashMap<String, UserMessages>();
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		this.listener = new NetworkListener(broadcastPort, this);
+		this.discoverService = new KeepAliveService(this);
 	}
 
 	public void notifyUserStateChanged(String state) {
@@ -112,6 +114,7 @@ public class MessageService {
 			this.nickname = nickname;
 			if (state == "connected") {
 				this.listener.start();
+				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
 			return true;
