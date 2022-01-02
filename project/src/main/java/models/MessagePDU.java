@@ -7,7 +7,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Base64;
 
-import services.MessageService;
 import utils.NetworkUtils;
 
 public class MessagePDU implements Serializable {
@@ -36,7 +35,8 @@ public class MessagePDU implements Serializable {
 	private String destinationMAC;
 	private String destinationAddress;
 
-	private MessagePDU() {};
+	private MessagePDU() {
+	};
 
 	public MessagePDU(String nickname) {
 		this.sourceNickname = nickname;
@@ -92,6 +92,10 @@ public class MessagePDU implements Serializable {
 
 	public Status getStatus() {
 		return this.status;
+	}
+
+	public String getSourceMAC() {
+		return this.sourceMAC;
 	}
 
 	public String serialize() {
