@@ -29,5 +29,9 @@ public class KeepAliveService extends Thread {
             this.messageService.notifyUserStateChanged("connected");
         }
     }
+
+    public void setRunning(boolean running) {
+    	this.running = running;
+    }
     
 }

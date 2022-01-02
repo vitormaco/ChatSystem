@@ -132,8 +132,8 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		while (this.listener.isAlive())
-			;
+		this.discoverService.setRunning(false);
+		while (this.listener.isAlive());
 	}
 
 	public void messageReceived(MessagePDU message) {
