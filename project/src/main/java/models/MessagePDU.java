@@ -92,6 +92,10 @@ public class MessagePDU implements Serializable {
 	public Status getStatus() {
 		return this.status;
 	}
+	
+	public String getSourceMAC() {
+		return this.sourceMAC;
+	}
 
 	public String serialize() {
 		try {

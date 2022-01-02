@@ -61,21 +61,39 @@ public class MessageService {
 
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
+	
+	private Set<String> getNicknames(){
+		Set<String> nicknames = new HashSet<String>();
+		
+		for(UserMessages user : usersList.values()){
+			nicknames.add(user.getNickname());
+		}
+	
+		return nicknames;
+	}
+	 
+	private boolean isNicknameAvailable(String nickname) {	
+		return !this.getNicknames().contains(nickname);
+	}
 
-	private void addNewLoggedUser(String nickname) {
+	private void addNewLoggedUser(String id, String nickname) {
 		if (this.chatView != null) {
-			if(!usersList.containsKey(nickname) && this.nickname != nickname) {
-				usersList.put(nickname, new UserMessages(nickname));
-				this.chatView.updateList(usersList.keySet());
+			if (!this.usersList.containsKey(id)) {
+				if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
+					usersList.put(id, new UserMessages(id, nickname));
+					this.chatView.updateList(this.getNicknames());
+				}
+			} else {
+				usersList.get(id).setNickname(nickname);
 			}
 		}
 	}
 
-	private void deleteLoggedoutUser(String nickname) {
+	private void deleteLoggedoutUser(String id, String nickname) {
 		if (this.chatView != null) {
-			if(usersList.containsKey(nickname)) {
-				usersList.remove(nickname);
-				this.chatView.updateList(usersList.keySet());
+			if(usersList.containsKey(id)) {
+				usersList.remove(id);
+				this.chatView.updateList(this.getNicknames());
 			}
 		}
 	}
@@ -129,9 +147,11 @@ public class MessageService {
 		MessagePDU.Status status = message.getStatus();
 
 		if (status == MessagePDU.Status.CONNECTION) {
-			this.addNewLoggedUser(message.getSourceNickname());
+			this.addNewLoggedUser(message.getSourceMAC(), 
+									message.getSourceNickname());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
-			this.deleteLoggedoutUser(message.getSourceNickname());
+			this.deleteLoggedoutUser(message.getSourceMAC(), 
+										message.getSourceNickname());
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message.getSourceAddress());
 		}
