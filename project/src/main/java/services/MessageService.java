@@ -85,6 +85,7 @@ public class MessageService {
 				}
 			} else {
 				usersList.get(id).setNickname(nickname);
+				this.chatView.updateList(this.getNicknames());
 			}
 		}
 	}
