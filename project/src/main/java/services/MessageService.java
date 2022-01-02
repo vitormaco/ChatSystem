@@ -64,49 +64,46 @@ public class MessageService {
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
-	private Set<String> getNicknames(){
+	public Set<String> getAllActiveUsers() {
 		Set<String> nicknames = new HashSet<String>();
-
-		for(UserMessages user : usersList.values()){
+		for (UserMessages user : usersList.values()) {
 			nicknames.add(user.getNickname());
 		}
-
 		return nicknames;
 	}
 
 	private boolean isNicknameAvailable(String nickname) {
-		return !this.getNicknames().contains(nickname);
+		return !this.getAllActiveUsers().contains(nickname);
 	}
 
-	private void addNewLoggedUser(String id, String nickname) {
+	private void addNewLoggedUser(String userMAC, String nickname) {
 		if (this.chatView != null) {
-			if (!this.usersList.containsKey(id)) {
+			if (!this.usersList.containsKey(userMAC)) {
 				if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
-					usersList.put(id, new UserMessages(id, nickname));
-					this.chatView.updateList(this.getNicknames());
+					usersList.put(userMAC, new UserMessages(nickname));
 				}
 			} else {
-				usersList.get(id).setNickname(nickname);
-				this.chatView.updateList(this.getNicknames());
+				usersList.get(userMAC).setNickname(nickname);
 			}
+
+			this.chatView.updateConnectedUsersList();
 		}
 	}
 
-  private void deleteLoggedoutUser(String id, String nickname) {
+	private void deleteLoggedoutUser(String id, String nickname) {
 		if (this.chatView != null) {
-			if(usersList.containsKey(id)) {
+			if (usersList.containsKey(id)) {
 				usersList.remove(id);
-				this.chatView.updateList(this.getNicknames());
 			}
+			this.chatView.updateConnectedUsersList();
 		}
 	}
 
-  private void receiveUserMessage(MessagePDU message) {
+	private void receiveUserMessage(MessagePDU message) {
 		if (this.chatView != null) {
 			this.chatView.addMessage(message.getMessageContent());
 		}
 	}
-
 
 	private void sendMyNickname(String address) {
 		String serializedObject = new MessagePDU(this.nickname)
@@ -153,7 +150,8 @@ public class MessageService {
 	public void disconnectServer() {
 		this.listener.setRunning(false);
 		this.discoverService.setRunning(false);
-		while (this.listener.isAlive());
+		while (this.listener.isAlive())
+			;
 	}
 
 	public void messageReceived(MessagePDU message) {
@@ -161,10 +159,10 @@ public class MessageService {
 
 		if (status == MessagePDU.Status.CONNECTION) {
 			this.addNewLoggedUser(message.getSourceMAC(),
-									message.getSourceNickname());
+					message.getSourceNickname());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC(),
-										message.getSourceNickname());
+					message.getSourceNickname());
 		} else if (status == MessagePDU.Status.MESSAGE) {
 			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {

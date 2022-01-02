@@ -4,12 +4,11 @@ public class UserMessages {
 	private String userId;
 	private Message[] messages;
 	private String nickname;
-	
-	public UserMessages(String userId, String nickname) {
-		this.userId = userId;
+
+	public UserMessages(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 	public String getUserId() {
 		return userId;
 	}
@@ -28,5 +27,5 @@ public class UserMessages {
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
-	
+
 }
