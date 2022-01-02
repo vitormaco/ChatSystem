@@ -13,6 +13,7 @@ public class MessageService {
 	private HashMap<String, UserMessages> usersList;
 	private String nickname;
 	private NetworkListener listener;
+	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 
@@ -20,6 +21,7 @@ public class MessageService {
 		this.usersList = new HashMap<String, UserMessages>();
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		this.listener = new NetworkListener(broadcastPort, this);
+		this.discoverService = new KeepAliveService(this);
 	}
 
 	public void notifyUserStateChanged(String state) {
@@ -90,7 +92,7 @@ public class MessageService {
 		}
 	}
 
-	private void deleteLoggedoutUser(String id, String nickname) {
+  private void deleteLoggedoutUser(String id, String nickname) {
 		if (this.chatView != null) {
 			if(usersList.containsKey(id)) {
 				usersList.remove(id);
@@ -98,6 +100,13 @@ public class MessageService {
 			}
 		}
 	}
+  
+  private void receiveUserMessage(MessagePDU message) {
+		if (this.chatView != null) {
+			this.chatView.addMessage(message.getMessageContent());
+		}
+	}
+
 
 	private void sendMyNickname(String address) {
 		String serializedObject = new MessagePDU(this.nickname)
@@ -115,6 +124,7 @@ public class MessageService {
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
 				.withMessageType(MessagePDU.MessageType.TEXT)
+				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
 				.withDestinationBroadcast()
 				.serialize();
@@ -131,6 +141,7 @@ public class MessageService {
 			this.nickname = nickname;
 			if (state == "connected") {
 				this.listener.start();
+				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
 			return true;
@@ -141,7 +152,8 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		while(this.listener.isAlive());
+		this.discoverService.setRunning(false);
+		while (this.listener.isAlive());
 	}
 
 	public void messageReceived(MessagePDU message) {
@@ -153,6 +165,8 @@ public class MessageService {
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC(), 
 										message.getSourceNickname());
+		} else if (status == MessagePDU.Status.MESSAGE) {
+			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message.getSourceAddress());
 		}

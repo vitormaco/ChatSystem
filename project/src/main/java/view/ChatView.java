@@ -12,8 +12,10 @@ public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
 
-	JList<String> list = new JList<String>();
-	JList<String> messagesList = new JList<String>();
+
+	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
+	JList<String> usersList = new JList<String>();
+	JList<String> messagesList = new JList<String>(usersMessagesModel);
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
 	JTextField writeMessageField = new JTextField();
@@ -82,7 +84,7 @@ public class ChatView extends BaseView implements ActionListener {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.fill = GridBagConstraints.BOTH;
-		leftPanel.add(list, c);
+		leftPanel.add(usersList, c);
 
 		// RIGHT PANEL
 
@@ -184,6 +186,10 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	public void updateList(Set<String> list) {
-		this.list.setListData(list.toArray(new String[list.size()]));
+		usersList.setListData(list.toArray(new String[list.size()]));
+	}
+
+	public void addMessage(String message) {
+		usersMessagesModel.addElement(message);
 	}
 }
