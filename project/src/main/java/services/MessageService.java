@@ -66,16 +66,22 @@ public class MessageService {
 
 	private void addNewLoggedUser(String nickname) {
 		if (this.chatView != null) {
-			if(!usersList.containsKey(nickname) && this.nickname != nickname) {
+			if (!usersList.containsKey(nickname) && this.nickname != nickname) {
 				usersList.put(nickname, new UserMessages(nickname));
 				this.chatView.updateList(usersList.keySet());
 			}
 		}
 	}
 
+	private void receiveUserMessage(MessagePDU message) {
+		if (this.chatView != null) {
+			this.chatView.addMessage(message.getMessageContent());
+		}
+	}
+
 	private void deleteLoggedoutUser(String nickname) {
 		if (this.chatView != null) {
-			if(usersList.containsKey(nickname)) {
+			if (usersList.containsKey(nickname)) {
 				usersList.remove(nickname);
 				this.chatView.updateList(usersList.keySet());
 			}
@@ -98,6 +104,7 @@ public class MessageService {
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
 				.withMessageType(MessagePDU.MessageType.TEXT)
+				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
 				.withDestinationBroadcast()
 				.serialize();
@@ -125,7 +132,8 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		while(this.listener.isAlive());
+		while (this.listener.isAlive())
+			;
 	}
 
 	public void messageReceived(MessagePDU message) {
@@ -135,6 +143,8 @@ public class MessageService {
 			this.addNewLoggedUser(message.getSourceNickname());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceNickname());
+		} else if (status == MessagePDU.Status.MESSAGE) {
+			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message.getSourceAddress());
 		}
