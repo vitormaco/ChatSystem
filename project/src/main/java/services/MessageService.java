@@ -145,7 +145,6 @@ public class MessageService {
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
-		this.disconnectServer();
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
