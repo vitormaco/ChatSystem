@@ -16,8 +16,10 @@ public class ChatView extends BaseView implements ActionListener {
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
 	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
 	JList<String> messagesList = new JList<String>(usersMessagesModel);
+	String currentSelectedUser = "";
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
+	JLabel currentSelectedUserLabel = new JLabel(currentSelectedUser);
 	JTextField writeMessageField = new JTextField();
 	JButton sendMessageButton = new JButton();
 
@@ -29,6 +31,7 @@ public class ChatView extends BaseView implements ActionListener {
 		setChangeNicknameButton();
 		setSendMessageButton();
 		buildPanel();
+		setMouseListeners();
 		setActionListeners();
 		setWindowListeners();
 	}
@@ -93,13 +96,18 @@ public class ChatView extends BaseView implements ActionListener {
 		c.gridy = 0;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
+		c.weighty = 1;
+		rightPanel.add(currentSelectedUserLabel, c);
+
+		c.gridx = 0;
+		c.gridy = 1;
 		c.weighty = 19;
 		rightPanel.add(messagesList, c);
 
 		c.weighty = 1;
 		c.gridwidth = 1;
 		c.gridx = 0;
-		c.gridy = 1;
+		c.gridy = 2;
 		c.weightx = 9;
 		rightPanel.add(writeMessageField, c);
 
@@ -126,6 +134,18 @@ public class ChatView extends BaseView implements ActionListener {
 		mainPanel.add(rightPanel, c);
 
 		container.add(mainPanel, BorderLayout.CENTER);
+	}
+
+	private void setMouseListeners() {
+		MouseListener selectUserListener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() > 0) {
+					currentSelectedUser = connectedUsersJList.getSelectedValue();
+					currentSelectedUserLabel.setText(currentSelectedUser);
+				}
+			}
+		};
+		connectedUsersJList.addMouseListener(selectUserListener);
 	}
 
 	private void setActionListeners() {
@@ -191,9 +211,5 @@ public class ChatView extends BaseView implements ActionListener {
 		for (String user : usersList) {
 			connectedUsers.addElement(user);
 		}
-	}
-
-	public void addMessage(String message) {
-		usersMessagesModel.addElement(message);
 	}
 }

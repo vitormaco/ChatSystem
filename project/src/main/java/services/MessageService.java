@@ -101,7 +101,7 @@ public class MessageService {
 
 	private void receiveUserMessage(MessagePDU message) {
 		if (this.chatView != null) {
-			this.chatView.addMessage(message.getMessageContent());
+			// should add message to users list
 		}
 	}
 
