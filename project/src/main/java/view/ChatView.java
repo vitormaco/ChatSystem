@@ -1,6 +1,9 @@
 package view;
 
 import javax.swing.*;
+
+import models.Message;
+
 import java.util.*;
 
 import services.MessageService;
@@ -141,11 +144,20 @@ public class ChatView extends BaseView implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() > 0) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
-					currentSelectedUserLabel.setText(currentSelectedUser);
+					updateSelectedUser(currentSelectedUser);
 				}
 			}
 		};
 		connectedUsersJList.addMouseListener(selectUserListener);
+	}
+
+	private void updateSelectedUser(String user) {
+		currentSelectedUserLabel.setText(user);
+		ArrayList<Message> messages = this.messageService.getUserMessages(user);
+		usersMessagesModel.clear();
+		for (int i = 0; i < messages.size(); i++) {
+			usersMessagesModel.addElement(messages.get(i).getFormattedMessage());
+		}
 	}
 
 	private void setActionListeners() {

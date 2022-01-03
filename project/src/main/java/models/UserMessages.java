@@ -1,8 +1,10 @@
 package models;
 
+import java.util.ArrayList;
+
 public class UserMessages {
 	private String userId;
-	private Message[] messages;
+	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String nickname;
 
 	public UserMessages(String nickname) {
@@ -12,18 +14,23 @@ public class UserMessages {
 	public String getUserId() {
 		return userId;
 	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public Message[] getMessages() {
+
+	public ArrayList<Message> getMessages() {
 		return messages;
 	}
-	public void setMessages(Message[] messages) {
-		this.messages = messages;
+
+	public void addMessage(Message message) {
+		this.messages.add(message);
 	}
+
 	public String getNickname() {
 		return nickname;
 	}
+
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
 	}
