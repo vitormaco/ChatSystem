@@ -25,7 +25,7 @@ public class KeepAliveService extends Thread {
         running = true;
 
         while (running) {
-            this.sleep(5000);
+            Thread.sleep(250);
             this.messageService.notifyUserStateChanged("connected");
         }
     }

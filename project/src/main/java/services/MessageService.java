@@ -81,6 +81,7 @@ public class MessageService {
 			if (!this.usersList.containsKey(userMAC)) {
 				if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
 					usersList.put(userMAC, new UserMessages(nickname));
+					System.out.println("added" + nickname);
 				}
 			} else {
 				usersList.get(userMAC).setNickname(nickname);
@@ -128,21 +129,33 @@ public class MessageService {
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
-	public void discoverUsers() {
-		this.notifyUserStateChanged("discover");
+	public void discoverUsers(String state) {
+		// this.notifyUserStateChanged("discover");
+		try {
+			if(state == "connected") {
+				this.listener.start();
+				Thread.sleep(1500);
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		this.disconnectServer();
+		
+		System.out.println("+++++++++++++++" + usersList.size());
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
-		this.discoverUsers();
-		if (!usersList.containsKey(nickname)) {
+		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
-				this.listener.start();
 				this.discoverService.start();
+				this.listener.start();
 			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
+			this.disconnectServer();
 			return false;
 		}
 	}
@@ -151,6 +164,9 @@ public class MessageService {
 		this.listener.setRunning(false);
 		this.discoverService.setRunning(false);
 		while (this.listener.isAlive())
+			;
+
+		while (this.discoverService.isAlive())
 			;
 	}
 
