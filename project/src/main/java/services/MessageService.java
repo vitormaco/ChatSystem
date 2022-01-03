@@ -71,10 +71,10 @@ public class MessageService {
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
-	public Set<String> getAllActiveUsers() {
-		Set<String> nicknames = new HashSet<String>();
-		for (UserMessages user : usersList.values()) {
-			nicknames.add(user.getNickname());
+	public HashMap<String, String> getAllActiveUsers() {
+		HashMap<String, String> nicknames = new HashMap<String, String>();
+		for (Map.Entry<String, UserMessages> user : usersList.entrySet()) {
+			nicknames.put(user.getValue().getNickname(), user.getKey());
 		}
 		return nicknames;
 	}
@@ -128,19 +128,19 @@ public class MessageService {
 
 	/* PUBLIC METHODS */
 
-	public void sendMessageToUser(String message, String user) {
+	public void sendMessageToUser(String message, String id) {
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
 				.withMessageType(MessagePDU.MessageType.TEXT)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestination(user, "*", "*")
+				.withDestination(usersList.get(id).getNickname(), id, "*")
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
 	private boolean isNicknameAvailable(String nickname) {
-		return !this.getAllActiveUsers().contains(nickname);
+		return !this.getAllActiveUsers().containsKey(nickname);
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
