@@ -96,7 +96,7 @@ public class MessageService {
 		}
 	}
 
-	private void deleteLoggedoutUser(String id, String nickname) {
+	public void deleteLoggedoutUser(String id) {
 		usersList.remove(id);
 
 		if (this.chatView != null) {
@@ -174,8 +174,7 @@ public class MessageService {
 			this.addNewLoggedUser(message.getSourceMAC(),
 					message.getSourceNickname(), message.getSourceAddress());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
-			this.deleteLoggedoutUser(message.getSourceMAC(),
-					message.getSourceNickname());
+			this.deleteLoggedoutUser(message.getSourceMAC());
 		} else if (status == MessagePDU.Status.MESSAGE) {
 			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {
