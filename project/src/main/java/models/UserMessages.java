@@ -6,9 +6,11 @@ public class UserMessages {
 	private String userId;
 	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String nickname;
+	private String addressIp;
 
-	public UserMessages(String nickname) {
+	public UserMessages(String nickname, String adressIp) {
 		this.nickname = nickname;
+		this.addressIp = adressIp;
 	}
 
 	public String getUserId() {
@@ -17,6 +19,14 @@ public class UserMessages {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+	
+	public String getAddressIp() {
+		return addressIp;
+	}
+
+	public void setAdressIp(String addressIp) {
+		this.addressIp = addressIp;
 	}
 
 	public ArrayList<Message> getMessages() {

@@ -79,14 +79,14 @@ public class MessageService {
 		return nicknames;
 	}
 
-	private void addNewLoggedUser(String userMAC, String nickname) {
+	private void addNewLoggedUser(String userMAC, String nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
 		}
 
 		if (!this.usersList.containsKey(userMAC)) {
-			usersList.put(userMAC, new UserMessages(nickname));
+			usersList.put(userMAC, new UserMessages(nickname, addressIp));
 		} else {
 			usersList.get(userMAC).setNickname(nickname);
 		}
@@ -171,7 +171,7 @@ public class MessageService {
 
 		if (status == MessagePDU.Status.CONNECTION) {
 			this.addNewLoggedUser(message.getSourceMAC(),
-					message.getSourceNickname());
+					message.getSourceNickname(), message.getSourceAddress());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC(),
 					message.getSourceNickname());
@@ -198,11 +198,11 @@ public class MessageService {
 	public void setChatView(ChatView chatView) {
 		this.chatView = chatView;
 		// MOCK
-		usersList.put("MAC1", new UserMessages("Mocked User 1"));
+		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
 		usersList.get("MAC1").addMessage(
 				new Message(
 						new MessagePDU("Mocked User 1").withMessageContent("TEST")));
-		usersList.put("MAC2", new UserMessages("Mocked User 2"));
+		usersList.put("MAC2", new UserMessages("Mocked User 2", "0.0.0.0"));
 		this.chatView.updateConnectedUsersList();
 		// END OF MOCK
 	}
