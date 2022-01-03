@@ -1,7 +1,5 @@
 package services;
 
-import java.util.*;
-
 public class KeepAliveService extends Thread {
 
     private boolean running;
@@ -25,13 +23,13 @@ public class KeepAliveService extends Thread {
         running = true;
 
         while (running) {
-            Thread.sleep(250);
+            Thread.sleep(2000);
             this.messageService.notifyUserStateChanged("connected");
         }
     }
 
     public void setRunning(boolean running) {
-    	this.running = running;
+        this.running = running;
     }
-    
+
 }

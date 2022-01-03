@@ -109,6 +109,10 @@ public class MessagePDU implements Serializable {
 		return this.sourceMAC;
 	}
 
+	public String getDestinationMAC() {
+		return this.destinationMAC;
+	}
+
 	public String serialize() {
 		try {
 			ByteArrayOutputStream bo = new ByteArrayOutputStream();

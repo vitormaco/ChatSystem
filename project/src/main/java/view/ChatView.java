@@ -15,6 +15,7 @@ public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
 
+	HashMap<String, String> MACbyNickname = new HashMap<String, String>();
 	DefaultListModel<String> connectedUsers = new DefaultListModel<String>();
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
 	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
@@ -214,14 +215,14 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
-		messageService.sendMessageToUser(text);
+		messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
 		writeMessageField.setText("");
 	}
 
 	public void updateConnectedUsersList() {
-		Set<String> usersList = messageService.getAllActiveUsers();
+		MACbyNickname = messageService.getAllActiveUsers();
 		connectedUsers.clear();
-		for (String user : usersList) {
+		for (String user : MACbyNickname.keySet()) {
 			connectedUsers.addElement(user);
 		}
 	}
