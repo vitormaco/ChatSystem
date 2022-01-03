@@ -82,25 +82,24 @@ public class MessageService {
 	}
 
 	private void addNewLoggedUser(String userMAC, String nickname) {
-		if (this.chatView != null) {
-			if (!this.usersList.containsKey(userMAC)) {
-				if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
-					usersList.put(userMAC, new UserMessages(nickname));
-					System.out.println("added" + nickname);
-				}
-			} else {
-				usersList.get(userMAC).setNickname(nickname);
+		if (!this.usersList.containsKey(userMAC)) {
+			if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
+				usersList.put(userMAC, new UserMessages(nickname));
+				System.out.println("added" + nickname);
 			}
-
+		} else {
+			usersList.get(userMAC).setNickname(nickname);
+		}
+		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
 	}
 
 	private void deleteLoggedoutUser(String id, String nickname) {
+		if (usersList.containsKey(id)) {
+			usersList.remove(id);
+		}
 		if (this.chatView != null) {
-			if (usersList.containsKey(id)) {
-				usersList.remove(id);
-			}
 			this.chatView.updateConnectedUsersList();
 		}
 	}
