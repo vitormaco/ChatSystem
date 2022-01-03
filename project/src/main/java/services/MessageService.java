@@ -20,9 +20,14 @@ public class MessageService {
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
-		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
-		this.listener = new NetworkListener(broadcastPort, this);
+		this.listener = this.getListenerThread();
+		this.listener.start();
 		this.discoverService = new KeepAliveService(this);
+	}
+	
+	private NetworkListener getListenerThread () {
+		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+		return new NetworkListener(broadcastPort, this);
 	}
 
 	public void notifyUserStateChanged(String state) {
@@ -78,24 +83,22 @@ public class MessageService {
 	}
 
 	private void addNewLoggedUser(String userMAC, String nickname) {
+		if (!this.usersList.containsKey(userMAC)) {
+			usersList.put(userMAC, new UserMessages(nickname));
+			System.out.println("added" + nickname);
+		} else {
+			usersList.get(userMAC).setNickname(nickname);
+		}
 		if (this.chatView != null) {
-			if (!this.usersList.containsKey(userMAC)) {
-				if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
-					usersList.put(userMAC, new UserMessages(nickname));
-				}
-			} else {
-				usersList.get(userMAC).setNickname(nickname);
-			}
-
 			this.chatView.updateConnectedUsersList();
 		}
 	}
 
 	private void deleteLoggedoutUser(String id, String nickname) {
+		if (usersList.containsKey(id)) {
+			usersList.remove(id);
+		}
 		if (this.chatView != null) {
-			if (usersList.containsKey(id)) {
-				usersList.remove(id);
-			}
 			this.chatView.updateConnectedUsersList();
 		}
 	}
@@ -130,16 +133,10 @@ public class MessageService {
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
-	public void discoverUsers() {
-		this.notifyUserStateChanged("discover");
-	}
-
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
-		this.discoverUsers();
-		if (!usersList.containsKey(nickname)) {
+		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
-				this.listener.start();
 				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
@@ -153,6 +150,9 @@ public class MessageService {
 		this.listener.setRunning(false);
 		this.discoverService.setRunning(false);
 		while (this.listener.isAlive())
+			;
+
+		while (this.discoverService.isAlive())
 			;
 	}
 
