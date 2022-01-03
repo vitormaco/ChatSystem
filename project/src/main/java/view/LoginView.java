@@ -103,7 +103,6 @@ public class LoginView extends BaseView implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String userText;
         userText = nicknameTextField.getText();
-        this.messageService.discoverUsers("connected");
         if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
             dispose();
             this.messageService.setChatView(new ChatView(this.messageService));

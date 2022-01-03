@@ -83,10 +83,8 @@ public class MessageService {
 
 	private void addNewLoggedUser(String userMAC, String nickname) {
 		if (!this.usersList.containsKey(userMAC)) {
-			if (this.isNicknameAvailable(nickname) && this.nickname != nickname) {
-				usersList.put(userMAC, new UserMessages(nickname));
-				System.out.println("added" + nickname);
-			}
+			usersList.put(userMAC, new UserMessages(nickname));
+			System.out.println("added" + nickname);
 		} else {
 			usersList.get(userMAC).setNickname(nickname);
 		}
@@ -133,19 +131,6 @@ public class MessageService {
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
-	public void discoverUsers(String state) {
-		return;
-		/*
-		try {
-			if(state == "connected") {
-				Thread.sleep(1500);
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}		
-		*/
-	}
-
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
@@ -155,7 +140,6 @@ public class MessageService {
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
-			this.disconnectServer();
 			return false;
 		}
 	}
