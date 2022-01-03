@@ -20,6 +20,7 @@ public class MessageService {
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
 		this.listener = this.getListenerThread();
+		this.listener.start();
 		this.discoverService = new KeepAliveService(this);
 	}
 	
@@ -134,22 +135,22 @@ public class MessageService {
 	}
 
 	public void discoverUsers(String state) {
+		return;
+		/*
 		try {
 			if(state == "connected") {
-				this.listener.start();
 				Thread.sleep(1500);
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}		
+		*/
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
-				this.listener = this.getListenerThread();
-				this.listener.start();
 				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
