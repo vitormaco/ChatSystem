@@ -1,6 +1,7 @@
 package services;
 
 import models.UserMessages;
+import models.Message;
 import models.MessagePDU;
 import utils.NetworkUtils;
 
@@ -101,7 +102,8 @@ public class MessageService {
 
 	private void receiveUserMessage(MessagePDU message) {
 		if (this.chatView != null) {
-			// should add message to users list
+			usersList.get(message.getSourceMAC())
+					.addMessage(new Message(message));
 		}
 	}
 
@@ -174,8 +176,18 @@ public class MessageService {
 		return this.nickname;
 	}
 
+	public ArrayList<Message> getUserMessages(String nickname) {
+		for (UserMessages user : usersList.values()) {
+			if (user.getNickname() == nickname) {
+				return user.getMessages();
+			}
+		}
+		return new ArrayList<Message>();
+	}
+
 	public void setChatView(ChatView chatView) {
 		this.chatView = chatView;
+		this.chatView.updateConnectedUsersList();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Base64;
 
 import utils.NetworkUtils;
@@ -27,7 +28,7 @@ public class MessagePDU implements Serializable {
 	private Status status;
 	private MessageType type;
 	private String messageContent;
-	private String timestamp;
+	private Timestamp timestamp;
 	private String sourceNickname;
 	private String sourceMAC;
 	private String sourceAddress;
@@ -42,6 +43,8 @@ public class MessagePDU implements Serializable {
 		this.sourceNickname = nickname;
 		this.sourceMAC = NetworkUtils.getLocalMACAdress();
 		this.sourceAddress = NetworkUtils.getIPAddress();
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		this.timestamp = now;
 	}
 
 	public MessagePDU withMessageContent(String messageContent) {
@@ -68,6 +71,10 @@ public class MessagePDU implements Serializable {
 		return this.sourceAddress;
 	}
 
+	public Timestamp getTimestamp() {
+		return this.timestamp;
+	}
+
 	public MessagePDU withDestination(String nickname, String id, String address) {
 		this.destinationNickname = nickname;
 		this.destinationMAC = id;
@@ -84,6 +91,10 @@ public class MessagePDU implements Serializable {
 
 	public String getMessageContent() {
 		return this.messageContent;
+	}
+
+	public MessageType getMessageType() {
+		return this.type;
 	}
 
 	public String getSourceNickname() {
