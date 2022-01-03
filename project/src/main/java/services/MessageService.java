@@ -19,9 +19,13 @@ public class MessageService {
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
-		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
-		this.listener = new NetworkListener(broadcastPort, this);
+		this.listener = this.getListenerThread();
 		this.discoverService = new KeepAliveService(this);
+	}
+	
+	private NetworkListener getListenerThread () {
+		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+		return new NetworkListener(broadcastPort, this);
 	}
 
 	public void notifyUserStateChanged(String state) {
@@ -130,7 +134,6 @@ public class MessageService {
 	}
 
 	public void discoverUsers(String state) {
-		// this.notifyUserStateChanged("discover");
 		try {
 			if(state == "connected") {
 				this.listener.start();
@@ -138,19 +141,17 @@ public class MessageService {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-		}
-		
-		this.disconnectServer();
-		
-		System.out.println("+++++++++++++++" + usersList.size());
+		}		
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
+		this.disconnectServer();
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
 			if (state == "connected") {
-				this.discoverService.start();
+				this.listener = this.getListenerThread();
 				this.listener.start();
+				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
 			return true;
