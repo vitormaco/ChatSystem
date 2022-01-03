@@ -128,13 +128,14 @@ public class MessageService {
 
 	/* PUBLIC METHODS */
 
-	public void sendMessageToUser(String message, String id) {
+	public void sendMessageToUser(String message, String mac) {
+		UserMessages user = usersList.get(mac);
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
 				.withMessageType(MessagePDU.MessageType.TEXT)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestination(usersList.get(id).getNickname(), id, "*")
+				.withDestination(user.getNickname(), mac, user.getAddressIp())
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
