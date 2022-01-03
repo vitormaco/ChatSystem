@@ -214,7 +214,7 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
-		messageService.sendMessageToUser(text);
+		messageService.sendMessageToUser(text, currentSelectedUser);
 		writeMessageField.setText("");
 	}
 

@@ -17,6 +17,7 @@ public class MessageService {
 	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
+	private String myMac = NetworkUtils.getLocalMACAdress();
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
@@ -24,8 +25,8 @@ public class MessageService {
 		this.listener.start();
 		this.discoverService = new KeepAliveService(this);
 	}
-	
-	private NetworkListener getListenerThread () {
+
+	private NetworkListener getListenerThread() {
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		return new NetworkListener(broadcastPort, this);
 	}
@@ -78,26 +79,26 @@ public class MessageService {
 		return nicknames;
 	}
 
-	private boolean isNicknameAvailable(String nickname) {
-		return !this.getAllActiveUsers().contains(nickname);
-	}
-
 	private void addNewLoggedUser(String userMAC, String nickname) {
+
+		if (userMAC.equals(myMac)) {
+			return;
+		}
+
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(nickname));
-			System.out.println("added" + nickname);
 		} else {
 			usersList.get(userMAC).setNickname(nickname);
 		}
+
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
 	}
 
 	private void deleteLoggedoutUser(String id, String nickname) {
-		if (usersList.containsKey(id)) {
-			usersList.remove(id);
-		}
+		usersList.remove(id);
+
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
@@ -105,8 +106,13 @@ public class MessageService {
 
 	private void receiveUserMessage(MessagePDU message) {
 		if (this.chatView != null) {
-			usersList.get(message.getSourceMAC())
-					.addMessage(new Message(message));
+			if (message.getSourceMAC().equals(myMac)) {
+				usersList.get(message.getDestinationMAC())
+						.addMessage(new Message(message));
+			} else {
+				usersList.get(message.getSourceMAC())
+						.addMessage(new Message(message));
+			}
 		}
 	}
 
@@ -122,15 +128,19 @@ public class MessageService {
 
 	/* PUBLIC METHODS */
 
-	public void sendMessageToUser(String message) {
+	public void sendMessageToUser(String message, String user) {
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
 				.withMessageType(MessagePDU.MessageType.TEXT)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestinationBroadcast()
+				.withDestination(user, "*", "*")
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
+	}
+
+	private boolean isNicknameAvailable(String nickname) {
+		return !this.getAllActiveUsers().contains(nickname);
 	}
 
 	public boolean validateAndAssingUserNickname(String nickname, String state) {
@@ -187,7 +197,14 @@ public class MessageService {
 
 	public void setChatView(ChatView chatView) {
 		this.chatView = chatView;
+		// MOCK
+		usersList.put("MAC1", new UserMessages("Mocked User 1"));
+		usersList.get("MAC1").addMessage(
+				new Message(
+						new MessagePDU("Mocked User 1").withMessageContent("TEST")));
+		usersList.put("MAC2", new UserMessages("Mocked User 2"));
 		this.chatView.updateConnectedUsersList();
+		// END OF MOCK
 	}
 
 }
