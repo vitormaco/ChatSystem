@@ -31,6 +31,7 @@ public class ChatView extends BaseView implements ActionListener {
 		buildPanel();
 		setActionListeners();
 		setWindowListeners();
+		updateConnectedUsersList();
 	}
 
 	private void setLogoutButton() {
