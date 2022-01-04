@@ -14,6 +14,7 @@ public class MessageService {
 	private HashMap<String, UserMessages> usersList;
 	private String nickname;
 	private NetworkListener listener;
+	private NetworkTCPListener listenerTCP;
 	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
@@ -23,6 +24,8 @@ public class MessageService {
 		this.usersList = new HashMap<String, UserMessages>();
 		this.listener = this.getListenerThread();
 		this.listener.start();
+		this.listenerTCP = this.getListenerTCPThread();
+		this.listenerTCP.start();
 		this.discoverService = new KeepAliveService(this);
 	}
 
@@ -33,6 +36,11 @@ public class MessageService {
 	private NetworkListener getListenerThread() {
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		return new NetworkListener(broadcastPort, this);
+	}
+
+	private NetworkTCPListener getListenerTCPThread(){
+		int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+		return new NetworkTCPListener(tcpPort, this);
 	}
 
 	public void notifyUserStateChanged(String state) {
@@ -217,5 +225,15 @@ public class MessageService {
 		this.chatView.updateConnectedUsersList();
 		// END OF MOCK
 	}
+
+	// public void createTCPConnection(String mac){
+	// 	try {
+	// 		String hostname = usersList.get(mac).getAddressIp();
+	// 	} catch (Exception e) {
+	// 		e.printStackTrace();
+	// 		return;
+	// 	}
+	// 	Socket s = new Socket(hostname, 8080);
+	// }
 
 }

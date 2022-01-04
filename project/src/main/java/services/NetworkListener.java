@@ -35,41 +35,7 @@ public class NetworkListener extends Thread {
     }
 
     private boolean isMyComputer(String ip) throws Exception {
-    	NetworkInterface ni = N
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
+    	NetworkInterface ni = NetworkInterface.
         		getByInetAddress(
         				InetAddress.getByName(ip));
     	return ni != null;
