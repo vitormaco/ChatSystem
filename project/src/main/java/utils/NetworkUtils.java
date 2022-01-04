@@ -8,6 +8,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class NetworkUtils {
 	static Dotenv dotenv = Dotenv.load();
 	static String networkIP = null;
+	static Set portsUsed = new Set();
 
 	public static String getLocalMACAdress() {
 		byte[] mac;
@@ -116,5 +117,13 @@ public class NetworkUtils {
 			e.printStackTrace();
 			System.out.println("Exception thrown when sending broadcast message");
 		}
+	}
+
+	private static int ipToPort(String ip1){
+
+	}
+
+	private static void sendTCPMessage(String msg, String ip){
+
 	}
 }
