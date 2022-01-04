@@ -53,19 +53,7 @@ public class ChatView extends BaseView implements ActionListener {
 		sendMessageButton.setText("Send Message");
 	}
 
-	private GridBagConstraints getBaseConstraints() {
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1;
-		c.weighty = 1;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		c.fill = GridBagConstraints.NONE;
-		return c;
-	}
-
 	private void buildPanel() {
-		GridBagConstraints c = getBaseConstraints();
-
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new GridBagLayout());
 		mainPanel.setBackground(Color.LIGHT_GRAY);
@@ -91,8 +79,6 @@ public class ChatView extends BaseView implements ActionListener {
 
 		// LEFT PANEL
 
-		c = getBaseConstraints();
-
 		leftPanel.add(connectedUsersJList,
 				new GridBagConstraints(0, 0, 1, 1, 1, 1,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -100,7 +86,6 @@ public class ChatView extends BaseView implements ActionListener {
 
 		// RIGHT PANEL
 
-		c = getBaseConstraints();
 		rightPanel.add(currentSelectedUserLabel,
 				new GridBagConstraints(0, 0, 2, 1, 1, 0,
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
