@@ -103,6 +103,10 @@ public class LoginView extends BaseView implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String userText;
         userText = nicknameTextField.getText();
+        if (!this.messageService.isConnected()) {
+            JOptionPane.showMessageDialog(this, "Network not configured correctly");
+        }
+
         if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
             dispose();
             this.messageService.setChatView(new ChatView(this.messageService));

@@ -32,7 +32,7 @@ public class NetworkUtils {
 
 		return sb.toString();
 	}
-	
+
 	private static InetAddress getInetAddress() {
 		Enumeration<NetworkInterface> n;
 		try {
@@ -54,23 +54,21 @@ public class NetworkUtils {
 		}
 		return null;
 	}
-	
+
 	private static String getBroadcastAddress() {
 		InetAddress addr = getInetAddress();
-		
-	    NetworkInterface networkInterface;
+
+		NetworkInterface networkInterface;
 		try {
 			networkInterface = NetworkInterface.getByInetAddress(addr);
-		    if (networkInterface.isLoopback())
-		        return "127.0.0.1";
-		    for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) 
-		    {
-		        InetAddress broadcast = interfaceAddress.getBroadcast();
-		        if (broadcast == null)
-		            continue;
-		        return broadcast.getHostAddress();
-		    }
-			
+			if (networkInterface.isLoopback())
+				return "127.0.0.1";
+			for (InterfaceAddress interfaceAddress : networkInterface.getInterfaceAddresses()) {
+				InetAddress broadcast = interfaceAddress.getBroadcast();
+				if (broadcast == null)
+					continue;
+				return broadcast.getHostAddress();
+			}
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
@@ -84,8 +82,8 @@ public class NetworkUtils {
 		}
 		try {
 			InetAddress addr = getInetAddress();
-			
-			if(addr != null) {
+
+			if (addr != null) {
 				networkIP = addr.getHostAddress();
 				return networkIP;
 			}
@@ -93,8 +91,8 @@ public class NetworkUtils {
 			throw new Exception("Configured network not found, please check if it's properly set up");
 		} catch (Exception e) {
 			System.out.println(e.toString());
-			return "127.0.0.1";
-        }
+			return "-";
+		}
 	}
 
 	public static void sendBroadcastMessage(String msg) {

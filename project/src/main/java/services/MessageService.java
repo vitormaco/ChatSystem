@@ -26,6 +26,10 @@ public class MessageService {
 		this.discoverService = new KeepAliveService(this);
 	}
 
+	public boolean isConnected() {
+		return NetworkUtils.getIPAddress() != "-";
+	}
+
 	private NetworkListener getListenerThread() {
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
 		return new NetworkListener(broadcastPort, this);
