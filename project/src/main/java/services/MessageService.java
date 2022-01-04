@@ -117,7 +117,6 @@ public class MessageService {
 				usersList.get(message.getSourceMAC())
 						.addMessage(new Message(message));
 			}
-			this.chatView.updateSelectedUserMessages();
 		}
 	}
 
@@ -206,13 +205,7 @@ public class MessageService {
 		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
 		usersList.get("MAC1").addMessage(
 				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST1")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST2")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST3")));
+						new MessagePDU("Mocked User 1").withMessageContent("TEST")));
 		usersList.put("MAC2", new UserMessages("Mocked User 2", "0.0.0.0"));
 		this.chatView.updateConnectedUsersList();
 		// END OF MOCK
