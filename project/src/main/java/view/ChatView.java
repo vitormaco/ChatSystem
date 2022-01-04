@@ -18,8 +18,7 @@ public class ChatView extends BaseView implements ActionListener {
 	HashMap<String, String> MACbyNickname = new HashMap<String, String>();
 	DefaultListModel<String> connectedUsers = new DefaultListModel<String>();
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
-	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
-	JList<String> messagesList = new JList<String>(usersMessagesModel);
+	JPanel messagesList = new JPanel();
 	String currentSelectedUser = "";
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
@@ -101,15 +100,19 @@ public class ChatView extends BaseView implements ActionListener {
 		c.gridy = 0;
 		c.gridwidth = 2;
 		c.fill = GridBagConstraints.BOTH;
-		c.weighty = 1;
+		c.weighty = 0;
+		c.ipady = 5;
 		rightPanel.add(currentSelectedUserLabel, c);
 
 		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = 19;
+		c.weighty = 1;
+		c.weightx = 1;
+		messagesList.setLayout(new BoxLayout(messagesList, BoxLayout.Y_AXIS));
+		messagesList.setBackground(Color.GREEN);
 		rightPanel.add(messagesList, c);
 
-		c.weighty = 1;
+		c.weighty = 0;
 		c.gridwidth = 1;
 		c.gridx = 0;
 		c.gridy = 2;
@@ -126,7 +129,7 @@ public class ChatView extends BaseView implements ActionListener {
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 2;
-		c.weighty = 1;
+		c.weighty = 0;
 		mainPanel.add(topPanel, c);
 		c.weighty = 9;
 		c.gridwidth = 1;
@@ -146,26 +149,29 @@ public class ChatView extends BaseView implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() > 0) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
-					updateSelectedUser(currentSelectedUser);
+					updateSelectedUserMessages();
 				}
 			}
 		};
 		connectedUsersJList.addMouseListener(selectUserListener);
 	}
 
-	private void updateSelectedUser(String user) {
-		currentSelectedUserLabel.setText(user);
-		ArrayList<Message> messages = this.messageService.getUserMessages(user);
-		usersMessagesModel.clear();
+	public void updateSelectedUserMessages() {
+		currentSelectedUserLabel.setText(currentSelectedUser);
+		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
+		messagesList.removeAll();
 		for (int i = 0; i < messages.size(); i++) {
-			usersMessagesModel.addElement(messages.get(i).getFormattedMessage());
+			messagesList.add(new JLabel(messages.get(i).getFormattedMessage()));
 		}
+		messagesList.revalidate();
+		messagesList.repaint();
 	}
 
 	private void setActionListeners() {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
 		sendMessageButton.addActionListener(this);
+		SwingUtilities.getRootPane(sendMessageButton).setDefaultButton(sendMessageButton);
 	}
 
 	private void setWindowListeners() {
@@ -215,7 +221,9 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
-		messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+		if (currentSelectedUser != "") {
+			messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+		}
 		writeMessageField.setText("");
 	}
 

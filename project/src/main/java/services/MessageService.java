@@ -117,6 +117,7 @@ public class MessageService {
 				usersList.get(message.getSourceMAC())
 						.addMessage(new Message(message));
 			}
+			this.chatView.updateSelectedUserMessages();
 		}
 	}
 

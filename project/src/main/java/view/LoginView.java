@@ -97,6 +97,7 @@ public class LoginView extends BaseView implements ActionListener {
 
     private void setActionListeners() {
         loginButton.addActionListener(this);
+        SwingUtilities.getRootPane(loginButton).setDefaultButton(loginButton);
     }
 
     @Override
