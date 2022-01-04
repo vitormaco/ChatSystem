@@ -219,6 +219,7 @@ public class ChatView extends BaseView implements ActionListener {
 		String text = writeMessageField.getText();
 		if (currentSelectedUser != "") {
 			messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+			messageService.sendMessageToUserTCP(text, MACbyNickname.get(currentSelectedUser));
 		}
 		writeMessageField.setText("");
 	}

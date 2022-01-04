@@ -21,17 +21,23 @@ public class ClientTCP {
             DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             String clientMessage = "";
-            while(!clientMessage.equals("bye")){
-                clientMessage = message;
-                out.writeUTF(clientMessage);
-                out.flush();
-                System.out.println("client message: " + clientMessage);
-            }
+            clientMessage = message;
+            out.writeUTF(clientMessage);
+            out.flush();
+            System.out.println("client message: " + clientMessage);
             out.close();
             in.close();
-            socket.close();
         } catch (Exception e) {
             System.out.println("Client Error " +  e.getMessage());
+        }
+    }
+
+    public void closeSocket(){
+        try {
+            socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+			System.out.println("Exception thrown when closing socket client TCP");
         }
     }
 }

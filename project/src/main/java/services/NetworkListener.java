@@ -64,13 +64,13 @@ public class NetworkListener extends Thread {
                 MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
 
                 // if(!this.isMyComputer(deserializedObject.getSourceAddress())) {
-	                System.out.println(
-	                    "message " + message_counter++ + ":\n" +
-	                    "-------------------------\n" +
-	                    deserializedObject.toString() +
-	                    "-------------------------" +
-	                    "\n\n"
-	                    );
+	                // System.out.println(
+	                //     "message " + message_counter++ + ":\n" +
+	                //     "-------------------------\n" +
+	                //     deserializedObject.toString() +
+	                //     "-------------------------" +
+	                //     "\n\n"
+	                //     );
                 // }
 	            resetLifeCounter(deserializedObject.getSourceMAC());
                 this.messageService.messageReceived(deserializedObject);
