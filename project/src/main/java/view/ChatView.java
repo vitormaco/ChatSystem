@@ -64,10 +64,10 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	private void buildPanel() {
-		JPanel mainPanel = new JPanel();
-
-		mainPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = getBaseConstraints();
+
+		JPanel mainPanel = new JPanel();
+		mainPanel.setLayout(new GridBagLayout());
 		mainPanel.setBackground(Color.LIGHT_GRAY);
 
 		JPanel topPanel = new JPanel();
@@ -79,69 +79,66 @@ public class ChatView extends BaseView implements ActionListener {
 
 		// TOP PANEL
 
-		c.gridx = 0;
-		c.gridy = 0;
-		topPanel.add(logoutButton, c);
+		topPanel.add(logoutButton,
+				new GridBagConstraints(0, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(0, 0, 0, 0), 0, 0));
 
-		c.gridx = 1;
-		topPanel.add(changeNicknameButton, c);
+		topPanel.add(changeNicknameButton,
+				new GridBagConstraints(1, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		// LEFT PANEL
 
 		c = getBaseConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
-		leftPanel.add(connectedUsersJList, c);
+
+		leftPanel.add(connectedUsersJList,
+				new GridBagConstraints(0, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		// RIGHT PANEL
 
 		c = getBaseConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.BOTH;
-		c.weighty = 0;
-		c.ipady = 5;
-		rightPanel.add(currentSelectedUserLabel, c);
+		rightPanel.add(currentSelectedUserLabel,
+				new GridBagConstraints(0, 0, 2, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.gridx = 0;
-		c.gridy = 1;
-		c.weighty = 1;
-		c.weightx = 1;
 		messagesList.setLayout(new GridBagLayout());
 		messagesList.setBackground(Color.GREEN);
 		messageListScroll.setViewportView(messagesList);
-		rightPanel.add(messageListScroll, c);
+		rightPanel.add(messageListScroll,
+				new GridBagConstraints(0, 1, 2, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.weighty = 0;
-		c.gridwidth = 1;
-		c.gridx = 0;
-		c.gridy = 2;
-		c.weightx = 9;
-		rightPanel.add(writeMessageField, c);
+		rightPanel.add(writeMessageField,
+				new GridBagConstraints(0, 2, 1, 1, 9, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.gridx = 1;
-		c.weightx = 1;
-		rightPanel.add(sendMessageButton, c);
+		rightPanel.add(sendMessageButton,
+				new GridBagConstraints(1, 2, 1, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
 		// MAIN PANEL
-		c = getBaseConstraints();
-		c.insets = new Insets(10, 10, 10, 10);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		c.weighty = 0;
-		mainPanel.add(topPanel, c);
-		c.weighty = 9;
-		c.gridwidth = 1;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 3;
-		mainPanel.add(leftPanel, c);
-		c.gridx = 1;
-		c.weightx = 7;
-		mainPanel.add(rightPanel, c);
+		mainPanel.add(topPanel,
+				new GridBagConstraints(0, 0, 2, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		mainPanel.add(leftPanel,
+				new GridBagConstraints(0, 1, 1, 1, 3, 9,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		mainPanel.add(rightPanel,
+				new GridBagConstraints(1, 1, 1, 1, 7, 9,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(10, 10, 10, 10), 0, 0));
 
 		container.add(mainPanel, BorderLayout.CENTER);
 	}
@@ -176,7 +173,6 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
-		pane.setOpaque(false);
 		pane.add(new JLabel(message.getFormattedMessage()));
 		return pane;
 	}
