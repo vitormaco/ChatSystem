@@ -38,7 +38,6 @@ public class NetworkTCPListener extends Thread {
         System.out.println("NetworkTCPListener up");
 
         running = true;
-        serverSocket.setSoTimeout(1000);
 
         while (running) {
             this.serverClient = serverSocket.accept();
