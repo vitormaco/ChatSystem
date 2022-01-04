@@ -22,7 +22,7 @@ public class NetworkTCPListener extends Thread {
             this.messageService = messageService;
         } catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Exception thrown when creating network listener");
+			System.out.println("Exception thrown when creating network TCP listener");
         }
     }
 

@@ -134,6 +134,7 @@ public class ChatView extends BaseView implements ActionListener {
 				if (e.getClickCount() > 0) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
 					updateSelectedUserMessages();
+					messageService.createTCPConnection(MACbyNickname.get(currentSelectedUser));
 				}
 			}
 		};

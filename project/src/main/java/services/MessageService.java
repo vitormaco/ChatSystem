@@ -172,11 +172,15 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
+		this.listenerTCP.setRunning(false);
 		this.discoverService.setRunning(false);
 		while (this.listener.isAlive())
 			;
 
 		while (this.discoverService.isAlive())
+			;
+
+		while (this.listenerTCP.isAlive())
 			;
 	}
 
@@ -226,14 +230,15 @@ public class MessageService {
 		// END OF MOCK
 	}
 
-	// public void createTCPConnection(String mac){
-	// 	try {
-	// 		String hostname = usersList.get(mac).getAddressIp();
-	// 	} catch (Exception e) {
-	// 		e.printStackTrace();
-	// 		return;
-	// 	}
-	// 	Socket s = new Socket(hostname, 8080);
-	// }
+	public void createTCPConnection(String mac){
+		try {
+			String hostname = usersList.get(mac).getAddressIp();
+			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+			ClientTCP client = new ClientTCP(hostname, tcpPort);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+	}
 
 }
