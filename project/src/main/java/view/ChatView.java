@@ -18,6 +18,7 @@ public class ChatView extends BaseView implements ActionListener {
 	HashMap<String, String> MACbyNickname = new HashMap<String, String>();
 	DefaultListModel<String> connectedUsers = new DefaultListModel<String>();
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
+	JScrollPane messageListScroll = new JScrollPane();
 	JPanel messagesList = new JPanel();
 	String currentSelectedUser = "";
 	JButton logoutButton = new JButton();
@@ -108,9 +109,10 @@ public class ChatView extends BaseView implements ActionListener {
 		c.gridy = 1;
 		c.weighty = 1;
 		c.weightx = 1;
-		messagesList.setLayout(new BoxLayout(messagesList, BoxLayout.Y_AXIS));
+		messagesList.setLayout(new GridBagLayout());
 		messagesList.setBackground(Color.GREEN);
-		rightPanel.add(messagesList, c);
+		messageListScroll.setViewportView(messagesList);
+		rightPanel.add(messageListScroll, c);
 
 		c.weighty = 0;
 		c.gridwidth = 1;
@@ -160,11 +162,23 @@ public class ChatView extends BaseView implements ActionListener {
 		currentSelectedUserLabel.setText(currentSelectedUser);
 		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
 		messagesList.removeAll();
+
 		for (int i = 0; i < messages.size(); i++) {
-			messagesList.add(new JLabel(messages.get(i).getFormattedMessage()));
+			messagesList.add(createMessagePanel(messages.get(i)),
+					new GridBagConstraints(0, i, 1, 1, 1, 0,
+							GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+							new Insets(0, 5, 5, 5), 0, 0));
 		}
+
 		messagesList.revalidate();
 		messagesList.repaint();
+	}
+
+	private JPanel createMessagePanel(Message message) {
+		JPanel pane = new JPanel();
+		pane.setOpaque(false);
+		pane.add(new JLabel(message.getFormattedMessage()));
+		return pane;
 	}
 
 	private void setActionListeners() {
