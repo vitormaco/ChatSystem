@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-import services.ClientThread;
+import services.ServerTCPThread;
 
 import models.MessagePDU;
 
@@ -41,8 +41,8 @@ public class NetworkTCPListener extends Thread {
 
         while (running) {
             this.serverClient = serverSocket.accept();
-            ClientThread ct = new ClientThread(this.serverClient);
-            ct.start();
+            ServerTCPThread st = new ServerTCPThread(this.serverClient);
+            st.start();
 
         }
 

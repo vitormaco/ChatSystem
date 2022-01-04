@@ -233,6 +233,7 @@ public class MessageService {
 
 	public void createTCPConnection(String mac){
 		try {
+			
 			String hostname = usersList.get(mac).getAddressIp();
 			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
 			client = new ClientTCP(hostname, tcpPort);
@@ -243,15 +244,16 @@ public class MessageService {
 	}
 
 	public void sendMessageToUserTCP(String message, String mac) {
-		UserMessages user = usersList.get(mac);
-		String serializedObject;
-		serializedObject = new MessagePDU(this.nickname)
-				.withMessageType(MessagePDU.MessageType.TEXT)
-				.withStatus(MessagePDU.Status.MESSAGE)
-				.withMessageContent(message)
-				.withDestination(user.getNickname(), mac, user.getAddressIp())
-				.serialize();
-		client.sendMessage(serializedObject);
+		// UserMessages user = usersList.get(mac);
+		// String serializedObject;
+		// serializedObject = new MessagePDU(this.nickname)
+		// 		.withMessageType(MessagePDU.MessageType.TEXT)
+		// 		.withStatus(MessagePDU.Status.MESSAGE)
+		// 		.withMessageContent(message)
+		// 		.withDestination(user.getNickname(), mac, user.getAddressIp())
+		// 		.serialize();
+		client.sendMessage("hola");
+		client.closeSocket();
 	}
 	
 

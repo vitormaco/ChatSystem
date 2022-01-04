@@ -9,6 +9,7 @@ public class ClientTCP {
 
     public ClientTCP(String host, int port){
         try {
+            System.out.println("create socket");
             this.socket = new Socket(host, port);
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,6 +35,7 @@ public class ClientTCP {
 
     public void closeSocket(){
         try {
+            System.out.println("closed socket");
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();

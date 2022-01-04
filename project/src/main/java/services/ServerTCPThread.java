@@ -3,12 +3,12 @@ package services;
 import java.net.*;
 import java.io.*;
 
-public class ClientThread extends Thread {
+public class ServerTCPThread extends Thread {
 
     Socket serverClient;
     int clientNo;
 
-    ClientThread(Socket s){
+    ServerTCPThread(Socket s){
         serverClient = s;
     }
 
