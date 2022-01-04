@@ -18,8 +18,8 @@ public class ChatView extends BaseView implements ActionListener {
 	HashMap<String, String> MACbyNickname = new HashMap<String, String>();
 	DefaultListModel<String> connectedUsers = new DefaultListModel<String>();
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
-	DefaultListModel<String> usersMessagesModel = new DefaultListModel<String>();
-	JList<String> messagesList = new JList<String>(usersMessagesModel);
+	JScrollPane messageListScroll = new JScrollPane();
+	JPanel messagesList = new JPanel();
 	String currentSelectedUser = "";
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
@@ -53,21 +53,9 @@ public class ChatView extends BaseView implements ActionListener {
 		sendMessageButton.setText("Send Message");
 	}
 
-	private GridBagConstraints getBaseConstraints() {
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 1;
-		c.weighty = 1;
-		c.gridwidth = 1;
-		c.anchor = GridBagConstraints.CENTER;
-		c.fill = GridBagConstraints.NONE;
-		return c;
-	}
-
 	private void buildPanel() {
 		JPanel mainPanel = new JPanel();
-
 		mainPanel.setLayout(new GridBagLayout());
-		GridBagConstraints c = getBaseConstraints();
 		mainPanel.setBackground(Color.LIGHT_GRAY);
 
 		JPanel topPanel = new JPanel();
@@ -79,64 +67,63 @@ public class ChatView extends BaseView implements ActionListener {
 
 		// TOP PANEL
 
-		c.gridx = 0;
-		c.gridy = 0;
-		topPanel.add(logoutButton, c);
+		topPanel.add(logoutButton,
+				new GridBagConstraints(0, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(0, 0, 0, 0), 0, 0));
 
-		c.gridx = 1;
-		topPanel.add(changeNicknameButton, c);
+		topPanel.add(changeNicknameButton,
+				new GridBagConstraints(1, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		// LEFT PANEL
 
-		c = getBaseConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.fill = GridBagConstraints.BOTH;
-		leftPanel.add(connectedUsersJList, c);
+		leftPanel.add(connectedUsersJList,
+				new GridBagConstraints(0, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		// RIGHT PANEL
 
-		c = getBaseConstraints();
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		c.fill = GridBagConstraints.BOTH;
-		c.weighty = 1;
-		rightPanel.add(currentSelectedUserLabel, c);
+		rightPanel.add(currentSelectedUserLabel,
+				new GridBagConstraints(0, 0, 2, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.gridx = 0;
-		c.gridy = 1;
-		c.weighty = 19;
-		rightPanel.add(messagesList, c);
+		messagesList.setLayout(new GridBagLayout());
+		messagesList.setBackground(Color.GREEN);
+		messageListScroll.setViewportView(messagesList);
+		rightPanel.add(messageListScroll,
+				new GridBagConstraints(0, 1, 2, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.weighty = 1;
-		c.gridwidth = 1;
-		c.gridx = 0;
-		c.gridy = 2;
-		c.weightx = 9;
-		rightPanel.add(writeMessageField, c);
+		rightPanel.add(writeMessageField,
+				new GridBagConstraints(0, 2, 1, 1, 9, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
-		c.gridx = 1;
-		c.weightx = 1;
-		rightPanel.add(sendMessageButton, c);
+		rightPanel.add(sendMessageButton,
+				new GridBagConstraints(1, 2, 1, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 5));
 
 		// MAIN PANEL
-		c = getBaseConstraints();
-		c.insets = new Insets(10, 10, 10, 10);
-		c.gridx = 0;
-		c.gridy = 0;
-		c.gridwidth = 2;
-		c.weighty = 1;
-		mainPanel.add(topPanel, c);
-		c.weighty = 9;
-		c.gridwidth = 1;
-		c.gridy = 1;
-		c.fill = GridBagConstraints.BOTH;
-		c.weightx = 3;
-		mainPanel.add(leftPanel, c);
-		c.gridx = 1;
-		c.weightx = 7;
-		mainPanel.add(rightPanel, c);
+		mainPanel.add(topPanel,
+				new GridBagConstraints(0, 0, 2, 1, 1, 0,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		mainPanel.add(leftPanel,
+				new GridBagConstraints(0, 1, 1, 1, 3, 9,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		mainPanel.add(rightPanel,
+				new GridBagConstraints(1, 1, 1, 1, 7, 9,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(10, 10, 10, 10), 0, 0));
 
 		container.add(mainPanel, BorderLayout.CENTER);
 	}
@@ -146,26 +133,40 @@ public class ChatView extends BaseView implements ActionListener {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() > 0) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
-					updateSelectedUser(currentSelectedUser);
+					updateSelectedUserMessages();
 				}
 			}
 		};
 		connectedUsersJList.addMouseListener(selectUserListener);
 	}
 
-	private void updateSelectedUser(String user) {
-		currentSelectedUserLabel.setText(user);
-		ArrayList<Message> messages = this.messageService.getUserMessages(user);
-		usersMessagesModel.clear();
+	public void updateSelectedUserMessages() {
+		currentSelectedUserLabel.setText(currentSelectedUser);
+		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
+		messagesList.removeAll();
+
 		for (int i = 0; i < messages.size(); i++) {
-			usersMessagesModel.addElement(messages.get(i).getFormattedMessage());
+			messagesList.add(createMessagePanel(messages.get(i)),
+					new GridBagConstraints(0, i, 1, 1, 1, 0,
+							GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+							new Insets(0, 5, 5, 5), 0, 0));
 		}
+
+		messagesList.revalidate();
+		messagesList.repaint();
+	}
+
+	private JPanel createMessagePanel(Message message) {
+		JPanel pane = new JPanel();
+		pane.add(new JLabel(message.getFormattedMessage()));
+		return pane;
 	}
 
 	private void setActionListeners() {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
 		sendMessageButton.addActionListener(this);
+		SwingUtilities.getRootPane(sendMessageButton).setDefaultButton(sendMessageButton);
 	}
 
 	private void setWindowListeners() {
@@ -215,7 +216,9 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
-		messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+		if (currentSelectedUser != "") {
+			messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+		}
 		writeMessageField.setText("");
 	}
 
