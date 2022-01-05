@@ -43,8 +43,6 @@ public class NetworkTCPListener extends Thread {
         while(running) {
         	try {
 	            Socket serverClient = serverSocket.accept();
-	            
-	            System.out.println("New connection with client");
 	            ServerTCPThread st = new ServerTCPThread(serverClient);
 	            st.start();
 	            myThreads.add(st);

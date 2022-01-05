@@ -237,7 +237,7 @@ public class MessageService {
 			}
 			String hostname = usersList.get(mac).getAddressIp();
 			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
-			activeChat = new ClientTCP(hostname, tcpPort);
+			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
