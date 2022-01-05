@@ -181,6 +181,7 @@ public class MessageService {
 		while (this.discoverService.isAlive())
 			;
 
+		System.out.println("is alive listener tcp " + this.listenerTCP.isAlive());
 		while (this.listenerTCP.isAlive())
 			;
 	}

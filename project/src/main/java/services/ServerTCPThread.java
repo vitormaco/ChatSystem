@@ -6,7 +6,7 @@ import java.io.*;
 public class ServerTCPThread extends Thread {
 
     Socket serverClient;
-    int clientNo;
+    private boolean running;
 
     ServerTCPThread(Socket s){
         serverClient = s;
@@ -14,13 +14,14 @@ public class ServerTCPThread extends Thread {
 
     public void run(){
         try {
+
             DataInputStream in = new DataInputStream(serverClient.getInputStream());
             DataOutputStream out = new DataOutputStream(serverClient.getOutputStream());
             String clientMessage = "", serverMessage = "";
-            while(!clientMessage.equals("bye")){
+            while(running){
                 clientMessage = in.readUTF();
-                System.out.println("Client: " + clientNo +  " Message: " + clientMessage);
-                serverMessage = "From server to client " + clientNo + " " + clientMessage + " I'm your server";
+                System.out.println("Client: " +  " Message: " + clientMessage);
+                serverMessage = "From server to client " + clientMessage + " I'm your server";
                 out.writeUTF(serverMessage);
             }
             in.close();
@@ -29,8 +30,12 @@ public class ServerTCPThread extends Thread {
         } catch (Exception e) {
             System.out.println("client error " + e.getMessage());
         } finally {
-            System.out.println("Client: " + clientNo +  " exit!!");
+            System.out.println("Client: " +  " exit!!");
         }
 
+    }
+
+    public void setRunning(boolean running) {
+    	this.running = running;
     }
 }

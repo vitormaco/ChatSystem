@@ -36,17 +36,20 @@ public class NetworkTCPListener extends Thread {
 
     private void listenToNetwork() throws Exception {
         System.out.println("NetworkTCPListener up");
-
+        ServerTCPThread st = new ServerTCPThread(this.serverClient);
         running = true;
 
         while (running) {
             this.serverClient = serverSocket.accept();
-            ServerTCPThread st = new ServerTCPThread(this.serverClient);
+            
             st.start();
 
         }
-
+        st.setRunning(false);
+        while (st.isAlive())
+			;
         serverSocket.close();
+        
     }
 
     public void setRunning(boolean running) {
