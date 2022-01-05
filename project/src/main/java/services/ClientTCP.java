@@ -9,8 +9,8 @@ public class ClientTCP {
 
     public ClientTCP(String host, int port){
         try {
-            System.out.println("create socket");
             this.socket = new Socket(host, port);
+            System.out.println("create socket");
         } catch (Exception e) {
             e.printStackTrace();
 			System.out.println("Exception thrown when creating client TCP");

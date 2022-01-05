@@ -11,7 +11,6 @@ import models.MessagePDU;
 
 public class NetworkTCPListener extends Thread {
     private ServerSocket serverSocket;
-    private Socket serverClient;
     private boolean running;
     private byte[] buf = new byte[65536];
     private MessageService messageService;
@@ -40,11 +39,15 @@ public class NetworkTCPListener extends Thread {
         System.out.println("NetworkTCPListener up");
         running = true;
 
-        while (running) {
-            this.serverClient = serverSocket.accept();
-            ServerTCPThread st = new ServerTCPThread(this.serverClient);
-            st.start();
-            myThreads.add(st);
+        serverSocket.setSoTimeout(1000);
+        while(running) {
+        	try {
+	            Socket serverClient = serverSocket.accept();
+	            System.out.println("New connection with client");
+	            ServerTCPThread st = new ServerTCPThread(serverClient);
+	            st.start();
+	            myThreads.add(st);
+        	} catch (SocketTimeoutException e) {};
         }
         
         for(ServerTCPThread st : myThreads) {
