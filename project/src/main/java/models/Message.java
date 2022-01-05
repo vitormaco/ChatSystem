@@ -14,6 +14,12 @@ public class Message {
 		content = message.getMessageContent();
 		type = message.getMessageType();
 	}
+	
+	public Message(String message) {
+		timestamp = new Timestamp(System.currentTimeMillis());
+		type = MessageType.TEXT;
+		content = message;
+	}
 
 	public String getFormattedMessage() {
 		return content;

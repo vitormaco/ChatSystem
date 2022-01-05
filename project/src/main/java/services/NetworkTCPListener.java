@@ -1,5 +1,6 @@
 package services;
 import java.net.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +9,7 @@ import java.util.TimerTask;
 import services.ServerTCPThread;
 
 import models.MessagePDU;
+import models.Message;
 
 public class NetworkTCPListener extends Thread {
     private ServerSocket serverSocket;
@@ -43,7 +45,7 @@ public class NetworkTCPListener extends Thread {
         while(running) {
         	try {
 	            Socket serverClient = serverSocket.accept();
-	            ServerTCPThread st = new ServerTCPThread(serverClient);
+	            ServerTCPThread st = new ServerTCPThread(serverClient, this);
 	            st.start();
 	            myThreads.add(st);
         	} catch (SocketTimeoutException e) {};
@@ -59,6 +61,10 @@ public class NetworkTCPListener extends Thread {
         
         serverSocket.close();
         
+    }
+    
+    public void saveMessage(String clientMAC, Message message) {
+    	this.messageService.receiveUserMessage(clientMAC, message);
     }
 
     public void setRunning(boolean running) {

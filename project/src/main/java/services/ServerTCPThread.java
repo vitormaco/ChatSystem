@@ -2,6 +2,7 @@ package services;
 
 import java.net.*;
 import java.io.*;
+import models.Message;
 
 public class ServerTCPThread extends Thread {
 
@@ -9,9 +10,11 @@ public class ServerTCPThread extends Thread {
     private boolean running;
     private DataInputStream in;
     private String clientMAC = "";
+    private NetworkTCPListener parent;
     
-    ServerTCPThread(Socket s){
+    ServerTCPThread(Socket s, NetworkTCPListener parent){
         this.serverClient = s;
+        this.parent = parent;
         try {
 			this.in = new DataInputStream(serverClient.getInputStream());
 			this.clientMAC = this.in.readUTF();
@@ -26,8 +29,10 @@ public class ServerTCPThread extends Thread {
 
         try {
             while(running){
-                String clientMessage = in.readUTF();
-                System.out.println("Client: " +  " Message: " + clientMessage);
+                String clientContent = in.readUTF();
+                Message message = new Message(clientContent);
+                parent.saveMessage(this.clientMAC, message);
+                // System.out.println("Client: " +  " Message: " + clientMessage);
                 // messageService.receiveUserMessage(message);
             }
             

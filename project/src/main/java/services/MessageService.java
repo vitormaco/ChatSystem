@@ -117,15 +117,10 @@ public class MessageService {
 		}
 	}
 
-	private void receiveUserMessage(MessagePDU message) {
+	public void receiveUserMessage(String mac, Message message) {
+		usersList.get(mac).addMessage(message);
+		
 		if (this.chatView != null) {
-			if (message.getSourceMAC().equals(myMac)) {
-				usersList.get(message.getDestinationMAC())
-						.addMessage(new Message(message));
-			} else {
-				usersList.get(message.getSourceMAC())
-						.addMessage(new Message(message));
-			}
 			this.chatView.updateSelectedUserMessages();
 		}
 	}
