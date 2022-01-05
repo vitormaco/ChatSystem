@@ -22,10 +22,12 @@ public class ServerTCPThread extends Thread {
                 String clientMessage = in.readUTF();
                 System.out.println("Client: " +  " Message: " + clientMessage);
             }
+            
             in.close();
             serverClient.close();
         } catch (Exception e) {
-            System.out.println("client error " + e.getMessage());
+        	System.out.println("SERVER TCP THREAD - ERROR");
+        	e.printStackTrace();
         }
     }
 
