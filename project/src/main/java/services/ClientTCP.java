@@ -10,7 +10,6 @@ public class ClientTCP {
     public ClientTCP(String host, int port){
         try {
             this.socket = new Socket(host, port);
-            System.out.println("create socket");
         } catch (Exception e) {
             e.printStackTrace();
 			System.out.println("Exception thrown when creating client TCP");
@@ -19,17 +18,13 @@ public class ClientTCP {
 
     public void sendMessage(String message){
         try {
-            DataInputStream in = new DataInputStream(socket.getInputStream());
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-            String clientMessage = "";
-            clientMessage = message;
-            out.writeUTF(clientMessage);
+            out.writeUTF(message);
             out.flush();
-            System.out.println("client message: " + clientMessage);
             out.close();
-            in.close();
         } catch (Exception e) {
-            System.out.println("Client Error " +  e.getMessage());
+        	e.printStackTrace();
+			System.out.println("Exception thrown when sendMessage client TCP");
         }
     }
 
