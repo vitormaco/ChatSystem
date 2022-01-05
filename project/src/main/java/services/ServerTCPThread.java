@@ -32,7 +32,7 @@ public class ServerTCPThread extends Thread {
                 String clientContent = in.readUTF();
                 Message message = new Message(clientContent);
                 parent.saveMessage(this.clientMAC, message);
-                // System.out.println("Client: " +  " Message: " + clientMessage);
+                System.out.println("Client: " +  " Message: " + clientContent);
                 // messageService.receiveUserMessage(message);
             }
             

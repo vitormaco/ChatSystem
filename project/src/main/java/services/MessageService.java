@@ -242,6 +242,8 @@ public class MessageService {
 	public void sendMessageToUserTCP(String message, String mac) {
 		activeChat.sendMessage(message);
 		receiveUserMessage(mac, new Message(message));
+        System.out.println("Me: " +  " Message: " + message);
+
 	}
 	
 
