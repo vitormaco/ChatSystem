@@ -153,13 +153,22 @@ public class ChatView extends BaseView implements ActionListener {
 							new Insets(0, 5, 5, 5), 0, 0));
 		}
 
-		messagesList.revalidate();
 		messagesList.repaint();
+		messagesList.revalidate();
 	}
 
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
-		pane.add(new JLabel(message.getFormattedMessage()));
+		String content = "";
+		
+		if(message.isClient()) {
+			content += currentSelectedUser;
+		}else {
+			content += messageService.getNickname();
+		}
+		
+		content += message.getFormattedMessage();
+		pane.add(new JLabel(content));
 		return pane;
 	}
 
