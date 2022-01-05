@@ -26,7 +26,7 @@ public class ServerTCPThread extends Thread {
             in.close();
             serverClient.close();
         } catch (Exception e) {
-        	System.out.println("SERVER TCP THREAD - ERROR");
+        	System.out.println("SERVER TCP THREAD - LOST CONNECTION");
         	e.printStackTrace();
         }
     }

@@ -6,10 +6,12 @@ import java.io.*;
 public class ClientTCP {
 
     private Socket socket;
+    private DataOutputStream out;
 
     public ClientTCP(String host, int port){
         try {
             this.socket = new Socket(host, port);
+            this.out = new DataOutputStream(socket.getOutputStream());
         } catch (Exception e) {
             e.printStackTrace();
 			System.out.println("Exception thrown when creating client TCP");
@@ -18,10 +20,8 @@ public class ClientTCP {
 
     public void sendMessage(String message){
         try {
-            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF(message);
             out.flush();
-            out.close();
         } catch (Exception e) {
         	e.printStackTrace();
 			System.out.println("Exception thrown when sendMessage client TCP");
@@ -31,6 +31,7 @@ public class ClientTCP {
     public void closeSocket(){
         try {
             System.out.println("closed socket");
+            out.close();
             socket.close();
         } catch (Exception e) {
             e.printStackTrace();
