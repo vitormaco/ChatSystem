@@ -173,8 +173,9 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		this.listenerTCP.setRunning(false);
 		this.discoverService.setRunning(false);
+		this.listenerTCP.setRunning(false);
+		
 		while (this.listener.isAlive())
 			;
 
