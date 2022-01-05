@@ -167,7 +167,7 @@ public class ChatView extends BaseView implements ActionListener {
 			content += messageService.getNickname();
 		}
 		
-		content += message.getFormattedMessage();
+		content += ":      " + message.getFormattedMessage();
 		pane.add(new JLabel(content));
 		return pane;
 	}
