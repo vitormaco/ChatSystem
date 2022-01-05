@@ -194,8 +194,6 @@ public class MessageService {
 					message.getSourceNickname(), message.getSourceAddress());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC());
-		} else if (status == MessagePDU.Status.MESSAGE) {
-			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message.getSourceAddress());
 		}

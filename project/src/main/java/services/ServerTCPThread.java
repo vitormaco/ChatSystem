@@ -21,6 +21,7 @@ public class ServerTCPThread extends Thread {
             while(running){
                 String clientMessage = in.readUTF();
                 System.out.println("Client: " +  " Message: " + clientMessage);
+                // messageService.receiveUserMessage(message);
             }
             
             in.close();
