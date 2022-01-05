@@ -14,7 +14,7 @@ public class ServerTCPThread extends Thread {
 
     public void run(){
         try {
-
+        	running = true;
             DataInputStream in = new DataInputStream(serverClient.getInputStream());
             DataOutputStream out = new DataOutputStream(serverClient.getOutputStream());
             String clientMessage = "", serverMessage = "";
