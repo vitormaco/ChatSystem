@@ -5,6 +5,7 @@ import models.Message;
 import models.MessagePDU;
 import utils.NetworkUtils;
 
+import java.sql.*;
 import java.util.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -20,6 +21,7 @@ public class MessageService {
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
+	private Connection conn = null;
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
@@ -28,6 +30,25 @@ public class MessageService {
 		this.listenerTCP = this.getListenerTCPThread();
 		this.listenerTCP.start();
 		this.discoverService = new KeepAliveService(this);
+
+		try {
+            conn = DriverManager.getConnection(
+                    "jdbc:" + dotenv.get("DATABASE_HOST"),
+                    dotenv.get("DATABASE_USER"),
+                    dotenv.get("DATABASE_PASSWORD"));
+
+            String query = "SELECT * FROM test";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            while (rs.next()) {
+                System.out.format("%s\n", rs.getInt("test"));
+            }
+            st.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 
 	public boolean isConnected() {
@@ -175,7 +196,7 @@ public class MessageService {
 		this.listener.setRunning(false);
 		this.discoverService.setRunning(false);
 		this.listenerTCP.setRunning(false);
-		
+
 		while (this.listener.isAlive())
 			;
 
@@ -249,6 +270,6 @@ public class MessageService {
 	public void sendMessageToUserTCP(String message, String mac) {
 		activeChat.sendMessage(message);
 	}
-	
+
 
 }
