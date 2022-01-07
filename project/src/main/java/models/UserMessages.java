@@ -20,7 +20,7 @@ public class UserMessages {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
 	public String getAddressIp() {
 		return addressIp;
 	}
