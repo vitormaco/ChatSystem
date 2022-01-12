@@ -16,6 +16,7 @@ public class ServerTCPThread extends Thread {
         this.serverClient = s;
         this.messageService = messageService;
         try {
+        	this.serverClient.setSoTimeout(1000);
             this.in = new DataInputStream(serverClient.getInputStream());
             this.clientMAC = this.in.readUTF();
             System.out.println("New connection with client: " + this.clientMAC);
