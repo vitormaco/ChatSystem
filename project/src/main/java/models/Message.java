@@ -15,7 +15,7 @@ public class Message {
 		content = message.getMessageContent();
 		type = message.getMessageType();
 	}
-	
+
 	public Message(String message, boolean client) {
 		timestamp = new Timestamp(System.currentTimeMillis());
 		type = MessageType.TEXT;
@@ -26,7 +26,11 @@ public class Message {
 	public String getFormattedMessage() {
 		return content;
 	}
-	
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
 	public boolean isClient() {
 		return isClient;
 	}

@@ -10,6 +10,7 @@ import services.MessageService;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 
 public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
@@ -183,8 +184,17 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
-		String content = message.getFormattedMessage();
-		pane.add(new JLabel(content));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+
+		String formattedDate = new SimpleDateFormat("hh:mm").format(message.getTimestamp());
+		JLabel timeLabel = new JLabel(formattedDate);
+		Font font = new Font("SansSerif", Font.BOLD, 8);
+		timeLabel.setFont(font);
+		pane.add(timeLabel);
+
+		String messageContent = message.getFormattedMessage();
+		pane.add(new JLabel(messageContent));
+
 		return pane;
 	}
 
