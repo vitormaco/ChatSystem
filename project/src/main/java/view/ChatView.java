@@ -10,6 +10,7 @@ import services.MessageService;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.text.SimpleDateFormat;
 
 public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
@@ -51,6 +52,10 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void setSendMessageButton() {
 		sendMessageButton.setText("Send Message");
+	}
+
+	public String getSelectedUserMAC() {
+		return this.MACbyNickname.get(this.currentSelectedUser);
 	}
 
 	private void buildPanel() {
@@ -143,15 +148,35 @@ public class ChatView extends BaseView implements ActionListener {
 
 	public void updateSelectedUserMessages() {
 		currentSelectedUserLabel.setText(currentSelectedUser);
-		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
+		ArrayList<Message> messages = this.messageService.getUserMessages(
+				MACbyNickname.get(currentSelectedUser));
 		messagesList.removeAll();
 
-		for (int i = 0; i < messages.size(); i++) {
-			messagesList.add(createMessagePanel(messages.get(i)),
-					new GridBagConstraints(0, i, 1, 1, 1, 0,
-							GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
-							new Insets(0, 5, 5, 5), 0, 0));
+		int i;
+		for (i = 0; i < messages.size(); i++) {
+			GridBagConstraints c;
+
+			if (messages.get(i).isClient()) {
+				// Right padding, left align
+				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
+				GridBagConstraints.WEST, GridBagConstraints.VERTICAL,
+				new Insets(5, 5, 5, 100), 0, 0);
+			} else {
+				// Left padding, right align
+				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
+				GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+				new Insets(5, 100, 5, 5), 0, 0);
+			}
+
+			messagesList.add(createMessagePanel(messages.get(i)), c);
 		}
+
+		JPanel verticalSpacing = new JPanel();
+		verticalSpacing.setOpaque(false);
+		messagesList.add(verticalSpacing,
+				new GridBagConstraints(0, i, 0, 0, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		messagesList.revalidate();
 		messagesList.repaint();
@@ -159,7 +184,17 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
-		pane.add(new JLabel(message.getFormattedMessage()));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+
+		String formattedDate = new SimpleDateFormat("hh:mm").format(message.getTimestamp());
+		JLabel timeLabel = new JLabel(formattedDate);
+		Font font = new Font("SansSerif", Font.BOLD, 8);
+		timeLabel.setFont(font);
+		pane.add(timeLabel);
+
+		String messageContent = message.getFormattedMessage();
+		pane.add(new JLabel(messageContent));
+
 		return pane;
 	}
 
@@ -217,8 +252,7 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
-		if (currentSelectedUser != "") {
-			messageService.sendMessageToUser(text, MACbyNickname.get(currentSelectedUser));
+		if (currentSelectedUser != "" && !text.isBlank()) {
 			messageService.sendMessageToUserTCP(text, MACbyNickname.get(currentSelectedUser));
 		}
 		writeMessageField.setText("");

@@ -39,7 +39,7 @@ public class MessageService {
 		return new NetworkListener(broadcastPort, this);
 	}
 
-	private NetworkTCPListener getListenerTCPThread(){
+	private NetworkTCPListener getListenerTCPThread() {
 		int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
 		return new NetworkTCPListener(tcpPort, this);
 	}
@@ -117,15 +117,10 @@ public class MessageService {
 		}
 	}
 
-	private void receiveUserMessage(MessagePDU message) {
-		if (this.chatView != null) {
-			if (message.getSourceMAC().equals(myMac)) {
-				usersList.get(message.getDestinationMAC())
-						.addMessage(new Message(message));
-			} else {
-				usersList.get(message.getSourceMAC())
-						.addMessage(new Message(message));
-			}
+	public void receiveUserMessage(String mac, Message message) {
+		usersList.get(mac).addMessage(message);
+
+		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
 		}
 	}
@@ -175,7 +170,7 @@ public class MessageService {
 		this.listener.setRunning(false);
 		this.discoverService.setRunning(false);
 		this.listenerTCP.setRunning(false);
-		
+
 		while (this.listener.isAlive())
 			;
 
@@ -194,8 +189,6 @@ public class MessageService {
 					message.getSourceNickname(), message.getSourceAddress());
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC());
-		} else if (status == MessagePDU.Status.MESSAGE) {
-			this.receiveUserMessage(message);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message.getSourceAddress());
 		}
@@ -205,16 +198,16 @@ public class MessageService {
 		return this.nickname;
 	}
 
-	public ArrayList<Message> getUserMessages(String nickname) {
-		for (UserMessages user : usersList.values()) {
-			if (user.getNickname() == nickname) {
-				return user.getMessages();
-			}
-		}
-		return new ArrayList<Message>();
+	public ArrayList<Message> getUserMessages(String mac) {
+		if(usersList.containsKey(mac))
+			return usersList.get(mac).getMessages();
+		else
+			return new ArrayList<Message>();
 	}
 
-	public void setChatView(ChatView chatView) {
+	public void setChatView() {
+		this.chatView = new ChatView(this);
+
 		this.chatView = chatView;
 		// MOCK
 		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
@@ -232,14 +225,14 @@ public class MessageService {
 		// END OF MOCK
 	}
 
-	public void createTCPConnection(String mac){
+	public void createTCPConnection(String mac) {
 		try {
-			if(activeChat != null) {
+			if (activeChat != null) {
 				activeChat.closeSocket();
 			}
 			String hostname = usersList.get(mac).getAddressIp();
 			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
-			activeChat = new ClientTCP(hostname, tcpPort);
+			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -248,7 +241,9 @@ public class MessageService {
 
 	public void sendMessageToUserTCP(String message, String mac) {
 		activeChat.sendMessage(message);
+		receiveUserMessage(mac, new Message(message, false));
+		System.out.println("Me: " + " Message: " + message);
+
 	}
-	
 
 }
