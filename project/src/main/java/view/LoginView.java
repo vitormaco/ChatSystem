@@ -110,7 +110,7 @@ public class LoginView extends BaseView implements ActionListener {
 
         if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
             dispose();
-            this.messageService.setChatView(new ChatView(this.messageService));
+            this.messageService.setChatView();
         } else {
             JOptionPane.showMessageDialog(this, "Invalid Username");
         }

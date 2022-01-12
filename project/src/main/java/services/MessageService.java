@@ -207,7 +207,9 @@ public class MessageService {
 		return new ArrayList<Message>();
 	}
 
-	public void setChatView(ChatView chatView) {
+	public void setChatView() {
+		this.chatView = new ChatView(this);
+		
 		this.chatView = chatView;
 		// MOCK
 		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
