@@ -13,6 +13,7 @@ public class ClientTCP {
             this.socket = new Socket(host, port);
             this.out = new DataOutputStream(socket.getOutputStream());
             this.sendMessage(myMAC);
+            System.out.println("TCP Socket opened");
         } catch (Exception e) {
             e.printStackTrace();
 			System.out.println("Exception thrown when creating client TCP");
@@ -31,7 +32,7 @@ public class ClientTCP {
 
     public void closeSocket(){
         try {
-            System.out.println("closed socket");
+            System.out.println("TCP Socket closed");
             out.close();
             socket.close();
         } catch (Exception e) {

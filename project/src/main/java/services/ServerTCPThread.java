@@ -9,41 +9,40 @@ public class ServerTCPThread extends Thread {
     Socket serverClient;
     private boolean running;
     private DataInputStream in;
-    private String clientMAC = "";
-    private NetworkTCPListener parent;
-    
-    ServerTCPThread(Socket s, NetworkTCPListener parent){
+    private String clientMAC;
+    private MessageService messageService;
+
+    ServerTCPThread(Socket s, MessageService messageService) {
         this.serverClient = s;
-        this.parent = parent;
+        this.messageService = messageService;
         try {
-			this.in = new DataInputStream(serverClient.getInputStream());
-			this.clientMAC = this.in.readUTF();
-            System.out.println("New connection with client: " + this.clientMAC);		
+            this.in = new DataInputStream(serverClient.getInputStream());
+            this.clientMAC = this.in.readUTF();
+            System.out.println("New connection with client: " + this.clientMAC);
         } catch (IOException e) {
-			System.out.println("Error while creating DIS Server TCP Thread");
-		}
+            System.out.println("Error while creating DIS Server TCP Thread");
+        }
     }
 
-    public void run(){
-    	running = true;
+    public void run() {
+        running = true;
 
         try {
-            while(running){
+            while (running) {
                 String clientContent = in.readUTF();
                 Message message = new Message(clientContent, true);
-                parent.saveMessage(this.clientMAC, message);
-                System.out.println("Client: " +  " Message: " + clientContent);
-                // messageService.receiveUserMessage(message);
+                this.messageService.receiveUserMessage(this.clientMAC, message);
+                System.out.println("Client: " + " Message: " + clientContent);
             }
-            
+
             in.close();
             serverClient.close();
         } catch (Exception e) {
-        	System.out.println("SERVER TCP THREAD - LOST CONNECTION");
+            System.out.println("SERVER TCP THREAD - LOST CONNECTION");
         }
     }
 
     public void setRunning(boolean running) {
-    	this.running = running;
+        this.running = running;
     }
 }
