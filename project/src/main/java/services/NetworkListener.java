@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import models.MessagePDU;
 
 public class NetworkListener extends Thread {
@@ -13,7 +14,11 @@ public class NetworkListener extends Thread {
     private boolean running;
     private byte[] buf = new byte[65536];
     private MessageService messageService;
+	private Dotenv dotenv = Dotenv.load();
     private HashMap<String, Integer> lifeCounter;
+    private int maxLife = Integer.parseInt(dotenv.get("CHECKLIFE_MAX"));
+    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
+    private int checklife = Integer.parseInt(dotenv.get("CHECKLIFE_TIMER"));
 
     public NetworkListener(int port, MessageService messageService) {
         try {
@@ -46,15 +51,15 @@ public class NetworkListener extends Thread {
 
         running = true;
         int message_counter = 0;
-        socket.setSoTimeout(1000);
-        
+        socket.setSoTimeout(timeout);
+       
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
         	  @Override
         	  public void run() {
         		  checkLifeCounter();
         	  }
-        	}, 5000, 5000);
+        	}, checklife, checklife);
 
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -97,7 +102,7 @@ public class NetworkListener extends Thread {
     		String mac = user.getKey();
     		Integer counter = user.getValue();
     		increaseLifeCounter(mac);
-    		if(counter >= 5) {
+    		if(counter >= maxLife) {
     			messageService.deleteLoggedoutUser(mac);
     			lifeCounter.remove(mac);
     		}

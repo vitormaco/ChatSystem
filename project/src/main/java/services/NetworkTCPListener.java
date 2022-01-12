@@ -4,6 +4,7 @@ import java.net.*;
 
 import java.util.ArrayList;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import models.Message;
 
 public class NetworkTCPListener extends Thread {
@@ -11,6 +12,8 @@ public class NetworkTCPListener extends Thread {
     private boolean running;
     private MessageService messageService;
     private ArrayList<ServerTCPThread> myThreads;
+    private Dotenv dotenv = Dotenv.load();
+    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
 
     public NetworkTCPListener(int port, MessageService messageService) {
         try {
@@ -33,7 +36,7 @@ public class NetworkTCPListener extends Thread {
 
     private void listenToNetwork() throws Exception {
         System.out.println("NetworkTCPListener up");
-        serverSocket.setSoTimeout(1000);
+        serverSocket.setSoTimeout(timeout);
         running = true;
 
         while (running) {

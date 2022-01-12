@@ -1,20 +1,23 @@
 package services;
 
 import java.net.*;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.io.*;
 
 public class ClientTCP {
 
     private Socket socket;
     private DataOutputStream out;
-
+	
     public ClientTCP(String host, int port, String myMAC){
         try {
             this.socket = new Socket(host, port);
             this.out = new DataOutputStream(socket.getOutputStream());
             this.sendMessage(myMAC);
             System.out.println("TCP Socket opened");
-        } catch (Exception e) {
+        } catch (Exception e) {	
             e.printStackTrace();
 			System.out.println("Exception thrown when creating client TCP");
         }
