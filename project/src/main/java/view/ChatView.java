@@ -146,12 +146,19 @@ public class ChatView extends BaseView implements ActionListener {
 		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
 		messagesList.removeAll();
 
-		for (int i = 0; i < messages.size(); i++) {
+		int i;
+		for (i = 0; i < messages.size(); i++) {
 			messagesList.add(createMessagePanel(messages.get(i)),
 					new GridBagConstraints(0, i, 1, 1, 1, 0,
 							GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
-							new Insets(0, 5, 5, 5), 0, 0));
+							new Insets(5, 5, 5, 5), 0, 0));
 		}
+		JPanel verticalSpacing = new JPanel();
+		verticalSpacing.setOpaque(false);
+		messagesList.add(verticalSpacing,
+				new GridBagConstraints(0, i, 0, 0, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+						new Insets(0, 0, 0, 0), 0, 0));
 
 		messagesList.repaint();
 		messagesList.revalidate();
