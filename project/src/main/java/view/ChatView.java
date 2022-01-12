@@ -52,7 +52,7 @@ public class ChatView extends BaseView implements ActionListener {
 	private void setSendMessageButton() {
 		sendMessageButton.setText("Send Message");
 	}
-	
+
 	public String getSelectedUserMAC() {
 		return this.MACbyNickname.get(this.currentSelectedUser);
 	}
@@ -155,14 +155,14 @@ public class ChatView extends BaseView implements ActionListener {
 			GridBagConstraints c;
 
 			if (messages.get(i).isClient()) {
-				// Right
-				c = new GridBagConstraints(0, i, 1, 1, 1, 0,
-				GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+				// Right padding, left align
+				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
+				GridBagConstraints.WEST, GridBagConstraints.VERTICAL,
 				new Insets(5, 5, 5, 100), 0, 0);
 			} else {
-				// Left
-				c = new GridBagConstraints(0, i, 1, 1, 1, 0,
-				GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+				// Left padding, right align
+				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
+				GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
 				new Insets(5, 100, 5, 5), 0, 0);
 			}
 
@@ -177,7 +177,7 @@ public class ChatView extends BaseView implements ActionListener {
 						new Insets(0, 0, 0, 0), 0, 0));
 
 		messagesList.validate();
-		messagesList.repaint();	
+		messagesList.repaint();
 	}
 
 	private JPanel createMessagePanel(Message message) {
