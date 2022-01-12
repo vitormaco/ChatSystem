@@ -120,7 +120,7 @@ public class MessageService {
 	public void receiveUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
 		
-		if (this.chatView != null) {
+		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
 		}
 	}

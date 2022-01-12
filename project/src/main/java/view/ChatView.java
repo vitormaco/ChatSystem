@@ -52,6 +52,10 @@ public class ChatView extends BaseView implements ActionListener {
 	private void setSendMessageButton() {
 		sendMessageButton.setText("Send Message");
 	}
+	
+	public String getSelectedUserMAC() {
+		return this.MACbyNickname.get(this.currentSelectedUser);
+	}
 
 	private void buildPanel() {
 		JPanel mainPanel = new JPanel();
@@ -160,8 +164,8 @@ public class ChatView extends BaseView implements ActionListener {
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 0), 0, 0));
 
-		messagesList.repaint();
-		messagesList.revalidate();
+		messagesList.validate();
+		messagesList.repaint();	
 	}
 
 	private JPanel createMessagePanel(Message message) {
