@@ -120,6 +120,8 @@ public class MessageService {
 	public void receiveUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
 		
+		if(this.chatView == null) System.out.println("ChatView está null");
+		
 		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
 		}
@@ -198,13 +200,11 @@ public class MessageService {
 		return this.nickname;
 	}
 
-	public ArrayList<Message> getUserMessages(String nickname) {
-		for (UserMessages user : usersList.values()) {
-			if (user.getNickname() == nickname) {
-				return user.getMessages();
-			}
-		}
-		return new ArrayList<Message>();
+	public ArrayList<Message> getUserMessages(String mac) {
+		if(usersList.containsKey(mac)) 
+			return usersList.get(mac).getMessages();
+		else 
+			return new ArrayList<Message>();
 	}
 
 	public void setChatView(ChatView chatView) {

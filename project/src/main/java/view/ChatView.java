@@ -147,7 +147,8 @@ public class ChatView extends BaseView implements ActionListener {
 
 	public void updateSelectedUserMessages() {
 		currentSelectedUserLabel.setText(currentSelectedUser);
-		ArrayList<Message> messages = this.messageService.getUserMessages(currentSelectedUser);
+		ArrayList<Message> messages = this.messageService.getUserMessages(
+				MACbyNickname.get(currentSelectedUser));
 		messagesList.removeAll();
 
 		int i;
@@ -176,7 +177,7 @@ public class ChatView extends BaseView implements ActionListener {
 						GridBagConstraints.CENTER, GridBagConstraints.BOTH,
 						new Insets(0, 0, 0, 0), 0, 0));
 
-		messagesList.validate();
+		messagesList.revalidate();
 		messagesList.repaint();
 	}
 
