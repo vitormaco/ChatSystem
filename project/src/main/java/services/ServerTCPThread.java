@@ -27,16 +27,20 @@ public class ServerTCPThread extends Thread {
 
     public void run() {
         running = true;
-
+        
         try {
-            while (running) {
-                String clientContent = in.readUTF();
-                Message message = new Message(clientContent, true);
-                this.messageService.receiveUserMessage(this.clientMAC, message);
-                System.out.println("Client: " + " Message: " + clientContent);
-            }
+    		while (running) {
+    			try {                
+    				String clientContent = in.readUTF();
+    				Message message = new Message(clientContent, true);
+    				this.messageService.receiveUserMessage(this.clientMAC, message);
+    				System.out.println("Client: " + " Message: " + clientContent);
+    			} catch (SocketTimeoutException e) {
+    				continue;
+    			}
+    		}
 
-            in.close();
+        	in.close();
             serverClient.close();
         } catch (Exception e) {
             System.out.println("SERVER TCP THREAD - LOST CONNECTION");
