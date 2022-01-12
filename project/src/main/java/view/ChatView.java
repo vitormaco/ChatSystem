@@ -152,11 +152,23 @@ public class ChatView extends BaseView implements ActionListener {
 
 		int i;
 		for (i = 0; i < messages.size(); i++) {
-			messagesList.add(createMessagePanel(messages.get(i)),
-					new GridBagConstraints(0, i, 1, 1, 1, 0,
-							GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
-							new Insets(5, 5, 5, 5), 0, 0));
+			GridBagConstraints c;
+
+			if (messages.get(i).isClient()) {
+				// Right
+				c = new GridBagConstraints(0, i, 1, 1, 1, 0,
+				GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+				new Insets(5, 5, 5, 100), 0, 0);
+			} else {
+				// Left
+				c = new GridBagConstraints(0, i, 1, 1, 1, 0,
+				GridBagConstraints.NORTH, GridBagConstraints.HORIZONTAL,
+				new Insets(5, 100, 5, 5), 0, 0);
+			}
+
+			messagesList.add(createMessagePanel(messages.get(i)), c);
 		}
+
 		JPanel verticalSpacing = new JPanel();
 		verticalSpacing.setOpaque(false);
 		messagesList.add(verticalSpacing,
@@ -170,15 +182,7 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
-		String content = "";
-		
-		if(message.isClient()) {
-			content += currentSelectedUser;
-		}else {
-			content += messageService.getNickname();
-		}
-		
-		content += ":      " + message.getFormattedMessage();
+		String content = message.getFormattedMessage();
 		pane.add(new JLabel(content));
 		return pane;
 	}
