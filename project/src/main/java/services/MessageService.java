@@ -63,19 +63,22 @@ public class MessageService {
 		return nicknames;
 	}
 
-	private void addNewLoggedUser(String userMAC, String nickname, String addressIp) {
+	private void addNewLoggedUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
 		}
 
 		if (!this.usersList.containsKey(userMAC)) {
-			usersList.put(userMAC, new UserMessages(nickname, addressIp));
+			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
+			updateConnectedUsersFrontend();
 		} else {
-			usersList.get(userMAC).setNickname(nickname);
-		}
-
-		updateConnectedUsersFrontend();
+			String actual_nickname = usersList.get(userMAC).getNickname();
+			if(!actual_nickname.equals(new_nickname)) {
+				usersList.get(userMAC).setNickname(new_nickname);
+				nicknameUpdated(actual_nickname, new_nickname);
+			} 
+		}		
 	}
 
 	public void deleteLoggedoutUser(String id) {
@@ -87,6 +90,12 @@ public class MessageService {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
+	}
+	
+	private void nicknameUpdated(String old_nickname, String new_nickname) {
+		this.usersList.put(new_nickname, usersList.remove(old_nickname));
+		this.chatView.nicknameChanged(old_nickname, new_nickname);
+		this.chatView.updateSelectedUserMessages();
 	}
 
 	public void receiveUserMessage(String mac, Message message) {
@@ -152,12 +161,14 @@ public class MessageService {
 
 	public void broadcastMessageReceived(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
+		String mac = message.getSourceMAC();
+		String nickname = message.getSourceNickname();
+		String address = message.getSourceAddress();
 
 		if (status == MessagePDU.Status.CONNECTION) {
-			this.addNewLoggedUser(message.getSourceMAC(),
-					message.getSourceNickname(), message.getSourceAddress());
+			this.addNewLoggedUser(mac, nickname, address);
 		} else if (status == MessagePDU.Status.DISCONNECTION) {
-			this.deleteLoggedoutUser(message.getSourceMAC());
+			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message);
 		}
