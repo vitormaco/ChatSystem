@@ -13,7 +13,7 @@ import utils.NetworkUtils;
 public class MessagePDU implements Serializable {
 	public enum Status {
 		CONNECTION,
-		DECONNECTION,
+		DISCONNECTION,
 		NICKNAME_CHANGED,
 		DISCOVER,
 		MESSAGE,
@@ -25,7 +25,6 @@ public class MessagePDU implements Serializable {
 	private String sourceNickname;
 	private String sourceMAC;
 	private String sourceAddress;
-	private String destinationMAC;
 
 	private MessagePDU() {
 	};
@@ -61,16 +60,6 @@ public class MessagePDU implements Serializable {
 		return this.timestamp;
 	}
 
-	public MessagePDU withDestination(String id) {
-		this.destinationMAC = id;
-		return this;
-	}
-
-	public MessagePDU withDestinationBroadcast() {
-		this.destinationMAC = "*";
-		return this;
-	}
-
 	public String getMessageContent() {
 		return this.messageContent;
 	}
@@ -85,10 +74,6 @@ public class MessagePDU implements Serializable {
 
 	public String getSourceMAC() {
 		return this.sourceMAC;
-	}
-
-	public String getDestinationMAC() {
-		return this.destinationMAC;
 	}
 
 	public String serialize() {

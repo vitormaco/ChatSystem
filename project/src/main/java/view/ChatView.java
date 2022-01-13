@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 
 import models.Message;
+import models.MessagePDU;
 
 import java.util.*;
 
@@ -226,7 +227,7 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	private void logoutProcess() {
-		this.messageService.notifyUserStateChanged("disconnected");
+		this.messageService.notifyUserStateChanged(MessagePDU.Status.DISCONNECTION);
 		this.messageService.disconnectServer();
 	}
 
@@ -238,7 +239,7 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleChangeNicknameButton() {
 		String text = JOptionPane.showInputDialog(container, "Insert the new nickname.");
-		if (text != null && messageService.validateAndAssingUserNickname(text, "nicknameChanged")) {
+		if (text != null && messageService.validateAndAssingUserNickname(text, MessagePDU.Status.NICKNAME_CHANGED)) {
 			this.setTitle(this.messageService.getMyNickname());
 			JOptionPane.showMessageDialog(container, "Nickname updated.");
 		} else {

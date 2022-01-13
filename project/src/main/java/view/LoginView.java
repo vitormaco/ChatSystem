@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import models.MessagePDU;
 
 public class LoginView extends BaseView implements ActionListener {
     static Dotenv dotenv = Dotenv.load();
@@ -108,7 +109,7 @@ public class LoginView extends BaseView implements ActionListener {
             JOptionPane.showMessageDialog(this, "Network not configured correctly");
         }
 
-        if (this.messageService.validateAndAssingUserNickname(userText, "connected")) {
+        if (this.messageService.validateAndAssingUserNickname(userText, MessagePDU.Status.CONNECTION)) {
             dispose();
             this.messageService.setChatView();
         } else {
