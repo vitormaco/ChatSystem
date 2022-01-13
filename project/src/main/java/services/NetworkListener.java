@@ -1,6 +1,6 @@
 package services;
 import java.net.*;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
@@ -98,14 +98,19 @@ public class NetworkListener extends Thread {
     }
     
     public void checkLifeCounter() {
+        ArrayList<String> removeList = new ArrayList<String>();
     	for(Map.Entry<String, Integer> user : lifeCounter.entrySet()) {
     		String mac = user.getKey();
     		Integer counter = user.getValue();
     		increaseLifeCounter(mac);
     		if(counter >= maxLife) {
-    			messageService.deleteLoggedoutUser(mac);
-    			lifeCounter.remove(mac);
+                removeList.add(mac);
     		}
      	}
+        for(int i = 0; i < removeList.size(); i++){
+            String mac = removeList.get(i);
+            messageService.deleteLoggedoutUser(mac);
+            lifeCounter.remove(mac);
+        }
     }
 }
