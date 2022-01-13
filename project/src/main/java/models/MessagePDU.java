@@ -12,7 +12,6 @@ import utils.NetworkUtils;
 
 public class MessagePDU implements Serializable {
 	public enum Status {
-		ACTIVE,
 		CONNECTION,
 		DECONNECTION,
 		NICKNAME_CHANGED,
@@ -20,21 +19,13 @@ public class MessagePDU implements Serializable {
 		MESSAGE,
 	}
 
-	public enum MessageType {
-		NOTIFICATION,
-		TEXT,
-	}
-
 	private Status status;
-	private MessageType type;
 	private String messageContent;
 	private Timestamp timestamp;
 	private String sourceNickname;
 	private String sourceMAC;
 	private String sourceAddress;
-	private String destinationNickname;
 	private String destinationMAC;
-	private String destinationAddress;
 
 	private MessagePDU() {
 	};
@@ -49,11 +40,6 @@ public class MessagePDU implements Serializable {
 
 	public MessagePDU withMessageContent(String messageContent) {
 		this.messageContent = messageContent;
-		return this;
-	}
-
-	public MessagePDU withMessageType(MessageType type) {
-		this.type = type;
 		return this;
 	}
 
@@ -75,26 +61,18 @@ public class MessagePDU implements Serializable {
 		return this.timestamp;
 	}
 
-	public MessagePDU withDestination(String nickname, String id, String address) {
-		this.destinationNickname = nickname;
+	public MessagePDU withDestination(String id) {
 		this.destinationMAC = id;
-		this.destinationAddress = address;
 		return this;
 	}
 
 	public MessagePDU withDestinationBroadcast() {
-		this.destinationNickname = "*";
 		this.destinationMAC = "*";
-		this.destinationAddress = "*";
 		return this;
 	}
 
 	public String getMessageContent() {
 		return this.messageContent;
-	}
-
-	public MessageType getMessageType() {
-		return this.type;
 	}
 
 	public String getSourceNickname() {
@@ -138,19 +116,5 @@ public class MessagePDU implements Serializable {
 			e.printStackTrace();
 			return new MessagePDU();
 		}
-	}
-
-	@Override
-	public String toString() {
-		return "status: " + status + "\n" +
-				"type: " + type + "\n" +
-				"messageContent: " + messageContent + "\n" +
-				"timestamp: " + timestamp + "\n" +
-				"sourceNickname: " + sourceNickname + "\n" +
-				"sourceMAC: " + sourceMAC + "\n" +
-				"sourceAddress: " + sourceAddress + "\n" +
-				"destinationNickname: " + destinationNickname + "\n" +
-				"destinationMAC: " + destinationMAC + "\n" +
-				"destinationAddress: " + destinationAddress + "\n";
 	}
 }

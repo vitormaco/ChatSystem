@@ -52,28 +52,24 @@ public class MessageService {
 			case "connected":
 				serializedObject = new MessagePDU(this.nickname)
 						.withStatus(MessagePDU.Status.CONNECTION)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 						.withDestinationBroadcast()
 						.serialize();
 				break;
 			case "disconnected":
 				serializedObject = new MessagePDU(this.nickname)
 						.withStatus(MessagePDU.Status.DECONNECTION)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 						.withDestinationBroadcast()
 						.serialize();
 				break;
 			case "nicknameChanged":
 				serializedObject = new MessagePDU(this.nickname)
 						.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 						.withDestinationBroadcast()
 						.serialize();
 				break;
 			case "discover":
 				serializedObject = new MessagePDU(this.nickname)
 						.withStatus(MessagePDU.Status.DISCOVER)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
 						.withDestinationBroadcast()
 						.serialize();
 				break;
@@ -105,14 +101,15 @@ public class MessageService {
 			usersList.get(userMAC).setNickname(nickname);
 		}
 
-		if (this.chatView != null) {
-			this.chatView.updateConnectedUsersList();
-		}
+		updateConnectedUsersFrontend();
 	}
 
 	public void deleteLoggedoutUser(String id) {
 		usersList.remove(id);
+		updateConnectedUsersFrontend();
+	}
 
+	private void updateConnectedUsersFrontend() {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
@@ -130,26 +127,21 @@ public class MessageService {
 		}
 	}
 
-	private void sendMyNickname(String address) {
+	private void sendMyNickname(MessagePDU message) {
 		String serializedObject = new MessagePDU(this.nickname)
 				.withStatus(MessagePDU.Status.CONNECTION)
-				.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-				.withDestination("nickname", "id", address)
+				.withDestination(message.getSourceMAC())
 				.serialize();
 
-		NetworkUtils.sendUnicastMessage(serializedObject, address);
+		NetworkUtils.sendUnicastMessage(serializedObject, message.getSourceAddress());
 	}
 
-	/* PUBLIC METHODS */
-
 	public void sendMessageToUser(String message, String mac) {
-		UserMessages user = usersList.get(mac);
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
-				.withMessageType(MessagePDU.MessageType.TEXT)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestination(user.getNickname(), mac, user.getAddressIp())
+				.withDestination(mac)
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
@@ -186,7 +178,7 @@ public class MessageService {
 			;
 	}
 
-	public void messageReceived(MessagePDU message) {
+	public void broadcastMessageReceived(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
 
 		if (status == MessagePDU.Status.CONNECTION) {
@@ -195,11 +187,11 @@ public class MessageService {
 		} else if (status == MessagePDU.Status.DECONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC());
 		} else if (status == MessagePDU.Status.DISCOVER) {
-			this.sendMyNickname(message.getSourceAddress());
+			this.sendMyNickname(message);
 		}
 	}
 
-	public String getNickname() {
+	public String getMyNickname() {
 		return this.nickname;
 	}
 
