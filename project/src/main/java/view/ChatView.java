@@ -7,6 +7,7 @@ import models.Message;
 import java.util.*;
 
 import services.MessageService;
+import utils.NetworkUtils;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -156,6 +157,7 @@ public class ChatView extends BaseView implements ActionListener {
 		for (i = 0; i < messages.size(); i++) {
 			GridBagConstraints c;
 
+			// if (messages.get(i).getSourceId() == NetworkUtils.getLocalMACAdress()) {
 			if (messages.get(i).isClient()) {
 				// Right padding, left align
 				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
@@ -192,7 +194,7 @@ public class ChatView extends BaseView implements ActionListener {
 		timeLabel.setFont(font);
 		pane.add(timeLabel);
 
-		String messageContent = message.getFormattedMessage();
+		String messageContent = message.getContent();
 		pane.add(new JLabel(messageContent));
 
 		return pane;

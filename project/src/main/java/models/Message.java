@@ -23,7 +23,7 @@ public class Message {
 		isClient = client;
 	}
 
-	public String getFormattedMessage() {
+	public String getContent() {
 		return content;
 	}
 

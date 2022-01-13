@@ -1,9 +1,9 @@
 package services;
 
 import models.UserMessages;
+import utils.NetworkUtils;
 import models.Message;
 import models.MessagePDU;
-import utils.NetworkUtils;
 
 import java.util.*;
 
@@ -20,6 +20,7 @@ public class MessageService {
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
+	private boolean shouldUseDatabase = !dotenv.get("USE_DATABASE").isBlank();
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
@@ -119,6 +120,10 @@ public class MessageService {
 
 	public void receiveUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
+		if (this.shouldUseDatabase) {
+			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
+			System.out.println("message saved to database");
+		}
 
 		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
@@ -199,16 +204,15 @@ public class MessageService {
 	}
 
 	public ArrayList<Message> getUserMessages(String mac) {
-		if(usersList.containsKey(mac))
+		// return HistoryService.getHistory();
+		if (usersList.containsKey(mac))
 			return usersList.get(mac).getMessages();
-		else
-			return new ArrayList<Message>();
+		return new ArrayList<Message>();
 	}
 
 	public void setChatView() {
 		this.chatView = new ChatView(this);
 
-		this.chatView = chatView;
 		// MOCK
 		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
 		usersList.get("MAC1").addMessage(
@@ -243,7 +247,5 @@ public class MessageService {
 		activeChat.sendMessage(message);
 		receiveUserMessage(mac, new Message(message, false));
 		System.out.println("Me: " + " Message: " + message);
-
 	}
-
 }
