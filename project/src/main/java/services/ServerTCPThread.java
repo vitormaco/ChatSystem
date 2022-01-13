@@ -1,6 +1,9 @@
 package services;
 
 import java.net.*;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.io.*;
 import models.Message;
 
@@ -11,11 +14,14 @@ public class ServerTCPThread extends Thread {
     private DataInputStream in;
     private String clientMAC;
     private MessageService messageService;
+    private Dotenv dotenv = Dotenv.load();
+    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
 
     ServerTCPThread(Socket s, MessageService messageService) {
         this.serverClient = s;
         this.messageService = messageService;
         try {
+            this.serverClient.setSoTimeout(timeout);
             this.in = new DataInputStream(serverClient.getInputStream());
             this.clientMAC = this.in.readUTF();
             System.out.println("New connection with client: " + this.clientMAC);
@@ -29,10 +35,14 @@ public class ServerTCPThread extends Thread {
 
         try {
             while (running) {
-                String clientContent = in.readUTF();
-                Message message = new Message(clientContent, true);
-                this.messageService.receiveUserMessage(this.clientMAC, message);
-                System.out.println("Client: " + " Message: " + clientContent);
+                try {
+                    String clientContent = in.readUTF();
+                    Message message = new Message(clientContent, true);
+                    this.messageService.receiveUserMessage(this.clientMAC, message);
+                    System.out.println("Client: " + " Message: " + clientContent);
+                } catch (SocketTimeoutException e) {
+                    continue;
+                }
             }
 
             in.close();
