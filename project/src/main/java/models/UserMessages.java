@@ -3,7 +3,6 @@ package models;
 import java.util.ArrayList;
 
 public class UserMessages {
-	private String userId;
 	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String nickname;
 	private String addressIp;
@@ -13,20 +12,8 @@ public class UserMessages {
 		this.addressIp = adressIp;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public String getAddressIp() {
 		return addressIp;
-	}
-
-	public void setAdressIp(String addressIp) {
-		this.addressIp = addressIp;
 	}
 
 	public ArrayList<Message> getMessages() {

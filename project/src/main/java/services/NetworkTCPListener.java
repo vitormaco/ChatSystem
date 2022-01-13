@@ -4,8 +4,6 @@ import java.net.*;
 
 import java.util.ArrayList;
 
-import models.Message;
-
 public class NetworkTCPListener extends Thread {
     private ServerSocket serverSocket;
     private boolean running;
