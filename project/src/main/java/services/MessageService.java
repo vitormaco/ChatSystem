@@ -45,38 +45,12 @@ public class MessageService {
 		return new NetworkTCPListener(tcpPort, this);
 	}
 
-	public void notifyUserStateChanged(String state) {
+	public void notifyUserStateChanged(MessagePDU.Status status) {
 		String serializedObject;
 
-		switch (state) {
-			case "connected":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.CONNECTION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "disconnected":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.DECONNECTION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "nicknameChanged":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "discover":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.DISCOVER)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			default:
-				System.out.println("Error creating PDU");
-				return;
-		}
+		serializedObject = new MessagePDU(this.nickname)
+				.withStatus(status)
+				.serialize();
 
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
@@ -130,7 +104,6 @@ public class MessageService {
 	private void sendMyNickname(MessagePDU message) {
 		String serializedObject = new MessagePDU(this.nickname)
 				.withStatus(MessagePDU.Status.CONNECTION)
-				.withDestination(message.getSourceMAC())
 				.serialize();
 
 		NetworkUtils.sendUnicastMessage(serializedObject, message.getSourceAddress());
@@ -141,7 +114,6 @@ public class MessageService {
 		serializedObject = new MessagePDU(this.nickname)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestination(mac)
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
@@ -150,10 +122,10 @@ public class MessageService {
 		return !this.getAllActiveUsers().containsKey(nickname);
 	}
 
-	public boolean validateAndAssingUserNickname(String nickname, String state) {
+	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
-			if (state == "connected") {
+			if (state == MessagePDU.Status.CONNECTION) {
 				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
@@ -184,7 +156,7 @@ public class MessageService {
 		if (status == MessagePDU.Status.CONNECTION) {
 			this.addNewLoggedUser(message.getSourceMAC(),
 					message.getSourceNickname(), message.getSourceAddress());
-		} else if (status == MessagePDU.Status.DECONNECTION) {
+		} else if (status == MessagePDU.Status.DISCONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC());
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message);

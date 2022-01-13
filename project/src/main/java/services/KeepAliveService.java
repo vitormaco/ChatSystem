@@ -1,4 +1,5 @@
 package services;
+import models.MessagePDU;
 
 public class KeepAliveService extends Thread {
 
@@ -24,7 +25,7 @@ public class KeepAliveService extends Thread {
 
         while (running) {
             Thread.sleep(2000);
-            this.messageService.notifyUserStateChanged("connected");
+            this.messageService.notifyUserStateChanged(MessagePDU.Status.CONNECTION);
         }
     }
 
