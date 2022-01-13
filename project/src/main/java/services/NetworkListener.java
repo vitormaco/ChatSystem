@@ -1,4 +1,5 @@
 package services;
+
 import java.net.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class NetworkListener extends Thread {
     private boolean running;
     private byte[] buf = new byte[65536];
     private MessageService messageService;
-	private Dotenv dotenv = Dotenv.load();
+    private Dotenv dotenv = Dotenv.load();
     private HashMap<String, Integer> lifeCounter;
     private int maxLife = Integer.parseInt(dotenv.get("CHECKLIFE_MAX"));
     private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
@@ -24,10 +25,10 @@ public class NetworkListener extends Thread {
         try {
             socket = new DatagramSocket(port);
             this.messageService = messageService;
-            lifeCounter = new HashMap<String, Integer> ();
+            lifeCounter = new HashMap<String, Integer>();
         } catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Exception thrown when creating network listener");
+            e.printStackTrace();
+            System.out.println("Exception thrown when creating network listener");
         }
     }
 
@@ -46,11 +47,11 @@ public class NetworkListener extends Thread {
         socket.setSoTimeout(timeout);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
-        	  @Override
-        	  public void run() {
-        		  checkLifeCounter();
-        	  }
-        	}, checklife, checklife);
+            @Override
+            public void run() {
+                checkLifeCounter();
+            }
+        }, checklife, checklife);
 
         while (running) {
             DatagramPacket packet = new DatagramPacket(buf, buf.length);
@@ -58,37 +59,39 @@ public class NetworkListener extends Thread {
                 socket.receive(packet);
                 String package_received = new String(packet.getData(), 0, packet.getLength());
                 MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-	            resetLifeCounter(deserializedObject.getSourceMAC());
+                resetLifeCounter(deserializedObject.getSourceMAC());
                 this.messageService.broadcastMessageReceived(deserializedObject);
-            } catch (SocketTimeoutException e) {};
+            } catch (SocketTimeoutException e) {
+            }
+            ;
         }
 
         socket.close();
     }
 
     public void setRunning(boolean running) {
-    	this.running = running;
+        this.running = running;
     }
 
     public void increaseLifeCounter(String mac) {
-    	lifeCounter.put(mac, lifeCounter.get(mac) + 1);
+        lifeCounter.put(mac, lifeCounter.get(mac) + 1);
     }
 
     public void resetLifeCounter(String mac) {
-    	lifeCounter.put(mac, 0);
+        lifeCounter.put(mac, 0);
     }
 
     public void checkLifeCounter() {
         ArrayList<String> removeList = new ArrayList<String>();
-    	for(Map.Entry<String, Integer> user : lifeCounter.entrySet()) {
-    		String mac = user.getKey();
-    		Integer counter = user.getValue();
-    		increaseLifeCounter(mac);
-    		if(counter >= maxLife) {
+        for (Map.Entry<String, Integer> user : lifeCounter.entrySet()) {
+            String mac = user.getKey();
+            Integer counter = user.getValue();
+            increaseLifeCounter(mac);
+            if (counter >= maxLife) {
                 removeList.add(mac);
-    		}
-     	}
-        for(int i = 0; i < removeList.size(); i++){
+            }
+        }
+        for (int i = 0; i < removeList.size(); i++) {
             String mac = removeList.get(i);
             messageService.deleteLoggedoutUser(mac);
             lifeCounter.remove(mac);

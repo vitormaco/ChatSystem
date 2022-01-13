@@ -21,7 +21,7 @@ public class ServerTCPThread extends Thread {
         this.serverClient = s;
         this.messageService = messageService;
         try {
-        	this.serverClient.setSoTimeout(timeout);
+            this.serverClient.setSoTimeout(timeout);
             this.in = new DataInputStream(serverClient.getInputStream());
             this.clientMAC = this.in.readUTF();
             System.out.println("New connection with client: " + this.clientMAC);
@@ -32,20 +32,20 @@ public class ServerTCPThread extends Thread {
 
     public void run() {
         running = true;
-        
-        try {
-    		while (running) {
-    			try {                
-    				String clientContent = in.readUTF();
-    				Message message = new Message(clientContent, true);
-    				this.messageService.receiveUserMessage(this.clientMAC, message);
-    				System.out.println("Client: " + " Message: " + clientContent);
-    			} catch (SocketTimeoutException e) {
-    				continue;
-    			}
-    		}
 
-        	in.close();
+        try {
+            while (running) {
+                try {
+                    String clientContent = in.readUTF();
+                    Message message = new Message(clientContent, true);
+                    this.messageService.receiveUserMessage(this.clientMAC, message);
+                    System.out.println("Client: " + " Message: " + clientContent);
+                } catch (SocketTimeoutException e) {
+                    continue;
+                }
+            }
+
+            in.close();
             serverClient.close();
         } catch (Exception e) {
             System.out.println("SERVER TCP THREAD - LOST CONNECTION");
