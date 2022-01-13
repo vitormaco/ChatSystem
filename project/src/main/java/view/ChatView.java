@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 
 import models.Message;
+import models.MessagePDU;
 
 import java.util.*;
 
@@ -30,7 +31,7 @@ public class ChatView extends BaseView implements ActionListener {
 
 	public ChatView(MessageService messageService) {
 		super();
-		this.setTitle(messageService.getNickname());
+		this.setTitle(messageService.getMyNickname());
 		this.messageService = messageService;
 		setLogoutButton();
 		setChangeNicknameButton();
@@ -156,16 +157,17 @@ public class ChatView extends BaseView implements ActionListener {
 		for (i = 0; i < messages.size(); i++) {
 			GridBagConstraints c;
 
+			// if (messages.get(i).getSourceId() == NetworkUtils.getLocalMACAdress()) {
 			if (messages.get(i).isClient()) {
 				// Right padding, left align
 				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
-				GridBagConstraints.WEST, GridBagConstraints.VERTICAL,
-				new Insets(5, 5, 5, 100), 0, 0);
+						GridBagConstraints.WEST, GridBagConstraints.VERTICAL,
+						new Insets(5, 5, 5, 100), 0, 0);
 			} else {
 				// Left padding, right align
 				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
-				GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
-				new Insets(5, 100, 5, 5), 0, 0);
+						GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
+						new Insets(5, 100, 5, 5), 0, 0);
 			}
 
 			messagesList.add(createMessagePanel(messages.get(i)), c);
@@ -192,7 +194,7 @@ public class ChatView extends BaseView implements ActionListener {
 		timeLabel.setFont(font);
 		pane.add(timeLabel);
 
-		String messageContent = message.getFormattedMessage();
+		String messageContent = message.getContent();
 		pane.add(new JLabel(messageContent));
 
 		return pane;
@@ -225,7 +227,7 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	private void logoutProcess() {
-		this.messageService.notifyUserStateChanged("disconnected");
+		this.messageService.notifyUserStateChanged(MessagePDU.Status.DISCONNECTION);
 		this.messageService.disconnectServer();
 	}
 
@@ -237,14 +239,9 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void handleChangeNicknameButton() {
 		String text = JOptionPane.showInputDialog(container, "Insert the new nickname.");
-		if (text != null) {
-			System.out.println(text);
-			if (messageService.validateAndAssingUserNickname(text, "nicknameChanged")) {
-				this.setTitle(this.messageService.getNickname());
-				JOptionPane.showMessageDialog(container, "Nickname updated.");
-			} else {
-				JOptionPane.showMessageDialog(container, "Nickname not updated.");
-			}
+		if (text != null && messageService.validateAndAssingUserNickname(text, MessagePDU.Status.NICKNAME_CHANGED)) {
+			this.setTitle(this.messageService.getMyNickname());
+			JOptionPane.showMessageDialog(container, "Nickname updated.");
 		} else {
 			JOptionPane.showMessageDialog(container, "Nickname not updated.");
 		}

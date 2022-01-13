@@ -39,20 +39,11 @@ public class NetworkListener extends Thread {
         }
     }
 
-    private boolean isMyComputer(String ip) throws Exception {
-    	NetworkInterface ni = NetworkInterface.
-        		getByInetAddress(
-        				InetAddress.getByName(ip));
-    	return ni != null;
-    }
-
     private void listenToNetwork() throws Exception {
         System.out.println("NetworkListener up");
 
         running = true;
-        int message_counter = 0;
         socket.setSoTimeout(timeout);
-       
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
         	  @Override
@@ -67,18 +58,8 @@ public class NetworkListener extends Thread {
                 socket.receive(packet);
                 String package_received = new String(packet.getData(), 0, packet.getLength());
                 MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
-
-                // if(!this.isMyComputer(deserializedObject.getSourceAddress())) {
-	                // System.out.println(
-	                //     "message " + message_counter++ + ":\n" +
-	                //     "-------------------------\n" +
-	                //     deserializedObject.toString() +
-	                //     "-------------------------" +
-	                //     "\n\n"
-	                //     );
-                // }
 	            resetLifeCounter(deserializedObject.getSourceMAC());
-                this.messageService.messageReceived(deserializedObject);
+                this.messageService.broadcastMessageReceived(deserializedObject);
             } catch (SocketTimeoutException e) {};
         }
 
@@ -88,15 +69,15 @@ public class NetworkListener extends Thread {
     public void setRunning(boolean running) {
     	this.running = running;
     }
-    
+
     public void increaseLifeCounter(String mac) {
     	lifeCounter.put(mac, lifeCounter.get(mac) + 1);
     }
-    
+
     public void resetLifeCounter(String mac) {
     	lifeCounter.put(mac, 0);
     }
-    
+
     public void checkLifeCounter() {
         ArrayList<String> removeList = new ArrayList<String>();
     	for(Map.Entry<String, Integer> user : lifeCounter.entrySet()) {

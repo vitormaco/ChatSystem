@@ -1,9 +1,9 @@
 package services;
 
 import models.UserMessages;
+import utils.NetworkUtils;
 import models.Message;
 import models.MessagePDU;
-import utils.NetworkUtils;
 
 import java.util.*;
 
@@ -20,6 +20,7 @@ public class MessageService {
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
+	private boolean shouldUseDatabase = !dotenv.get("USE_DATABASE").isBlank();
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
@@ -44,42 +45,12 @@ public class MessageService {
 		return new NetworkTCPListener(tcpPort, this);
 	}
 
-	public void notifyUserStateChanged(String state) {
+	public void notifyUserStateChanged(MessagePDU.Status status) {
 		String serializedObject;
 
-		switch (state) {
-			case "connected":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.CONNECTION)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "disconnected":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.DECONNECTION)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "nicknameChanged":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.NICKNAME_CHANGED)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			case "discover":
-				serializedObject = new MessagePDU(this.nickname)
-						.withStatus(MessagePDU.Status.DISCOVER)
-						.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-						.withDestinationBroadcast()
-						.serialize();
-				break;
-			default:
-				System.out.println("Error creating PDU");
-				return;
-		}
+		serializedObject = new MessagePDU(this.nickname)
+				.withStatus(status)
+				.serialize();
 
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
@@ -104,14 +75,15 @@ public class MessageService {
 			usersList.get(userMAC).setNickname(nickname);
 		}
 
-		if (this.chatView != null) {
-			this.chatView.updateConnectedUsersList();
-		}
+		updateConnectedUsersFrontend();
 	}
 
 	public void deleteLoggedoutUser(String id) {
 		usersList.remove(id);
+		updateConnectedUsersFrontend();
+	}
 
+	private void updateConnectedUsersFrontend() {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
@@ -119,32 +91,29 @@ public class MessageService {
 
 	public void receiveUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
+		if (this.shouldUseDatabase) {
+			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
+			System.out.println("message saved to database");
+		}
 
 		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
 		}
 	}
 
-	private void sendMyNickname(String address) {
+	private void sendMyNickname(MessagePDU message) {
 		String serializedObject = new MessagePDU(this.nickname)
 				.withStatus(MessagePDU.Status.CONNECTION)
-				.withMessageType(MessagePDU.MessageType.NOTIFICATION)
-				.withDestination("nickname", "id", address)
 				.serialize();
 
-		NetworkUtils.sendUnicastMessage(serializedObject, address);
+		NetworkUtils.sendUnicastMessage(serializedObject, message.getSourceAddress());
 	}
 
-	/* PUBLIC METHODS */
-
 	public void sendMessageToUser(String message, String mac) {
-		UserMessages user = usersList.get(mac);
 		String serializedObject;
 		serializedObject = new MessagePDU(this.nickname)
-				.withMessageType(MessagePDU.MessageType.TEXT)
 				.withStatus(MessagePDU.Status.MESSAGE)
 				.withMessageContent(message)
-				.withDestination(user.getNickname(), mac, user.getAddressIp())
 				.serialize();
 		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
@@ -153,10 +122,10 @@ public class MessageService {
 		return !this.getAllActiveUsers().containsKey(nickname);
 	}
 
-	public boolean validateAndAssingUserNickname(String nickname, String state) {
+	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
-			if (state == "connected") {
+			if (state == MessagePDU.Status.CONNECTION) {
 				this.discoverService.start();
 			}
 			this.notifyUserStateChanged(state);
@@ -181,34 +150,33 @@ public class MessageService {
 			;
 	}
 
-	public void messageReceived(MessagePDU message) {
+	public void broadcastMessageReceived(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
 
 		if (status == MessagePDU.Status.CONNECTION) {
 			this.addNewLoggedUser(message.getSourceMAC(),
 					message.getSourceNickname(), message.getSourceAddress());
-		} else if (status == MessagePDU.Status.DECONNECTION) {
+		} else if (status == MessagePDU.Status.DISCONNECTION) {
 			this.deleteLoggedoutUser(message.getSourceMAC());
 		} else if (status == MessagePDU.Status.DISCOVER) {
-			this.sendMyNickname(message.getSourceAddress());
+			this.sendMyNickname(message);
 		}
 	}
 
-	public String getNickname() {
+	public String getMyNickname() {
 		return this.nickname;
 	}
 
 	public ArrayList<Message> getUserMessages(String mac) {
-		if(usersList.containsKey(mac))
+		// return HistoryService.getHistory();
+		if (usersList.containsKey(mac))
 			return usersList.get(mac).getMessages();
-		else
-			return new ArrayList<Message>();
+		return new ArrayList<Message>();
 	}
 
 	public void setChatView() {
 		this.chatView = new ChatView(this);
 
-		this.chatView = chatView;
 		// MOCK
 		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
 		usersList.get("MAC1").addMessage(
@@ -243,7 +211,5 @@ public class MessageService {
 		activeChat.sendMessage(message);
 		receiveUserMessage(mac, new Message(message, false));
 		System.out.println("Me: " + " Message: " + message);
-
 	}
-
 }

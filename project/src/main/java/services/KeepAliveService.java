@@ -1,4 +1,5 @@
 package services;
+import models.MessagePDU;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
@@ -28,7 +29,7 @@ public class KeepAliveService extends Thread {
 
         while (running) {
             Thread.sleep(aliveTime);
-            this.messageService.notifyUserStateChanged("connected");
+            this.messageService.notifyUserStateChanged(MessagePDU.Status.CONNECTION);
         }
     }
 
