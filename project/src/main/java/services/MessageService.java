@@ -77,8 +77,8 @@ public class MessageService {
 			if(!actual_nickname.equals(new_nickname)) {
 				usersList.get(userMAC).setNickname(new_nickname);
 				nicknameUpdated(actual_nickname, new_nickname);
-			} 
-		}		
+			}
+		}
 	}
 
 	public void deleteLoggedoutUser(String id) {
@@ -91,7 +91,7 @@ public class MessageService {
 			this.chatView.updateConnectedUsersList();
 		}
 	}
-	
+
 	private void nicknameUpdated(String old_nickname, String new_nickname) {
 		this.usersList.put(new_nickname, usersList.remove(old_nickname));
 		this.chatView.nicknameChanged(old_nickname, new_nickname);
@@ -187,21 +187,6 @@ public class MessageService {
 
 	public void setChatView() {
 		this.chatView = new ChatView(this);
-
-		// MOCK
-		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST1")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST2")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST3")));
-		usersList.put("MAC2", new UserMessages("Mocked User 2", "0.0.0.0"));
-		this.chatView.updateConnectedUsersList();
-		// END OF MOCK
 	}
 
 	public void createTCPConnection(String mac) {

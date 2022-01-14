@@ -146,12 +146,12 @@ public class ChatView extends BaseView implements ActionListener {
 		};
 		connectedUsersJList.addMouseListener(selectUserListener);
 	}
-	
+
 	public void nicknameChanged(String old_nickname, String new_nickname) {
 		if (currentSelectedUser == old_nickname) {
 			currentSelectedUser = new_nickname;
-		} 
-		
+		}
+
 		MACbyNickname.put(new_nickname, MACbyNickname.remove(old_nickname));
 		int idx = connectedUsers.indexOf(old_nickname);
 		connectedUsers.set(idx, new_nickname);
