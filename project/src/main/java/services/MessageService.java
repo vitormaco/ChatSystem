@@ -159,7 +159,7 @@ public class MessageService {
 			;
 	}
 
-	public void broadcastMessageReceived(MessagePDU message) {
+	public void receiveBroadcastMessage(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
 		String mac = message.getSourceMAC();
 		String nickname = message.getSourceNickname();

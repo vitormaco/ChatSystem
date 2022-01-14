@@ -60,7 +60,7 @@ public class NetworkListener extends Thread {
                 String package_received = new String(packet.getData(), 0, packet.getLength());
                 MessagePDU deserializedObject = MessagePDU.deserialize(package_received);
                 resetLifeCounter(deserializedObject.getSourceMAC());
-                this.messageService.broadcastMessageReceived(deserializedObject);
+                this.messageService.receiveBroadcastMessage(deserializedObject);
             } catch (SocketTimeoutException e) {
             }
             ;
