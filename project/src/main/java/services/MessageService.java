@@ -76,11 +76,21 @@ public class MessageService {
 
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
+		}
+
+		updateConnectedUsersFrontend();
+	}
+
+	private void updateUserNickname(String userMAC, String new_nickname, String addressIp) {
+
+		if (userMAC.equals(myMac)) {
+			return;
+		}
+
+		if (!this.usersList.containsKey(userMAC)) {
+			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
-			String actual_nickname = usersList.get(userMAC).getNickname();
-			if (!new_nickname.equals(actual_nickname)) {
-				usersList.get(userMAC).setNickname(new_nickname);
-			}
+			usersList.get(userMAC).setNickname(new_nickname);
 		}
 
 		updateConnectedUsersFrontend();
@@ -164,6 +174,8 @@ public class MessageService {
 			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message);
+		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
+			this.updateUserNickname(mac, nickname, address);
 		}
 	}
 
