@@ -2,8 +2,6 @@ package services;
 
 import java.net.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 import java.io.*;
 
 public class ClientTCP {

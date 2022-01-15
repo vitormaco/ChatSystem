@@ -16,7 +16,6 @@ public class MessageService {
 	private ClientTCP activeChat;
 	private NetworkListener listener;
 	private NetworkTCPListener listenerTCP;
-	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
@@ -28,7 +27,6 @@ public class MessageService {
 		this.listener.start();
 		this.listenerTCP = this.getListenerTCPThread();
 		this.listenerTCP.start();
-		this.discoverService = new KeepAliveService(this);
 	}
 
 	public boolean isConnected() {
@@ -80,12 +78,12 @@ public class MessageService {
 			System.out.println("NEW USER 111");
 		} else {
 			String actual_nickname = usersList.get(userMAC).getNickname();
-			if (actual_nickname != new_nickname) {
+			if (!new_nickname.equals(actual_nickname)) {
 				usersList.get(userMAC).setNickname(new_nickname);
+				System.out.println("NEW USER 222");
 			}
-			System.out.println("NEW USER 222");
+			System.out.println("NEW USER 333");
 		}
-
 
 		updateConnectedUsersFrontend();
 	}
@@ -138,9 +136,6 @@ public class MessageService {
 	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
-			if (state == MessagePDU.Status.CONNECTION) {
-				this.discoverService.start();
-			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
@@ -150,13 +145,9 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		this.discoverService.setRunning(false);
 		this.listenerTCP.setRunning(false);
 
 		while (this.listener.isAlive())
-			;
-
-		while (this.discoverService.isAlive())
 			;
 
 		while (this.listenerTCP.isAlive())

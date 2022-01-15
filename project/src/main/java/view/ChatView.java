@@ -266,6 +266,6 @@ public class ChatView extends BaseView implements ActionListener {
 		for (String user : messageService.getAllActiveUsers().keySet()) {
 			connectedUsers.addElement(user);
 		}
-		connectedUsersJList.updateUI();
+		// connectedUsersJList.updateUI();
 	}
 }
