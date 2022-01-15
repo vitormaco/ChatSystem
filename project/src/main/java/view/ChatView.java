@@ -145,6 +145,8 @@ public class ChatView extends BaseView implements ActionListener {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
 					updateSelectedUserMessages();
 					String userMAC = getSelectedUserMAC();
+					System.out.println("aaaaaaa");
+					System.out.println(userMAC);
 					messageService.createTCPConnection(userMAC);
 				}
 			}

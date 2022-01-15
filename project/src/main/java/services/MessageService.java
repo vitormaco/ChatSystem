@@ -61,9 +61,10 @@ public class MessageService {
 		return nicknames;
 	}
 
-	public String getMACByNickname(String mac) {
-		if (usersList.containsKey(mac))
-			return usersList.get(mac).getNickname();
+	public String getMACByNickname(String nickname) {
+		HashMap<String,String> users = getAllActiveUsers();
+		if (users.containsKey(nickname))
+			return users.get(nickname);
 		return null;
 	}
 
@@ -75,21 +76,18 @@ public class MessageService {
 
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
-			System.out.println("NEW USER 111");
 		} else {
 			String actual_nickname = usersList.get(userMAC).getNickname();
 			if (!new_nickname.equals(actual_nickname)) {
 				usersList.get(userMAC).setNickname(new_nickname);
-				System.out.println("NEW USER 222");
 			}
-			System.out.println("NEW USER 333");
 		}
 
 		updateConnectedUsersFrontend();
 	}
 
 	public void deleteLoggedoutUser(String id) {
-		System.out.println("DELETED USER");
+		System.out.println("DELETED USER " + id);
 		usersList.remove(id);
 		updateConnectedUsersFrontend();
 	}
