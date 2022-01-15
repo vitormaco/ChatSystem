@@ -109,7 +109,7 @@ public class LoginView extends BaseView implements ActionListener {
             JOptionPane.showMessageDialog(this, "Network not configured correctly");
         }
 
-        if (this.messageService.validateAndAssingUserNickname(userText, MessagePDU.Status.CONNECTION)) {
+        if (!userText.isBlank() && this.messageService.validateAndAssingUserNickname(userText, MessagePDU.Status.CONNECTION)) {
             dispose();
             this.messageService.setChatView();
         } else {

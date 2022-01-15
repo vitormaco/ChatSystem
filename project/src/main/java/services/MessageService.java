@@ -16,7 +16,6 @@ public class MessageService {
 	private ClientTCP activeChat;
 	private NetworkListener listener;
 	private NetworkTCPListener listenerTCP;
-	private KeepAliveService discoverService;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
@@ -28,7 +27,6 @@ public class MessageService {
 		this.listener.start();
 		this.listenerTCP = this.getListenerTCPThread();
 		this.listenerTCP.start();
-		this.discoverService = new KeepAliveService(this);
 	}
 
 	public boolean isConnected() {
@@ -63,6 +61,13 @@ public class MessageService {
 		return nicknames;
 	}
 
+	public String getMACByNickname(String nickname) {
+		HashMap<String,String> users = getAllActiveUsers();
+		if (users.containsKey(nickname))
+			return users.get(nickname);
+		return null;
+	}
+
 	private void addNewLoggedUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
@@ -71,17 +76,28 @@ public class MessageService {
 
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
-			updateConnectedUsersFrontend();
+		}
+
+		updateConnectedUsersFrontend();
+	}
+
+	private void updateUserNickname(String userMAC, String new_nickname, String addressIp) {
+
+		if (userMAC.equals(myMac)) {
+			return;
+		}
+
+		if (!this.usersList.containsKey(userMAC)) {
+			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
-			String actual_nickname = usersList.get(userMAC).getNickname();
-			if(!actual_nickname.equals(new_nickname)) {
-				usersList.get(userMAC).setNickname(new_nickname);
-				nicknameUpdated(actual_nickname, new_nickname);
-			} 
-		}		
+			usersList.get(userMAC).setNickname(new_nickname);
+		}
+
+		updateConnectedUsersFrontend();
 	}
 
 	public void deleteLoggedoutUser(String id) {
+		System.out.println("DELETED USER " + id);
 		usersList.remove(id);
 		updateConnectedUsersFrontend();
 	}
@@ -90,12 +106,6 @@ public class MessageService {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
-	}
-	
-	private void nicknameUpdated(String old_nickname, String new_nickname) {
-		this.usersList.put(new_nickname, usersList.remove(old_nickname));
-		this.chatView.nicknameChanged(old_nickname, new_nickname);
-		this.chatView.updateSelectedUserMessages();
 	}
 
 	public void receiveUserMessage(String mac, Message message) {
@@ -134,9 +144,6 @@ public class MessageService {
 	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
-			if (state == MessagePDU.Status.CONNECTION) {
-				this.discoverService.start();
-			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
@@ -146,20 +153,16 @@ public class MessageService {
 
 	public void disconnectServer() {
 		this.listener.setRunning(false);
-		this.discoverService.setRunning(false);
 		this.listenerTCP.setRunning(false);
 
 		while (this.listener.isAlive())
-			;
-
-		while (this.discoverService.isAlive())
 			;
 
 		while (this.listenerTCP.isAlive())
 			;
 	}
 
-	public void broadcastMessageReceived(MessagePDU message) {
+	public void receiveBroadcastMessage(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
 		String mac = message.getSourceMAC();
 		String nickname = message.getSourceNickname();
@@ -171,6 +174,8 @@ public class MessageService {
 			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message);
+		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
+			this.updateUserNickname(mac, nickname, address);
 		}
 	}
 
@@ -187,21 +192,6 @@ public class MessageService {
 
 	public void setChatView() {
 		this.chatView = new ChatView(this);
-
-		// MOCK
-		usersList.put("MAC1", new UserMessages("Mocked User 1", "0.0.0.0"));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST1")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST2")));
-		usersList.get("MAC1").addMessage(
-				new Message(
-						new MessagePDU("Mocked User 1").withMessageContent("TEST3")));
-		usersList.put("MAC2", new UserMessages("Mocked User 2", "0.0.0.0"));
-		this.chatView.updateConnectedUsersList();
-		// END OF MOCK
 	}
 
 	public void createTCPConnection(String mac) {

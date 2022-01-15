@@ -5,7 +5,6 @@ import java.net.*;
 import java.util.ArrayList;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import models.Message;
 
 public class NetworkTCPListener extends Thread {
     private ServerSocket serverSocket;
