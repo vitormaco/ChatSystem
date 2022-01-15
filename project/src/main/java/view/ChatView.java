@@ -17,15 +17,17 @@ public class ChatView extends BaseView implements ActionListener {
 	private MessageService messageService;
 	Container container = getContentPane();
 
-	HashMap<String, String> MACbyNickname = new HashMap<String, String>();
 	DefaultListModel<String> connectedUsers = new DefaultListModel<String>();
 	JList<String> connectedUsersJList = new JList<String>(connectedUsers);
+
 	JScrollPane messageListScroll = new JScrollPane();
 	JPanel messagesList = new JPanel();
+
 	String currentSelectedUser = "";
+
+	JLabel currentSelectedUserLabel = new JLabel(currentSelectedUser);
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
-	JLabel currentSelectedUserLabel = new JLabel(currentSelectedUser);
 	JTextField writeMessageField = new JTextField();
 	JButton sendMessageButton = new JButton();
 
@@ -56,7 +58,7 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	public String getSelectedUserMAC() {
-		return this.MACbyNickname.get(this.currentSelectedUser);
+		return messageService.getMACByNickname(this.currentSelectedUser);
 	}
 
 	private void buildPanel() {
@@ -140,34 +142,25 @@ public class ChatView extends BaseView implements ActionListener {
 				if (e.getClickCount() > 0) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
 					updateSelectedUserMessages();
-					messageService.createTCPConnection(MACbyNickname.get(currentSelectedUser));
+					String userMAC = getSelectedUserMAC();
+					messageService.createTCPConnection(userMAC);
 				}
 			}
 		};
 		connectedUsersJList.addMouseListener(selectUserListener);
 	}
 
-	public void nicknameChanged(String old_nickname, String new_nickname) {
-		if (currentSelectedUser == old_nickname) {
-			currentSelectedUser = new_nickname;
-		}
-
-		MACbyNickname.put(new_nickname, MACbyNickname.remove(old_nickname));
-		int idx = connectedUsers.indexOf(old_nickname);
-		connectedUsers.set(idx, new_nickname);
-	}
-
 	public void updateSelectedUserMessages() {
 		currentSelectedUserLabel.setText(currentSelectedUser);
-		ArrayList<Message> messages = this.messageService.getUserMessages(
-				MACbyNickname.get(currentSelectedUser));
+		String userMAC = getSelectedUserMAC();
+		ArrayList<Message> messages = this.messageService.getUserMessages(userMAC);
+
 		messagesList.removeAll();
 
 		int i;
 		for (i = 0; i < messages.size(); i++) {
 			GridBagConstraints c;
 
-			// if (messages.get(i).getSourceId() == NetworkUtils.getLocalMACAdress()) {
 			if (messages.get(i).isClient()) {
 				// Right padding, left align
 				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
@@ -260,16 +253,19 @@ public class ChatView extends BaseView implements ActionListener {
 	private void handleSendMessageButton() {
 		String text = writeMessageField.getText();
 		if (currentSelectedUser != "" && !text.isBlank()) {
-			messageService.sendMessageToUserTCP(text, MACbyNickname.get(currentSelectedUser));
+			String userMAC = getSelectedUserMAC();
+			messageService.sendMessageToUserTCP(text, userMAC);
 		}
 		writeMessageField.setText("");
 	}
 
 	public void updateConnectedUsersList() {
-		MACbyNickname = messageService.getAllActiveUsers();
+		System.out.println("UPDATE UI");
+		System.out.println(connectedUsers);
 		connectedUsers.clear();
-		for (String user : MACbyNickname.keySet()) {
+		for (String user : messageService.getAllActiveUsers().keySet()) {
 			connectedUsers.addElement(user);
 		}
+		connectedUsersJList.updateUI();
 	}
 }

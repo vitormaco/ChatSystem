@@ -63,6 +63,12 @@ public class MessageService {
 		return nicknames;
 	}
 
+	public String getMACByNickname(String mac) {
+		if (usersList.containsKey(mac))
+			return usersList.get(mac).getNickname();
+		return null;
+	}
+
 	private void addNewLoggedUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
@@ -71,17 +77,21 @@ public class MessageService {
 
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
-			updateConnectedUsersFrontend();
+			System.out.println("NEW USER 111");
 		} else {
 			String actual_nickname = usersList.get(userMAC).getNickname();
-			if(!actual_nickname.equals(new_nickname)) {
+			if (actual_nickname != new_nickname) {
 				usersList.get(userMAC).setNickname(new_nickname);
-				nicknameUpdated(actual_nickname, new_nickname);
 			}
+			System.out.println("NEW USER 222");
 		}
+
+
+		updateConnectedUsersFrontend();
 	}
 
 	public void deleteLoggedoutUser(String id) {
+		System.out.println("DELETED USER");
 		usersList.remove(id);
 		updateConnectedUsersFrontend();
 	}
@@ -90,12 +100,6 @@ public class MessageService {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
-	}
-
-	private void nicknameUpdated(String old_nickname, String new_nickname) {
-		this.usersList.put(new_nickname, usersList.remove(old_nickname));
-		this.chatView.nicknameChanged(old_nickname, new_nickname);
-		this.chatView.updateSelectedUserMessages();
 	}
 
 	public void receiveUserMessage(String mac, Message message) {
