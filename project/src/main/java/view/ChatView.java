@@ -191,6 +191,13 @@ public class ChatView extends BaseView implements ActionListener {
 		messagesList.repaint();
 	}
 
+	public void updateSelectedUser(String old_nickname, String new_nickname){
+		if(this.currentSelectedUser.equals(old_nickname)){
+			this.currentSelectedUser = new_nickname;
+			currentSelectedUserLabel.setText(currentSelectedUser);
+		}
+	}
+
 	private JPanel createMessagePanel(Message message) {
 		JPanel pane = new JPanel();
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
