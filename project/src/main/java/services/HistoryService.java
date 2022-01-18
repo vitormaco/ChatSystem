@@ -27,19 +27,28 @@ public class HistoryService {
 		return connectionSingleton;
 	}
 
-	static public ArrayList<Message> getHistory() {
+	static public ArrayList<Message> getHistory(String myMac, String otherUserMac) {
 		Connection conn = getConnection();
 		try {
-			String query = "SELECT * FROM messages";
-			Statement st = conn.createStatement();
-			ResultSet rs = st.executeQuery(query);
+			PreparedStatement statement = conn.prepareStatement(
+				"select * from messages where" +
+				"(source_id=? and destination_id=?) or" +
+				"(source_id=? and destination_id=?)"
+			);
+			statement.setString(1, myMac);
+			statement.setString(2, otherUserMac);
+			statement.setString(3, otherUserMac);
+			statement.setString(4, myMac);
+			ResultSet rs = statement.executeQuery();
+
 			ArrayList<Message> messages = new ArrayList<Message>();
 			while (rs.next()) {
 				messages.add(
 						new Message(
-								new MessagePDU("Mocked User 1").withMessageContent(rs.getString("id"))));
+								new MessagePDU("Mocked User 1").withMessageContent(rs.getString("content"))));
 			}
-			st.close();
+
+			statement.close();
 			return messages;
 		} catch (Exception e) {
 			e.printStackTrace();

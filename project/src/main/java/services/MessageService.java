@@ -167,9 +167,17 @@ public class MessageService {
 	}
 
 	public ArrayList<Message> getUserMessages(String mac) {
-		// return HistoryService.getHistory();
-		if (usersList.containsKey(mac))
+		ArrayList<Message> messagesInHistory =
+			HistoryService.getHistory(myMac, mac);
+
+		if (usersList.containsKey(mac)) {
+			usersList.get(mac).getMessages().clear();
+			for (Message msg : messagesInHistory) {
+				usersList.get(mac).addMessage(msg);
+			}
 			return usersList.get(mac).getMessages();
+		}
+
 		return new ArrayList<Message>();
 	}
 
