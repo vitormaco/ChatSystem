@@ -9,10 +9,12 @@ public class ClientTCP {
     private Socket socket;
     private DataOutputStream out;
 
-    public ClientTCP(String host, int port, String myMAC) throws Exception {
+    public ClientTCP(String host, int port, String myMAC, String nickname, String ip) throws Exception {
         this.socket = new Socket(host, port);
         this.out = new DataOutputStream(socket.getOutputStream());
         this.sendMessage(myMAC);
+        this.sendMessage(nickname);
+        this.sendMessage(ip);
         System.out.println("TCP Socket opened");
     }
 

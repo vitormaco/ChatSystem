@@ -70,7 +70,7 @@ public class MessageService {
 		return null;
 	}
 
-	private void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
+	public void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
@@ -86,16 +86,14 @@ public class MessageService {
 			}
 		}
 
-		updateConnectedUsersFrontend();
+		if (this.chatView != null) {
+			this.chatView.updateConnectedUsersList();
+		}
 	}
 
 	public void deleteLoggedoutUser(String id) {
 		System.out.println("DELETED USER " + id);
 		usersList.remove(id);
-		updateConnectedUsersFrontend();
-	}
-
-	private void updateConnectedUsersFrontend() {
 		if (this.chatView != null) {
 			this.chatView.updateConnectedUsersList();
 		}
@@ -103,10 +101,6 @@ public class MessageService {
 
 	public void handleNewUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
-		if (this.shouldUseDatabase) {
-			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
-			System.out.println("message saved to database");
-		}
 
 		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
@@ -171,9 +165,10 @@ public class MessageService {
 	}
 
 	public ArrayList<Message> getUserMessages(String mac) {
-		// return HistoryService.getHistory();
-		if (usersList.containsKey(mac))
+		if (usersList.containsKey(mac)) {
 			return usersList.get(mac).getMessages();
+		}
+
 		return new ArrayList<Message>();
 	}
 
@@ -186,9 +181,21 @@ public class MessageService {
 			if (activeChat != null) {
 				activeChat.closeSocket();
 			}
-			String hostname = usersList.get(mac).getAddressIp();
-			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
-			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+			if (this.usersList.containsKey(mac)) {
+				String hostname = usersList.get(mac).getAddressIp();
+				int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+				activeChat = new ClientTCP(hostname, tcpPort, this.myMac, this.nickname, NetworkUtils.getIPAddress());
+			}
+			if (this.shouldUseDatabase) {
+				ArrayList<Message> messagesInHistory = HistoryService.getHistory(myMac, mac);
+				System.out.println("retrieved messages from database");
+
+				usersList.get(mac).getMessages().clear();
+				for (Message msg : messagesInHistory) {
+					usersList.get(mac).addMessage(msg);
+				}
+				this.chatView.updateSelectedUserMessages();
+			}
 		} catch (ConnectException e) {
 			chatView.showErrorMessage("User disconnected");
 			this.deleteLoggedoutUser(mac);
@@ -200,7 +207,11 @@ public class MessageService {
 
 	public void sendMessageToUserTCP(String message, String mac) {
 		if (activeChat.sendMessage(message)) {
-			handleNewUserMessage(mac, new Message(message, false));
+			if (this.shouldUseDatabase) {
+				HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, new Message(message, myMac));
+				System.out.println("message saved to database");
+			}
+			handleNewUserMessage(mac, new Message(message, myMac));
 			System.out.println("message " + message + " sent to user " + mac);
 		} else {
 			chatView.showErrorMessage("User disconnected");

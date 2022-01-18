@@ -5,17 +5,18 @@ import java.sql.Timestamp;
 public class Message {
 	private Timestamp timestamp;
 	private String content;
-	private boolean isClient;
+	private String senderMac;
 
-	public Message(MessagePDU message) {
-		timestamp = message.getTimestamp();
-		content = message.getMessageContent();
-	}
-
-	public Message(String message, boolean client) {
+	public Message(String message, String mac) {
 		timestamp = new Timestamp(System.currentTimeMillis());
 		content = message;
-		isClient = client;
+		senderMac = mac;
+	}
+
+	public Message(String message, String mac, Timestamp t) {
+		timestamp = t;
+		content = message;
+		senderMac = mac;
 	}
 
 	public String getContent() {
@@ -26,7 +27,7 @@ public class Message {
 		return timestamp;
 	}
 
-	public boolean isClient() {
-		return isClient;
+	public String getSenderId() {
+		return senderMac;
 	}
 }
