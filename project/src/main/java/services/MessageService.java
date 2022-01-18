@@ -68,7 +68,7 @@ public class MessageService {
 		return null;
 	}
 
-	private void addNewLoggedUser(String userMAC, String new_nickname, String addressIp) {
+	private void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
@@ -80,23 +80,8 @@ public class MessageService {
 			String old_nickname = usersList.get(userMAC).getNickname();
 			if(!old_nickname.equals(new_nickname)){
 				usersList.get(userMAC).setNickname(new_nickname);
+				this.chatView.updateSelectedUser(old_nickname, new_nickname);
 			}
-		}
-
-		updateConnectedUsersFrontend();
-	}
-
-	private void updateUserNickname(String userMAC, String new_nickname, String addressIp) {
-		if (userMAC.equals(myMac)) {
-			return;
-		}
-
-		if (!this.usersList.containsKey(userMAC)) {
-			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
-		} else {
-			String old_nickname = usersList.get(userMAC).getNickname();
-			usersList.get(userMAC).setNickname(new_nickname);
-			this.chatView.updateSelectedUser(old_nickname, new_nickname);
 		}
 
 		updateConnectedUsersFrontend();
@@ -175,13 +160,13 @@ public class MessageService {
 		String address = message.getSourceAddress();
 
 		if (status == MessagePDU.Status.CONNECTION) {
-			this.addNewLoggedUser(mac, nickname, address);
+			this.addOrUpdateUser(mac, nickname, address);
 		} else if (status == MessagePDU.Status.DISCONNECTION) {
 			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
 			this.sendMyNickname(message);
 		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
-			this.updateUserNickname(mac, nickname, address);
+			this.addOrUpdateUser(mac, nickname, address);
 		}
 	}
 
