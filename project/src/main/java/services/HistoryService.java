@@ -12,7 +12,6 @@ public class HistoryService {
 	static private Dotenv dotenv = Dotenv.load();
 
 	static public Connection getConnection() {
-
 		if (connectionSingleton == null) {
 			try {
 				connectionSingleton = DriverManager.getConnection(
@@ -44,7 +43,7 @@ public class HistoryService {
 			return messages;
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Error executing query");
+			System.out.println("Error executing query to retrieve messages from database");
 			return new ArrayList<Message>();
 		}
 	}
@@ -59,10 +58,9 @@ public class HistoryService {
 			statement.setString(3, source);
 			statement.setString(4, dest);
 			statement.executeUpdate();
-
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("Error executing query");
+			System.out.println("Error executing query to save message from database");
 		}
 	}
 }
