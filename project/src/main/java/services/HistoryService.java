@@ -43,9 +43,7 @@ public class HistoryService {
 
 			ArrayList<Message> messages = new ArrayList<Message>();
 			while (rs.next()) {
-				messages.add(
-						new Message(
-								new MessagePDU("Mocked User 1").withMessageContent(rs.getString("content"))));
+				messages.add(new Message(rs.getString("content"), rs.getString("source_id")));
 			}
 
 			statement.close();

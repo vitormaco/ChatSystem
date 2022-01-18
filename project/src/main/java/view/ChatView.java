@@ -162,7 +162,7 @@ public class ChatView extends BaseView implements ActionListener {
 		for (i = 0; i < messages.size(); i++) {
 			GridBagConstraints c;
 
-			if (messages.get(i).isClient()) {
+			if (userMAC.equals(messages.get(i).getSenderId())) {
 				// Right padding, left align
 				c = new GridBagConstraints(0, i, 1, 1, 0, 0,
 						GridBagConstraints.WEST, GridBagConstraints.VERTICAL,
@@ -188,8 +188,8 @@ public class ChatView extends BaseView implements ActionListener {
 		messagesList.repaint();
 	}
 
-	public void updateSelectedUserNickname(String old_nickname, String new_nickname){
-		if(this.currentSelectedUser.equals(old_nickname)){
+	public void updateSelectedUserNickname(String old_nickname, String new_nickname) {
+		if (this.currentSelectedUser.equals(old_nickname)) {
 			this.currentSelectedUser = new_nickname;
 			currentSelectedUserLabel.setText(currentSelectedUser);
 		}
@@ -280,7 +280,7 @@ public class ChatView extends BaseView implements ActionListener {
 		System.out.println("users connected: " + connectedUsers);
 	}
 
-	public void showErrorMessage(String message){
+	public void showErrorMessage(String message) {
 		JOptionPane.showMessageDialog(this, message);
 	}
 }

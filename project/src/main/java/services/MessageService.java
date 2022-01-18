@@ -207,10 +207,10 @@ public class MessageService {
 	public void sendMessageToUserTCP(String message, String mac) {
 		if (activeChat.sendMessage(message)) {
 			if (this.shouldUseDatabase) {
-				HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, new Message(message, false));
+				HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, new Message(message, myMac));
 				System.out.println("message saved to database");
 			}
-			handleNewUserMessage(mac, new Message(message, false));
+			handleNewUserMessage(mac, new Message(message, myMac));
 			System.out.println("message " + message + " sent to user " + mac);
 		} else {
 			chatView.showErrorMessage("User disconnected");

@@ -42,7 +42,7 @@ public class ServerTCPThread extends Thread {
             while (running) {
                 try {
                     String messageText = in.readUTF();
-                    Message message = new Message(messageText, true);
+                    Message message = new Message(messageText, this.clientMAC);
                     this.messageService.handleNewUserMessage(this.clientMAC, message);
                     System.out.println("message " + messageText + " received from user " + this.clientMAC);
                 } catch (SocketTimeoutException e) {
