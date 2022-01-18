@@ -78,7 +78,7 @@ public class MessageService {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
 			String old_nickname = usersList.get(userMAC).getNickname();
-			if(!old_nickname.equals(new_nickname)){
+			if(!new_nickname.equals(old_nickname)){
 				usersList.get(userMAC).setNickname(new_nickname);
 				this.chatView.updateSelectedUserNickname(old_nickname, new_nickname);
 			}
