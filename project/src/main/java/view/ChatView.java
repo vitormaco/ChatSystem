@@ -239,12 +239,11 @@ public class ChatView extends BaseView implements ActionListener {
 
 	private void logoutProcess() {
 		this.messageService.notifyUserStateChanged(MessagePDU.Status.DISCONNECTION);
-		this.messageService.disconnectServer();
 	}
 
 	private void handleLogoutButton() {
 		this.logoutProcess();
-		new LoginView(new MessageService());
+		new LoginView(this.messageService);
 		dispose();
 	}
 
