@@ -86,19 +86,13 @@ public class MessageService {
 			}
 		}
 
-		updateConnectedUsersFrontend();
+		this.chatView.updateConnectedUsersList();
 	}
 
 	public void deleteLoggedoutUser(String id) {
 		System.out.println("DELETED USER " + id);
 		usersList.remove(id);
-		updateConnectedUsersFrontend();
-	}
-
-	private void updateConnectedUsersFrontend() {
-		if (this.chatView != null) {
-			this.chatView.updateConnectedUsersList();
-		}
+		this.chatView.updateConnectedUsersList();
 	}
 
 	public void handleNewUserMessage(String mac, Message message) {
@@ -167,14 +161,7 @@ public class MessageService {
 	}
 
 	public ArrayList<Message> getUserMessages(String mac) {
-		ArrayList<Message> messagesInHistory =
-			HistoryService.getHistory(myMac, mac);
-
 		if (usersList.containsKey(mac)) {
-			usersList.get(mac).getMessages().clear();
-			for (Message msg : messagesInHistory) {
-				usersList.get(mac).addMessage(msg);
-			}
 			return usersList.get(mac).getMessages();
 		}
 
@@ -190,10 +177,20 @@ public class MessageService {
 			if (activeChat != null) {
 				activeChat.closeSocket();
 			}
-			if(this.usersList.containsKey(mac)){
+			if (this.usersList.containsKey(mac)) {
 				String hostname = usersList.get(mac).getAddressIp();
 				int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
 				activeChat = new ClientTCP(hostname, tcpPort, this.myMac, this.nickname, NetworkUtils.getIPAddress());
+			}
+			if (this.shouldUseDatabase) {
+				ArrayList<Message> messagesInHistory = HistoryService.getHistory(myMac, mac);
+				System.out.println("retrieved messages from database");
+
+				usersList.get(mac).getMessages().clear();
+				for (Message msg : messagesInHistory) {
+					usersList.get(mac).addMessage(msg);
+				}
+				this.chatView.updateSelectedUserMessages();
 			}
 		} catch (ConnectException e) {
 			chatView.showErrorMessage("User disconnected");

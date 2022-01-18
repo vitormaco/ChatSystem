@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import models.Message;
-import models.MessagePDU;
 
 public class HistoryService {
 	static private Connection connectionSingleton;
