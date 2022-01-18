@@ -43,7 +43,6 @@ public class ChatView extends BaseView implements ActionListener {
 		setActionListeners();
 		setWindowListeners();
 		updateConnectedUsersList();
-		this.messageService.notifyUserStateChanged(MessagePDU.Status.CONNECTION);
 		this.messageService.notifyUserStateChanged(MessagePDU.Status.DISCOVER);
 	}
 

@@ -159,6 +159,7 @@ public class MessageService {
 		} else if (status == MessagePDU.Status.DISCONNECTION) {
 			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
+			this.addOrUpdateUser(mac, nickname, address);
 			this.sendMyNickname(message);
 		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
 			this.addOrUpdateUser(mac, nickname, address);
