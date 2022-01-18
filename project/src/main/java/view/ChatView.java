@@ -279,4 +279,8 @@ public class ChatView extends BaseView implements ActionListener {
 		}
 		// connectedUsersJList.updateUI();
 	}
+
+	public void handleUserDisconnection(){
+		JOptionPane.showMessageDialog(this, "User disconnected");
+	}
 }

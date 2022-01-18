@@ -21,13 +21,16 @@ public class ClientTCP {
         }
     }
 
-    public void sendMessage(String message) {
+    public boolean sendMessage(String message) {
         try {
             out.writeUTF(message);
             out.flush();
+            return true;
+        } catch (SocketException e) {
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Exception thrown when sendMessage client TCP");
+            return false;
         }
     }
 
