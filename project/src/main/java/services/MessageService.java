@@ -80,7 +80,7 @@ public class MessageService {
 			String old_nickname = usersList.get(userMAC).getNickname();
 			if(!old_nickname.equals(new_nickname)){
 				usersList.get(userMAC).setNickname(new_nickname);
-				this.chatView.updateSelectedUser(old_nickname, new_nickname);
+				this.chatView.updateSelectedUserNickname(old_nickname, new_nickname);
 			}
 		}
 

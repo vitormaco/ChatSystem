@@ -189,7 +189,7 @@ public class ChatView extends BaseView implements ActionListener {
 		messagesList.repaint();
 	}
 
-	public void updateSelectedUser(String old_nickname, String new_nickname){
+	public void updateSelectedUserNickname(String old_nickname, String new_nickname){
 		if(this.currentSelectedUser.equals(old_nickname)){
 			this.currentSelectedUser = new_nickname;
 			currentSelectedUserLabel.setText(currentSelectedUser);
