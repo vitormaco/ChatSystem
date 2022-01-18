@@ -21,6 +21,7 @@ public class MessageService {
 	private Dotenv dotenv = Dotenv.load();
 	private String myMac = NetworkUtils.getLocalMACAdress();
 	private boolean shouldUseDatabase = !dotenv.get("USE_DATABASE").isBlank();
+	private ImAliveService aliveService;
 
 	public MessageService() {
 		this.usersList = new HashMap<String, UserMessages>();
@@ -28,6 +29,7 @@ public class MessageService {
 		this.listener.start();
 		this.listenerTCP = this.getListenerTCPThread();
 		this.listenerTCP.start();
+		this.aliveService = new ImAliveService(this);
 	}
 
 	public boolean isConnected() {
@@ -122,6 +124,9 @@ public class MessageService {
 	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
+			if (state == MessagePDU.Status.CONNECTION) {
+				this.aliveService.start();
+			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
