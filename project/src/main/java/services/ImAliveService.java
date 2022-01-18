@@ -4,14 +4,14 @@ import models.MessagePDU;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class KeepAliveService extends Thread {
+public class ImAliveService extends Thread {
 
     private boolean running;
     private MessageService messageService;
     private Dotenv dotenv = Dotenv.load();
     private int aliveTime = Integer.parseInt(dotenv.get("ALIVE_TIME"));
 
-    public KeepAliveService(MessageService messageService) {
+    public ImAliveService(MessageService messageService) {
         this.messageService = messageService;
     }
 
