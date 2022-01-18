@@ -45,6 +45,7 @@ public class MessageService {
 	}
 
 	public void notifyUserStateChanged(MessagePDU.Status status) {
+		System.out.println("broadcast sent of type: " + status);
 		String serializedObject;
 
 		serializedObject = new MessagePDU(this.nickname)
@@ -150,6 +151,8 @@ public class MessageService {
 		String mac = message.getSourceMAC();
 		String nickname = message.getSourceNickname();
 		String address = message.getSourceAddress();
+
+		System.out.println("broadcast received of type: " + status);
 
 		if (status == MessagePDU.Status.CONNECTION) {
 			this.addOrUpdateUser(mac, nickname, address);
