@@ -86,13 +86,17 @@ public class MessageService {
 			}
 		}
 
-		this.chatView.updateConnectedUsersList();
+		if (this.chatView != null) {
+			this.chatView.updateConnectedUsersList();
+		}
 	}
 
 	public void deleteLoggedoutUser(String id) {
 		System.out.println("DELETED USER " + id);
 		usersList.remove(id);
-		this.chatView.updateConnectedUsersList();
+		if (this.chatView != null) {
+			this.chatView.updateConnectedUsersList();
+		}
 	}
 
 	public void handleNewUserMessage(String mac, Message message) {
