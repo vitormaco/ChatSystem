@@ -63,7 +63,7 @@ public class MessageService {
 	}
 
 	public String getMACByNickname(String nickname) {
-		HashMap<String,String> users = getAllActiveUsers();
+		HashMap<String, String> users = getAllActiveUsers();
 		if (users.containsKey(nickname))
 			return users.get(nickname);
 		return null;
@@ -79,7 +79,7 @@ public class MessageService {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
 			String old_nickname = usersList.get(userMAC).getNickname();
-			if(!new_nickname.equals(old_nickname)){
+			if (!new_nickname.equals(old_nickname)) {
 				usersList.get(userMAC).setNickname(new_nickname);
 				this.chatView.updateSelectedUserNickname(old_nickname, new_nickname);
 			}
@@ -195,11 +195,12 @@ public class MessageService {
 	}
 
 	public void sendMessageToUserTCP(String message, String mac) {
-		if(activeChat.sendMessage(message)){
+		if (activeChat.sendMessage(message)) {
 			handleNewUserMessage(mac, new Message(message, false));
 			System.out.println("message " + message + " sent to user " + mac);
-		}else {
+		} else {
 			chatView.showErrorMessage("User disconnected");
+			this.deleteLoggedoutUser(mac);
 		}
 
 	}
