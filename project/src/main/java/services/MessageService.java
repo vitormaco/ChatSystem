@@ -103,10 +103,6 @@ public class MessageService {
 
 	public void handleNewUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
-		if (this.shouldUseDatabase) {
-			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
-			System.out.println("message saved to database");
-		}
 
 		if (this.chatView != null && mac.equals(this.chatView.getSelectedUserMAC())) {
 			this.chatView.updateSelectedUserMessages();
@@ -200,6 +196,10 @@ public class MessageService {
 
 	public void sendMessageToUserTCP(String message, String mac) {
 		if (activeChat.sendMessage(message)) {
+			if (this.shouldUseDatabase) {
+				HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, new Message(message, false));
+				System.out.println("message saved to database");
+			}
 			handleNewUserMessage(mac, new Message(message, false));
 			System.out.println("message " + message + " sent to user " + mac);
 		} else {
