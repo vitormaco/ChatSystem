@@ -182,9 +182,11 @@ public class MessageService {
 			if (activeChat != null) {
 				activeChat.closeSocket();
 			}
-			String hostname = usersList.get(mac).getAddressIp();
-			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
-			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+			if(this.usersList.containsKey(mac)){
+				String hostname = usersList.get(mac).getAddressIp();
+				int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+				activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+			}
 		} catch (ConnectException e) {
 			chatView.showErrorMessage("User disconnected");
 			this.deleteLoggedoutUser(mac);
