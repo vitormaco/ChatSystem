@@ -273,10 +273,15 @@ public class ChatView extends BaseView implements ActionListener {
 		for (String user : messageService.getAllActiveUsers().keySet()) {
 			connectedUsers.addElement(user);
 		}
+		if (!connectedUsers.contains(currentSelectedUser)) {
+			currentSelectedUser = "";
+			currentSelectedUserLabel.setText(currentSelectedUser);
+			updateSelectedUserMessages();
+		}
 		System.out.println("users connected: " + connectedUsers);
 	}
 
-	public void handleUserDisconnection(){
-		JOptionPane.showMessageDialog(this, "User disconnected");
+	public void showErrorMessage(String message){
+		JOptionPane.showMessageDialog(this, message);
 	}
 }

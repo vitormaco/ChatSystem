@@ -5,6 +5,7 @@ import utils.NetworkUtils;
 import models.Message;
 import models.MessagePDU;
 
+import java.net.ConnectException;
 import java.util.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -193,6 +194,9 @@ public class MessageService {
 			String hostname = usersList.get(mac).getAddressIp();
 			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
 			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+		} catch (ConnectException e) {
+			chatView.showErrorMessage("User disconnected");
+			this.deleteLoggedoutUser(mac);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -204,7 +208,7 @@ public class MessageService {
 			receiveUserMessage(mac, new Message(message, false));
 			System.out.println("Me: " + " Message: " + message);
 		}else {
-			chatView.handleUserDisconnection();
+			chatView.showErrorMessage("User disconnected");
 		}
 
 	}
