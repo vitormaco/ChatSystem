@@ -134,21 +134,6 @@ public class MessageService {
 		}
 	}
 
-	public void disconnectServer() {
-		this.listener.setRunning(false);
-		this.listenerTCP.setRunning(false);
-		this.aliveService.setRunning(false);
-
-		while (this.listener.isAlive())
-			;
-
-		while (this.listenerTCP.isAlive())
-			;
-
-		while (this.aliveService.isAlive())
-			;
-	}
-
 	public void receiveBroadcastMessage(MessagePDU message) {
 		MessagePDU.Status status = message.getStatus();
 		String mac = message.getSourceMAC();
