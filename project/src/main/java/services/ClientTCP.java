@@ -2,8 +2,6 @@ package services;
 
 import java.net.*;
 
-import javax.print.DocFlavor.STRING;
-
 import java.io.*;
 
 public class ClientTCP {
