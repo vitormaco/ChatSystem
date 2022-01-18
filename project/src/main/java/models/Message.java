@@ -13,6 +13,12 @@ public class Message {
 		senderMac = mac;
 	}
 
+	public Message(String message, String mac, Timestamp t) {
+		timestamp = t;
+		content = message;
+		senderMac = mac;
+	}
+
 	public String getContent() {
 		return content;
 	}

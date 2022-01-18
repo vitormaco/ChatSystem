@@ -43,7 +43,7 @@ public class HistoryService {
 
 			ArrayList<Message> messages = new ArrayList<Message>();
 			while (rs.next()) {
-				messages.add(new Message(rs.getString("content"), rs.getString("source_id")));
+				messages.add(new Message(rs.getString("content"), rs.getString("source_id"), rs.getTimestamp("time_sent")));
 			}
 
 			statement.close();
