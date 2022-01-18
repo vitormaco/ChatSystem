@@ -87,7 +87,6 @@ public class MessageService {
 	}
 
 	private void updateUserNickname(String userMAC, String new_nickname, String addressIp) {
-		String old_nickname = usersList.get(userMAC).getNickname();
 		if (userMAC.equals(myMac)) {
 			return;
 		}
@@ -95,11 +94,12 @@ public class MessageService {
 		if (!this.usersList.containsKey(userMAC)) {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
+			String old_nickname = usersList.get(userMAC).getNickname();
 			usersList.get(userMAC).setNickname(new_nickname);
+			this.chatView.updateSelectedUser(old_nickname, new_nickname);
 		}
 
 		updateConnectedUsersFrontend();
-		this.chatView.updateSelectedUser(old_nickname, new_nickname);
 	}
 
 	public void deleteLoggedoutUser(String id) {
@@ -221,6 +221,6 @@ public class MessageService {
 		}else {
 			chatView.handleUserDisconnection();
 		}
-		
+
 	}
 }
