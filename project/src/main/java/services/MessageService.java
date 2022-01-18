@@ -100,7 +100,7 @@ public class MessageService {
 		}
 	}
 
-	public void receiveUserMessage(String mac, Message message) {
+	public void handleNewUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
 		if (this.shouldUseDatabase) {
 			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
@@ -196,8 +196,8 @@ public class MessageService {
 
 	public void sendMessageToUserTCP(String message, String mac) {
 		if(activeChat.sendMessage(message)){
-			receiveUserMessage(mac, new Message(message, false));
-			System.out.println("Me: " + " Message: " + message);
+			handleNewUserMessage(mac, new Message(message, false));
+			System.out.println("message " + message + " sent to user " + mac);
 		}else {
 			chatView.showErrorMessage("User disconnected");
 		}
