@@ -30,6 +30,7 @@ public class MessageService {
 		this.listenerTCP = this.getListenerTCPThread();
 		this.listenerTCP.start();
 		this.aliveService = new ImAliveService(this);
+		this.aliveService.start();
 	}
 
 	public boolean isConnected() {
@@ -124,9 +125,6 @@ public class MessageService {
 	public boolean validateAndAssingUserNickname(String nickname, MessagePDU.Status state) {
 		if (this.isNicknameAvailable(nickname)) {
 			this.nickname = nickname;
-			if (state == MessagePDU.Status.CONNECTION) {
-				this.aliveService.start();
-			}
 			this.notifyUserStateChanged(state);
 			return true;
 		} else {
