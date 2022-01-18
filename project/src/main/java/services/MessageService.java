@@ -5,6 +5,7 @@ import utils.NetworkUtils;
 import models.Message;
 import models.MessagePDU;
 
+import java.net.ConnectException;
 import java.util.*;
 
 import io.github.cdimascio.dotenv.Dotenv;
@@ -44,6 +45,7 @@ public class MessageService {
 	}
 
 	public void notifyUserStateChanged(MessagePDU.Status status) {
+		System.out.println("broadcast sent of type: " + status);
 		String serializedObject;
 
 		serializedObject = new MessagePDU(this.nickname)
@@ -62,13 +64,13 @@ public class MessageService {
 	}
 
 	public String getMACByNickname(String nickname) {
-		HashMap<String,String> users = getAllActiveUsers();
+		HashMap<String, String> users = getAllActiveUsers();
 		if (users.containsKey(nickname))
 			return users.get(nickname);
 		return null;
 	}
 
-	private void addNewLoggedUser(String userMAC, String new_nickname, String addressIp) {
+	private void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
@@ -78,28 +80,13 @@ public class MessageService {
 			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
 		} else {
 			String old_nickname = usersList.get(userMAC).getNickname();
-			if(!old_nickname.equals(new_nickname)){
+			if (!new_nickname.equals(old_nickname)) {
 				usersList.get(userMAC).setNickname(new_nickname);
+				this.chatView.updateSelectedUserNickname(old_nickname, new_nickname);
 			}
 		}
 
 		updateConnectedUsersFrontend();
-	}
-
-	private void updateUserNickname(String userMAC, String new_nickname, String addressIp) {
-		String old_nickname = usersList.get(userMAC).getNickname();
-		if (userMAC.equals(myMac)) {
-			return;
-		}
-
-		if (!this.usersList.containsKey(userMAC)) {
-			usersList.put(userMAC, new UserMessages(new_nickname, addressIp));
-		} else {
-			usersList.get(userMAC).setNickname(new_nickname);
-		}
-
-		updateConnectedUsersFrontend();
-		this.chatView.updateSelectedUser(old_nickname, new_nickname);
 	}
 
 	public void deleteLoggedoutUser(String id) {
@@ -114,7 +101,7 @@ public class MessageService {
 		}
 	}
 
-	public void receiveUserMessage(String mac, Message message) {
+	public void handleNewUserMessage(String mac, Message message) {
 		usersList.get(mac).addMessage(message);
 		if (this.shouldUseDatabase) {
 			HistoryService.saveMessage(NetworkUtils.getLocalMACAdress(), mac, message);
@@ -132,15 +119,6 @@ public class MessageService {
 				.serialize();
 
 		NetworkUtils.sendUnicastMessage(serializedObject, message.getSourceAddress());
-	}
-
-	public void sendMessageToUser(String message, String mac) {
-		String serializedObject;
-		serializedObject = new MessagePDU(this.nickname)
-				.withStatus(MessagePDU.Status.MESSAGE)
-				.withMessageContent(message)
-				.serialize();
-		NetworkUtils.sendBroadcastMessage(serializedObject);
 	}
 
 	private boolean isNicknameAvailable(String nickname) {
@@ -174,14 +152,17 @@ public class MessageService {
 		String nickname = message.getSourceNickname();
 		String address = message.getSourceAddress();
 
+		System.out.println("broadcast received of type: " + status);
+
 		if (status == MessagePDU.Status.CONNECTION) {
-			this.addNewLoggedUser(mac, nickname, address);
+			this.addOrUpdateUser(mac, nickname, address);
 		} else if (status == MessagePDU.Status.DISCONNECTION) {
 			this.deleteLoggedoutUser(mac);
 		} else if (status == MessagePDU.Status.DISCOVER) {
+			this.addOrUpdateUser(mac, nickname, address);
 			this.sendMyNickname(message);
 		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
-			this.updateUserNickname(mac, nickname, address);
+			this.addOrUpdateUser(mac, nickname, address);
 		}
 	}
 
@@ -208,6 +189,9 @@ public class MessageService {
 			String hostname = usersList.get(mac).getAddressIp();
 			int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
 			activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+		} catch (ConnectException e) {
+			chatView.showErrorMessage("User disconnected");
+			this.deleteLoggedoutUser(mac);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return;
@@ -215,8 +199,13 @@ public class MessageService {
 	}
 
 	public void sendMessageToUserTCP(String message, String mac) {
-		activeChat.sendMessage(message);
-		receiveUserMessage(mac, new Message(message, false));
-		System.out.println("Me: " + " Message: " + message);
+		if (activeChat.sendMessage(message)) {
+			handleNewUserMessage(mac, new Message(message, false));
+			System.out.println("message " + message + " sent to user " + mac);
+		} else {
+			chatView.showErrorMessage("User disconnected");
+			this.deleteLoggedoutUser(mac);
+		}
+
 	}
 }

@@ -43,7 +43,6 @@ public class ChatView extends BaseView implements ActionListener {
 		setActionListeners();
 		setWindowListeners();
 		updateConnectedUsersList();
-		this.messageService.notifyUserStateChanged(MessagePDU.Status.CONNECTION);
 		this.messageService.notifyUserStateChanged(MessagePDU.Status.DISCOVER);
 	}
 
@@ -145,8 +144,6 @@ public class ChatView extends BaseView implements ActionListener {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
 					updateSelectedUserMessages();
 					String userMAC = getSelectedUserMAC();
-					System.out.println("aaaaaaa");
-					System.out.println(userMAC);
 					messageService.createTCPConnection(userMAC);
 				}
 			}
@@ -191,7 +188,7 @@ public class ChatView extends BaseView implements ActionListener {
 		messagesList.repaint();
 	}
 
-	public void updateSelectedUser(String old_nickname, String new_nickname){
+	public void updateSelectedUserNickname(String old_nickname, String new_nickname){
 		if(this.currentSelectedUser.equals(old_nickname)){
 			this.currentSelectedUser = new_nickname;
 			currentSelectedUserLabel.setText(currentSelectedUser);
@@ -271,12 +268,19 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	public void updateConnectedUsersList() {
-		System.out.println("UPDATE UI");
-		System.out.println(connectedUsers);
 		connectedUsers.clear();
 		for (String user : messageService.getAllActiveUsers().keySet()) {
 			connectedUsers.addElement(user);
 		}
-		// connectedUsersJList.updateUI();
+		if (!connectedUsers.contains(currentSelectedUser)) {
+			currentSelectedUser = "";
+			currentSelectedUserLabel.setText(currentSelectedUser);
+			updateSelectedUserMessages();
+		}
+		System.out.println("users connected: " + connectedUsers);
+	}
+
+	public void showErrorMessage(String message){
+		JOptionPane.showMessageDialog(this, message);
 	}
 }

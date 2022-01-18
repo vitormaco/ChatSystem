@@ -36,10 +36,10 @@ public class ServerTCPThread extends Thread {
         try {
             while (running) {
                 try {
-                    String clientContent = in.readUTF();
-                    Message message = new Message(clientContent, true);
-                    this.messageService.receiveUserMessage(this.clientMAC, message);
-                    System.out.println("Client: " + " Message: " + clientContent);
+                    String messageText = in.readUTF();
+                    Message message = new Message(messageText, true);
+                    this.messageService.handleNewUserMessage(this.clientMAC, message);
+                    System.out.println("message " + messageText + " received from user " + this.clientMAC);
                 } catch (SocketTimeoutException e) {
                     continue;
                 }
