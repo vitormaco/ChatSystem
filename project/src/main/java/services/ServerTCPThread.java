@@ -13,6 +13,8 @@ public class ServerTCPThread extends Thread {
     private boolean running;
     private DataInputStream in;
     private String clientMAC;
+    private String nickname;
+    private String ip;
     private MessageService messageService;
     private Dotenv dotenv = Dotenv.load();
     private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
@@ -24,7 +26,10 @@ public class ServerTCPThread extends Thread {
             this.serverClient.setSoTimeout(timeout);
             this.in = new DataInputStream(serverClient.getInputStream());
             this.clientMAC = this.in.readUTF();
-            System.out.println("New connection with client: " + this.clientMAC);
+            this.nickname = this.in.readUTF();
+            this.ip = this.in.readUTF();
+            System.out.println("New connection with client: " + this.clientMAC  + " nickname: "+ this.nickname + " ip: " +this.ip);
+            this.messageService.addOrUpdateUser(this.clientMAC, this.nickname, this.ip);
         } catch (IOException e) {
             System.out.println("Error while creating DIS Server TCP Thread");
         }

@@ -70,7 +70,7 @@ public class MessageService {
 		return null;
 	}
 
-	private void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
+	public void addOrUpdateUser(String userMAC, String new_nickname, String addressIp) {
 
 		if (userMAC.equals(myMac)) {
 			return;
@@ -185,7 +185,7 @@ public class MessageService {
 			if(this.usersList.containsKey(mac)){
 				String hostname = usersList.get(mac).getAddressIp();
 				int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
-				activeChat = new ClientTCP(hostname, tcpPort, this.myMac);
+				activeChat = new ClientTCP(hostname, tcpPort, this.myMac, this.nickname, NetworkUtils.getIPAddress());
 			}
 		} catch (ConnectException e) {
 			chatView.showErrorMessage("User disconnected");
