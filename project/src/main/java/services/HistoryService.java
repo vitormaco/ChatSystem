@@ -8,33 +8,30 @@ import models.Message;
 import models.MessagePDU;
 
 public class HistoryService {
-	static private Connection conn = null;
+	static private Connection connectionSingleton;
 	static private Dotenv dotenv = Dotenv.load();
-	static private HistoryService historyService = null;
 
-	private HistoryService() {
-		try {
-			conn = DriverManager.getConnection(
-					"jdbc:" + dotenv.get("DATABASE_HOST"),
-					dotenv.get("DATABASE_USER"),
-					dotenv.get("DATABASE_PASSWORD"));
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Error connecting to database");
-		}
-	}
+	static public Connection getConnection() {
 
-	static public HistoryService singletonCheck() {
-		if (historyService == null) {
-			historyService = new HistoryService();
+		if (connectionSingleton == null) {
+			try {
+				connectionSingleton = DriverManager.getConnection(
+						"jdbc:" + dotenv.get("DATABASE_HOST"),
+						dotenv.get("DATABASE_USER"),
+						dotenv.get("DATABASE_PASSWORD"));
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Error connecting to database");
+			}
 		}
-		return historyService;
+
+		return connectionSingleton;
 	}
 
 	static public ArrayList<Message> getHistory() {
-		singletonCheck();
+		Connection conn = getConnection();
 		try {
-			String query = "SELECT * FROM test";
+			String query = "SELECT * FROM messages";
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
 			ArrayList<Message> messages = new ArrayList<Message>();
@@ -53,7 +50,7 @@ public class HistoryService {
 	}
 
 	static public void saveMessage(String source, String dest, Message message) {
-		singletonCheck();
+		Connection conn = getConnection();
 		try {
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO messages (time_sent, content, source_id, destination_id) VALUES(?,?,?,?)");
