@@ -120,15 +120,6 @@ public class MessageService {
 		NetworkUtils.sendUnicastMessage(serializedObject, message.getSourceAddress());
 	}
 
-	public void sendMessageToUser(String message, String mac) {
-		String serializedObject;
-		serializedObject = new MessagePDU(this.nickname)
-				.withStatus(MessagePDU.Status.MESSAGE)
-				.withMessageContent(message)
-				.serialize();
-		NetworkUtils.sendBroadcastMessage(serializedObject);
-	}
-
 	private boolean isNicknameAvailable(String nickname) {
 		return !this.getAllActiveUsers().containsKey(nickname);
 	}
