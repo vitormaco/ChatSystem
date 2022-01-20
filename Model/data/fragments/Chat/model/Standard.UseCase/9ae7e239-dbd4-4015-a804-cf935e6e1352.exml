@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Start Conversation" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Open Conversation" version="4">
   <OBJECT>
-    <ID name="Start Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
+    <ID name="Open Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
     <PID name="chat" mc="Standard.Package" uid="cfa53605-1d69-4429-9890-f770057fc4a4"/>
     <ATTRIBUTES>
       <ATT name="IsElementary">false</ATT>
@@ -9,7 +9,7 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[Start Conversation]]></ATT>
+      <ATT name="Name"><![CDATA[Open Conversation]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>

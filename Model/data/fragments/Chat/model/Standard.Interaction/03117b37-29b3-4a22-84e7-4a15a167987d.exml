@@ -516,7 +516,7 @@
         </OBJECT>
       </COMP>
       <COMP relation="Product">
-        <COMPID name="Diagramme de séquence Interaction" mc="Standard.SequenceDiagram" uid="12c99ec4-7980-472b-888d-817738b0f6d9"/>
+        <COMPID name="Sequence diagram update active users" mc="Standard.SequenceDiagram" uid="12c99ec4-7980-472b-888d-817738b0f6d9"/>
       </COMP>
     </DEPENDENCIES>
   </OBJECT>

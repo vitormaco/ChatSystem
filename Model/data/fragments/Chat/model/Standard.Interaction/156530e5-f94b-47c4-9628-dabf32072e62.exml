@@ -2,7 +2,7 @@
 <!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Interaction" version="4">
   <OBJECT>
     <ID name="Interaction" mc="Standard.Interaction" uid="156530e5-f94b-47c4-9628-dabf32072e62"/>
-    <PID name="Finish Conversation" mc="Standard.UseCase" uid="4e52d3ff-ff9a-4724-85b9-130a332c378c"/>
+    <PID name="End Session" mc="Standard.UseCase" uid="4e52d3ff-ff9a-4724-85b9-130a332c378c"/>
     <ATTRIBUTES>
       <ATT name="IsReentrant">false</ATT>
       <ATT name="Name"><![CDATA[Interaction]]></ATT>
@@ -297,7 +297,7 @@
                   </LINK>
                   <LINK relation="Invoked">
                     <REFOBJ>
-                      <ID name="saveMessageHistory" mc="Standard.Operation" uid="4655496d-8614-4be6-8802-9169d79c028b"/>
+                      <ID name="saveMessage" mc="Standard.Operation" uid="4655496d-8614-4be6-8802-9169d79c028b"/>
                     </REFOBJ>
                   </LINK>
                 </DEPENDENCIES>

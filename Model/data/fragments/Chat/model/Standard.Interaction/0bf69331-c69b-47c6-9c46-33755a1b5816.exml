@@ -2,7 +2,7 @@
 <!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Interaction" version="4">
   <OBJECT>
     <ID name="Interaction" mc="Standard.Interaction" uid="0bf69331-c69b-47c6-9c46-33755a1b5816"/>
-    <PID name="Start Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
+    <PID name="Open Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
     <ATTRIBUTES>
       <ATT name="IsReentrant">false</ATT>
       <ATT name="Name"><![CDATA[Interaction]]></ATT>
