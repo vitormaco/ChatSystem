@@ -17,21 +17,21 @@
     <DEPENDENCIES>
       <COMP relation="OwnedOperation">
         <OBJECT>
-          <ID name="renderLoginView" mc="Standard.Operation" uid="ce998087-b545-44ff-b9c5-4f592b11ba69"/>
+          <ID name="buildPanel" mc="Standard.Operation" uid="ce998087-b545-44ff-b9c5-4f592b11ba69"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
             <ATT name="Passing">MethodOut</ATT>
-            <ATT name="Visibility">Public</ATT>
+            <ATT name="Visibility">Private</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[renderLoginView]]></ATT>
+            <ATT name="Name"><![CDATA[buildPanel]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
         <OBJECT>
-          <ID name="connectNewUser" mc="Standard.Operation" uid="5cfb0afd-2dc3-4a78-a145-1ac6b79af715"/>
+          <ID name="handleLogIn" mc="Standard.Operation" uid="5cfb0afd-2dc3-4a78-a145-1ac6b79af715"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
@@ -39,7 +39,7 @@
             <ATT name="Visibility">Public</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[connectNewUser]]></ATT>
+            <ATT name="Name"><![CDATA[handleLogIn]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
@@ -94,18 +94,68 @@
           </DEPENDENCIES>
         </OBJECT>
         <OBJECT>
-          <ID name="showFailedLoginMessage" mc="Standard.Operation" uid="cb56f016-feaf-4570-aaa3-5085c6c40040"/>
+          <ID name="setComponents" mc="Standard.Operation" uid="7cded14d-5565-415c-9a9d-536932d92228"/>
           <ATTRIBUTES>
             <ATT name="Concurrency">false</ATT>
             <ATT name="Final">false</ATT>
             <ATT name="Passing">MethodOut</ATT>
-            <ATT name="Visibility">Public</ATT>
+            <ATT name="Visibility">Private</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[showFailedLoginMessage]]></ATT>
+            <ATT name="Name"><![CDATA[setComponents]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="OwnedAttribute">
+        <OBJECT>
+          <ID name="loginButton" mc="Standard.Attribute" uid="d8c81e03-3ee8-4bd4-bb04-b13b2717adab"/>
+          <ATTRIBUTES>
+            <ATT name="TypeConstraint"></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="TargetIsClass">false</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[loginButton]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Type">
+              <ID name="JButton" mc="Standard.Class" uid="1ddab937-5559-489d-a405-35695c88eea0"/>
+            </LINK>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="nicknameTextField" mc="Standard.Attribute" uid="0d62db13-7716-4261-8252-145d6f95e152"/>
+          <ATTRIBUTES>
+            <ATT name="TypeConstraint"></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="TargetIsClass">false</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[nicknameTextField]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Type">
+              <ID name="JTextField" mc="Standard.Class" uid="5f93ebf4-0549-4f92-a694-82028d9beb70"/>
+            </LINK>
+          </DEPENDENCIES>
         </OBJECT>
       </COMP>
       <COMP relation="OwnedEnd">
@@ -168,6 +218,21 @@
             <COMP relation="Association">
               <COMPID name="" mc="Standard.Association" uid="b1508644-7ab7-4942-8920-3bee3d5fe071"/>
             </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="Parent">
+        <OBJECT>
+          <ID name="Generalization" mc="Standard.Generalization" uid="72a94651-2ddf-41d3-babb-ff7b8e8ef45f"/>
+          <ATTRIBUTES>
+            <ATT name="Discriminator"></ATT>
+            <ATT name="Name"><![CDATA[Generalization]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="SuperType">
+              <ID name="BaseView" mc="Standard.Class" uid="15839dba-3cf7-4d05-892f-ca3bb0649d7b"/>
+            </LINK>
           </DEPENDENCIES>
         </OBJECT>
       </COMP>

@@ -37,7 +37,7 @@
                   </LINK>
                   <LINK relation="Invoked">
                     <REFOBJ>
-                      <ID name="connectNewUser" mc="Standard.Operation" uid="5cfb0afd-2dc3-4a78-a145-1ac6b79af715"/>
+                      <ID name="handleLogIn" mc="Standard.Operation" uid="5cfb0afd-2dc3-4a78-a145-1ac6b79af715"/>
                     </REFOBJ>
                   </LINK>
                 </DEPENDENCIES>
@@ -524,11 +524,6 @@
                   <LINK relation="ReceiveEvent">
                     <REFOBJ>
                       <ID name="" mc="Standard.ExecutionOccurenceSpecification" uid="0062522e-1ecd-4dfe-a5eb-39826933e459"/>
-                    </REFOBJ>
-                  </LINK>
-                  <LINK relation="Invoked">
-                    <REFOBJ>
-                      <ID name="showFailedLoginMessage" mc="Standard.Operation" uid="cb56f016-feaf-4570-aaa3-5085c6c40040"/>
                     </REFOBJ>
                   </LINK>
                 </DEPENDENCIES>

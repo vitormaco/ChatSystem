@@ -20,17 +20,33 @@
         <COMPID name="User" mc="Standard.Actor" uid="47208184-cb02-4406-b880-783edc8a74b6"/>
         <COMPID name="Network" mc="Standard.Actor" uid="217f1646-83b5-439e-9444-12e73be9d50e"/>
         <COMPID name="Update active users" mc="Standard.UseCase" uid="0cc4eab1-80d8-4829-9c65-d469abda5249"/>
-        <COMPID name="Start Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
+        <COMPID name="Open Conversation" mc="Standard.UseCase" uid="9ae7e239-dbd4-4015-a804-cf935e6e1352"/>
         <COMPID name="Database" mc="Standard.Actor" uid="689b5493-96f7-4237-89c5-a5b0dc166146"/>
         <COMPID name="Retrieve history messages " mc="Standard.UseCase" uid="e202dd95-e55d-4c98-b781-9398000656b9"/>
-        <COMPID name="Finish Conversation" mc="Standard.UseCase" uid="4e52d3ff-ff9a-4724-85b9-130a332c378c"/>
+        <COMPID name="End Session" mc="Standard.UseCase" uid="4e52d3ff-ff9a-4724-85b9-130a332c378c"/>
         <COMPID name="Choose or change nickname" mc="Standard.UseCase" uid="ba3136f5-8704-492c-91d4-046988e88e90"/>
         <COMPID name="LoginView" mc="Standard.Class" uid="31f35923-3eaf-442b-8c14-af8b6ca437d2"/>
         <COMPID name="ChatView" mc="Standard.Class" uid="59c51e92-bc6f-4063-a8c4-c4978f621041"/>
         <COMPID name="MessageService" mc="Standard.Class" uid="67d0b9f1-4932-49de-9784-024f012e50e3"/>
         <COMPID name="MessageRepository" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
-        <COMPID name="UserMessages" mc="Standard.DataType" uid="4bde4f3a-09f4-4c96-9496-b9926ae65727"/>
-        <COMPID name="Message" mc="Standard.DataType" uid="bb79695a-9a73-47ed-affd-8d1873f566c3"/>
+        <COMPID name="BaseView" mc="Standard.Class" uid="15839dba-3cf7-4d05-892f-ca3bb0649d7b"/>
+        <COMPID name="JFrame" mc="Standard.Class" uid="1926c911-6adc-41d2-8816-2f26457c2266"/>
+        <COMPID name="JButton" mc="Standard.Class" uid="1ddab937-5559-489d-a405-35695c88eea0"/>
+        <COMPID name="JTextField" mc="Standard.Class" uid="5f93ebf4-0549-4f92-a694-82028d9beb70"/>
+        <COMPID name="JPanel" mc="Standard.Class" uid="3605af1f-7867-4f46-8824-58be32516cfe"/>
+        <COMPID name="JList" mc="Standard.Class" uid="c9e127e4-8241-45fd-8009-01481ddb3073"/>
+        <COMPID name="UserMessages" mc="Standard.Class" uid="e1c07280-dbc1-45c7-8cf6-a36c5e7e68bc"/>
+        <COMPID name="Message" mc="Standard.Class" uid="7bcd4560-cafa-4f85-a4ff-e44993ee1501"/>
+        <COMPID name="ClientTCP" mc="Standard.Class" uid="666df09f-2748-4800-8044-e61e4c11341c"/>
+        <COMPID name="NetworkUDPListener" mc="Standard.Class" uid="5e98aa1f-0115-41da-b9d4-f8b2985f1c1b"/>
+        <COMPID name="NetworkTCPListener" mc="Standard.Class" uid="0391bed8-5ad9-4f6b-953e-bb8dd513cc5d"/>
+        <COMPID name="ImAliveService" mc="Standard.Class" uid="4d90597b-e09a-48aa-8031-367690a803dc"/>
+        <COMPID name="MessagePDU" mc="Standard.Class" uid="01f4bb02-3b77-44fd-8635-da68a8877cd4"/>
+        <COMPID name="Socket" mc="Standard.Class" uid="a9db6e29-cd10-413d-a27e-a443a992a02d"/>
+        <COMPID name="DatagramSocket" mc="Standard.Class" uid="51c95040-04ff-4c84-a381-262599d57d31"/>
+        <COMPID name="ServerSocket" mc="Standard.Class" uid="340f461c-670a-4b26-b0cf-8d9d44de6593"/>
+        <COMPID name="ServerTCP" mc="Standard.Class" uid="02f9a049-6a61-4a9d-b481-4cc5d30d5fd4"/>
+        <COMPID name="Thread" mc="Standard.Class" uid="5a29ca84-d711-4e26-b5ac-37797dd3a976"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="Diagramme de cas d'utilisation chat" mc="Standard.UseCaseDiagram" uid="83f4b6f6-1b95-418e-ac3a-c373cb8ce290"/>
