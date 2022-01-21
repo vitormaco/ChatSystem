@@ -1,6 +1,5 @@
 package models;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import io.github.cdimascio.dotenv.Dotenv;
 public class UserMessages {

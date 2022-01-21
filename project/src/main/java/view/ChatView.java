@@ -140,7 +140,7 @@ public class ChatView extends BaseView implements ActionListener {
 	private void setMouseListeners() {
 		MouseListener selectUserListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() > 0) {
+				if (e.getClickCount() > 0 && !connectedUsers.isEmpty()) {
 					currentSelectedUser = connectedUsersJList.getSelectedValue();
 					updateSelectedUserMessages();
 					String userMAC = getSelectedUserMAC();
