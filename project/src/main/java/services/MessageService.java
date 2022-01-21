@@ -150,6 +150,22 @@ public class MessageService {
 		} else if (status == MessagePDU.Status.NICKNAME_CHANGED) {
 			this.addOrUpdateUser(mac, nickname, address);
 		}
+
+		this.setLastSeenAlive(mac);
+	}
+
+	private void setLastSeenAlive(String mac) {
+		if (this.usersList.containsKey(mac)) {
+			usersList.get(mac).resetLastSeenAlive();
+		}
+	}
+
+	public void checkAliveUsers() {
+		for (String mac : usersList.keySet()) {
+			if (usersList.get(mac).wasSeenRecently()) {
+				this.deleteLoggedoutUser(mac);
+			}
+		}
 	}
 
 	public String getMyNickname() {

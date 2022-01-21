@@ -31,6 +31,7 @@ public class ImAliveService extends Thread {
         while (running) {
             Thread.sleep(aliveTime);
             this.messageService.notifyUserStateChanged(MessagePDU.Status.CONNECTION);
+            this.messageService.checkAliveUsers();
         }
     }
 

@@ -1,15 +1,20 @@
 package models;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
-
+import io.github.cdimascio.dotenv.Dotenv;
 public class UserMessages {
 	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String nickname;
 	private String addressIp;
+	private long lastSeenAlive;
+	private Dotenv dotenv = Dotenv.load();
+	private int aliveTime = Integer.parseInt(dotenv.get("ALIVE_TIME"));
 
 	public UserMessages(String nickname, String adressIp) {
 		this.nickname = nickname;
 		this.addressIp = adressIp;
+		this.lastSeenAlive = System.currentTimeMillis();
 	}
 
 	public String getAddressIp() {
@@ -18,6 +23,14 @@ public class UserMessages {
 
 	public ArrayList<Message> getMessages() {
 		return messages;
+	}
+
+	public void resetLastSeenAlive() {
+		this.lastSeenAlive = System.currentTimeMillis();
+	}
+
+	public boolean wasSeenRecently() {
+		return (System.currentTimeMillis() - lastSeenAlive) > (aliveTime*2.5);
 	}
 
 	public void addMessage(Message message) {
