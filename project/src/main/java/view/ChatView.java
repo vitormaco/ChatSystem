@@ -28,6 +28,8 @@ public class ChatView extends BaseView implements ActionListener {
 	JLabel currentSelectedUserLabel = new JLabel(currentSelectedUser);
 	JButton logoutButton = new JButton();
 	JButton changeNicknameButton = new JButton();
+	JLabel searchBarLabel = new JLabel("Search messages");
+	JTextField searchBar = new JTextField();
 	JTextField writeMessageField = new JTextField();
 	JButton sendMessageButton = new JButton();
 
@@ -79,12 +81,22 @@ public class ChatView extends BaseView implements ActionListener {
 		topPanel.add(logoutButton,
 				new GridBagConstraints(0, 0, 1, 1, 1, 1,
 						GridBagConstraints.CENTER, GridBagConstraints.NONE,
-						new Insets(0, 0, 0, 0), 0, 0));
+						new Insets(10, 10, 10, 10), 0, 0));
 
 		topPanel.add(changeNicknameButton,
 				new GridBagConstraints(1, 0, 1, 1, 1, 1,
 						GridBagConstraints.CENTER, GridBagConstraints.NONE,
-						new Insets(0, 0, 0, 0), 0, 0));
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		topPanel.add(searchBarLabel,
+				new GridBagConstraints(2, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(10, 10, 10, 10), 0, 0));
+
+		topPanel.add(searchBar,
+				new GridBagConstraints(3, 0, 1, 1, 1, 1,
+						GridBagConstraints.CENTER, GridBagConstraints.NONE,
+						new Insets(10, 10, 10, 10), 200, 0));
 
 		// LEFT PANEL
 
@@ -152,6 +164,10 @@ public class ChatView extends BaseView implements ActionListener {
 	}
 
 	public void updateSelectedUserMessages() {
+		updateSelectedUserMessages("");
+	}
+
+	public void updateSelectedUserMessages(String filter) {
 		currentSelectedUserLabel.setText(currentSelectedUser);
 		String userMAC = getSelectedUserMAC();
 		ArrayList<Message> messages = this.messageService.getUserMessages(userMAC);
@@ -173,8 +189,15 @@ public class ChatView extends BaseView implements ActionListener {
 						GridBagConstraints.EAST, GridBagConstraints.VERTICAL,
 						new Insets(5, 100, 5, 5), 0, 0);
 			}
-
-			messagesList.add(createMessagePanel(messages.get(i)), c);
+			boolean shouldAddMessage =
+				// if there is no filter
+				filter == null
+				|| filter.isBlank()
+				// or if there is and the messages contains it
+				|| messages.get(i).getContent().contains(filter);
+			if (shouldAddMessage) {
+				messagesList.add(createMessagePanel(messages.get(i)), c);
+			}
 		}
 
 		JPanel verticalSpacing = new JPanel();
@@ -214,6 +237,7 @@ public class ChatView extends BaseView implements ActionListener {
 	private void setActionListeners() {
 		logoutButton.addActionListener(this);
 		changeNicknameButton.addActionListener(this);
+		searchBar.addActionListener(this);
 		sendMessageButton.addActionListener(this);
 		SwingUtilities.getRootPane(sendMessageButton).setDefaultButton(sendMessageButton);
 	}
@@ -234,6 +258,8 @@ public class ChatView extends BaseView implements ActionListener {
 			handleChangeNicknameButton();
 		} else if (e.getSource() == sendMessageButton) {
 			handleSendMessageButton();
+		} else if (e.getSource() == searchBar) {
+			updateSelectedUserMessages(searchBar.getText());
 		}
 	}
 
