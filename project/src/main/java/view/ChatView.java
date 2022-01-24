@@ -113,7 +113,7 @@ public class ChatView extends BaseView implements ActionListener {
 						new Insets(0, 0, 0, 0), 0, 5));
 
 		messagesList.setLayout(new GridBagLayout());
-		messagesList.setBackground(Color.GREEN);
+		messagesList.setBackground(new Color(224, 224, 224));
 		messageListScroll.setViewportView(messagesList);
 		rightPanel.add(messageListScroll,
 				new GridBagConstraints(0, 1, 2, 1, 1, 1,
