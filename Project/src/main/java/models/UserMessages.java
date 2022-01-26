@@ -1,14 +1,15 @@
 package models;
 
 import java.util.ArrayList;
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
+
 public class UserMessages {
 	private ArrayList<Message> messages = new ArrayList<Message>();
 	private String nickname;
 	private String addressIp;
 	private long lastSeenAlive;
-	private Dotenv dotenv = Dotenv.load();
-	private int aliveTime = Integer.parseInt(dotenv.get("ALIVE_TIME"));
+	private ConfigManager properties = new ConfigManager();
+	private int aliveTime = Integer.parseInt(properties.get("ALIVE_TIME"));
 
 	public UserMessages(String nickname, String adressIp) {
 		this.nickname = nickname;

@@ -2,14 +2,14 @@ package services;
 
 import models.MessagePDU;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 
 public class ImAliveService extends Thread {
 
     private boolean running;
     private MessageService messageService;
-    private Dotenv dotenv = Dotenv.load();
-    private int aliveTime = Integer.parseInt(dotenv.get("ALIVE_TIME"));
+    private ConfigManager properties = new ConfigManager();
+    private int aliveTime = Integer.parseInt(properties.get("ALIVE_TIME"));
 
     public ImAliveService(MessageService messageService) {
         this.messageService = messageService;

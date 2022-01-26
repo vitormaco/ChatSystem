@@ -3,10 +3,10 @@ package utils;
 import java.net.*;
 import java.util.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 
 public class NetworkUtils {
-	static Dotenv dotenv = Dotenv.load();
+	static ConfigManager properties = new ConfigManager();
 	static String networkIP = null;
 
 	public static String getLocalMACAdress() {
@@ -44,7 +44,7 @@ public class NetworkUtils {
 				while (a.hasMoreElements()) {
 					InetAddress addr = a.nextElement();
 					String ip = addr.getHostAddress();
-					if (ip.startsWith(dotenv.get("BASE_IP"))) {
+					if (ip.startsWith(properties.get("BASE_IP"))) {
 						return addr;
 					}
 				}
@@ -108,7 +108,7 @@ public class NetworkUtils {
 			DatagramSocket socket = new DatagramSocket();
 			InetAddress address = InetAddress.getByName(ip);
 			byte[] buf = msg.getBytes();
-			int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+			int broadcastPort = Integer.parseInt(properties.get("BROADCAST_PORT"));
 			DatagramPacket packet = new DatagramPacket(buf, buf.length, address, broadcastPort);
 			socket.send(packet);
 			socket.close();

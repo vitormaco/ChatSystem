@@ -2,7 +2,7 @@ package services;
 
 import java.net.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 
 import java.io.*;
 import models.Message;
@@ -16,8 +16,8 @@ public class ServerTCPThread extends Thread {
     private String nickname;
     private String ip;
     private MessageService messageService;
-    private Dotenv dotenv = Dotenv.load();
-    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
+    private ConfigManager properties = new ConfigManager();
+    private int timeout = Integer.parseInt(properties.get("SOCKETS_TIMEOUT"));
 
     ServerTCPThread(Socket s, MessageService messageService) {
         this.serverClient = s;

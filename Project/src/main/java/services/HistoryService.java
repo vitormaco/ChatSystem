@@ -3,20 +3,20 @@ package services;
 import java.sql.*;
 import java.util.ArrayList;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 import models.Message;
 
 public class HistoryService {
 	static private Connection connectionSingleton;
-	static private Dotenv dotenv = Dotenv.load();
+	static private ConfigManager properties = new ConfigManager();
 
 	static public Connection getConnection() {
 		if (connectionSingleton == null) {
 			try {
 				connectionSingleton = DriverManager.getConnection(
-						"jdbc:" + dotenv.get("DATABASE_HOST"),
-						dotenv.get("DATABASE_USER"),
-						dotenv.get("DATABASE_PASSWORD"));
+						"jdbc:" + properties.get("DATABASE_HOST"),
+						properties.get("DATABASE_USER"),
+						properties.get("DATABASE_PASSWORD"));
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error connecting to database");
