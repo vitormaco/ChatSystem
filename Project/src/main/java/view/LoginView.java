@@ -36,7 +36,7 @@ public class LoginView extends BaseView implements ActionListener {
     private void seticonLabel() {
         try {
             iconLabel.setSize(100, 100);
-            String imagePath = properties.get("STATIC_FOLDER") + "/login-icon.png";
+            String imagePath = "static/login-icon.png";
             ImageIcon originalIcon = new ImageIcon(imagePath);
             ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage()
                     .getScaledInstance(iconLabel.getWidth(), iconLabel.getHeight(), Image.SCALE_DEFAULT));

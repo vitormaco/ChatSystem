@@ -7,14 +7,15 @@ public class ConfigManager {
 
     private Map<String, String> properties = new HashMap<String, String>();
     private Properties mainProperties = new Properties();
-    private String path = "src/main/java/config.properties";
     private FileInputStream file;
 
     public ConfigManager(){
         try {
-            this.file = new FileInputStream(this.path);
-            this.mainProperties.load(this.file);
-            this.file.close();
+            InputStream is = ConfigManager.class.getResourceAsStream("config.properties");
+            // this.file = new FileInputStream("/config.properties");
+            this.mainProperties.load(is);
+            // this.file.close();
+            is.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
