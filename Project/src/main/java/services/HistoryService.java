@@ -10,25 +10,20 @@ public class HistoryService {
 	static private Connection connectionSingleton;
 	static private ConfigManager properties = new ConfigManager();
 
-	static public Connection getConnection() {
+	static public Connection getConnection() throws Exception {
 		if (connectionSingleton == null) {
-			try {
-				connectionSingleton = DriverManager.getConnection(
-					"jdbc:" + properties.get("DATABASE_HOST"),
-					properties.get("DATABASE_USER"),
-					properties.get("DATABASE_PASSWORD"));
-		} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Error connecting to database");
-			}
+			connectionSingleton = DriverManager.getConnection(
+				"jdbc:" + properties.get("DATABASE_HOST"),
+				properties.get("DATABASE_USER"),
+				properties.get("DATABASE_PASSWORD"));
 		}
 
 		return connectionSingleton;
 	}
 
 	static public ArrayList<Message> getHistory(String myMac, String otherUserMac) {
-		Connection conn = getConnection();
 		try {
+			Connection conn = getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 				"select * from messages where" +
 				"(source_id=? and destination_id=?) or" +
@@ -55,8 +50,8 @@ public class HistoryService {
 	}
 
 	static public void saveMessage(String source, String dest, Message message) {
-		Connection conn = getConnection();
 		try {
+			Connection conn = getConnection();
 			PreparedStatement statement = conn.prepareStatement(
 					"INSERT INTO messages (time_sent, content, source_id, destination_id) VALUES(?,?,?,?)");
 			statement.setTimestamp(1, message.getTimestamp());

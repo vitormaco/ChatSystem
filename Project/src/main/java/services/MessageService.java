@@ -182,6 +182,11 @@ public class MessageService {
 
 	public void setChatView() {
 		this.chatView = new ChatView(this);
+		try {
+			HistoryService.getConnection();
+		} catch (Exception e) {
+			chatView.showErrorMessage("Error connecting to database, please check your credentials");
+		}
 	}
 
 	public void createTCPConnection(String mac) {
