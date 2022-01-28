@@ -69,6 +69,8 @@
           <artifactId>maven-jar-plugin</artifactId>
           <version>3.0.2</version>
           <configuration>
+            <outputDirectory>./</outputDirectory>
+            <finalName>chatSystem</finalName>
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
