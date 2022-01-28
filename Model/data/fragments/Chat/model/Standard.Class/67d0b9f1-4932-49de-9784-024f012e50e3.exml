@@ -458,6 +458,59 @@
           </ATTRIBUTES>
           <DEPENDENCIES></DEPENDENCIES>
         </OBJECT>
+        <OBJECT>
+          <ID name="isConnected" mc="Standard.Operation" uid="392a3d4a-9c66-4adb-aab5-44965908729a"/>
+          <ATTRIBUTES>
+            <ATT name="Concurrency">false</ATT>
+            <ATT name="Final">false</ATT>
+            <ATT name="Passing">MethodOut</ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[isConnected]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <COMP relation="Return">
+              <OBJECT>
+                <ID name="p1" mc="Standard.Parameter" uid="cd3a37f2-8295-4cb0-8382-d81363b191a2"/>
+                <ATTRIBUTES>
+                  <ATT name="ParameterPassing">In</ATT>
+                  <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+                  <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+                  <ATT name="TypeConstraint"></ATT>
+                  <ATT name="DefaultValue"></ATT>
+                  <ATT name="IsOrdered">false</ATT>
+                  <ATT name="IsUnique">false</ATT>
+                  <ATT name="IsException">false</ATT>
+                  <ATT name="IsStream">false</ATT>
+                  <ATT name="Effect">ReadEffect</ATT>
+                  <ATT name="Name"><![CDATA[p1]]></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Type">
+                    <FOREIGNID name="boolean" mc="Standard.DataType" uid="00000004-0000-0005-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="getListenersThreads" mc="Standard.Operation" uid="20d2b04c-9d99-43ea-bc44-f2531107a7de"/>
+          <ATTRIBUTES>
+            <ATT name="Concurrency">false</ATT>
+            <ATT name="Final">false</ATT>
+            <ATT name="Passing">MethodOut</ATT>
+            <ATT name="Visibility">Private</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[getListenersThreads]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES></DEPENDENCIES>
+        </OBJECT>
       </COMP>
       <COMP relation="OwnedAttribute">
         <OBJECT>
@@ -472,7 +525,7 @@
             <ATT name="IsUnique">false</ATT>
             <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
             <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-            <ATT name="Visibility">Public</ATT>
+            <ATT name="Visibility">Private</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
             <ATT name="Name"><![CDATA[nickname]]></ATT>
@@ -498,6 +551,70 @@
                 </DEPENDENCIES>
               </OBJECT>
             </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="usersList" mc="Standard.Attribute" uid="da1235ba-8bc5-4deb-b268-cb6d381d40b1"/>
+          <ATTRIBUTES>
+            <ATT name="TypeConstraint"></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="TargetIsClass">false</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Private</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[usersList]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Type">
+              <ID name="HashMap" mc="Standard.DataType" uid="7fc57fc2-62f9-4547-a561-ef56a179b8f1"/>
+            </LINK>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="101a32e6-d025-4076-9a48-3323eb4d205c"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[<Enter note text here>]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="myMac" mc="Standard.Attribute" uid="294574bd-7ba2-4ce5-ac33-a2a65f7bc19e"/>
+          <ATTRIBUTES>
+            <ATT name="TypeConstraint"></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="TargetIsClass">false</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Private</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[myMac]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Type">
+              <FOREIGNID name="string" mc="Standard.DataType" uid="00000004-0000-000d-0000-000000000000"/>
+            </LINK>
           </DEPENDENCIES>
         </OBJECT>
       </COMP>
@@ -585,7 +702,7 @@
           </ATTRIBUTES>
           <DEPENDENCIES>
             <LINK relation="Target">
-              <ID name="MessageRepository" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
+              <ID name="HistoryService" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
             </LINK>
             <COMP relation="Opposite">
               <OBJECT>
@@ -688,11 +805,91 @@
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
+        <FOREIGNID name="imAlive" mc="Standard.AssociationEnd" uid="bf3df8b8-7c66-4a60-8cd2-7bb0586c1825"/>
         <REFOBJ>
-          <ID name="imAlive" mc="Standard.AssociationEnd" uid="bf3df8b8-7c66-4a60-8cd2-7bb0586c1825"/>
+          <ID name="imAliveService" mc="Standard.AssociationEnd" uid="91535126-69dc-400e-a613-84b61b449334"/>
+        </REFOBJ>
+        <REFOBJ>
+          <ID name="listenerTCP" mc="Standard.AssociationEnd" uid="8f4028e6-30e2-4fab-9764-47291e4ae0c2"/>
         </REFOBJ>
         <OBJECT>
-          <ID name="TCPListener" mc="Standard.AssociationEnd" uid="4ef5d0e6-898b-4194-8cdd-d2072636938d"/>
+          <ID name="listenerUDP" mc="Standard.AssociationEnd" uid="6a4ae547-84c4-455c-8bcb-41c2db67cd0f"/>
+          <ATTRIBUTES>
+            <ATT name="Aggregation">KindIsComposition</ATT>
+            <ATT name="IsChangeable">true</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Private</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[listenerUDP]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Target">
+              <ID name="NetworkUDPListener" mc="Standard.Class" uid="5e98aa1f-0115-41da-b9d4-f8b2985f1c1b"/>
+            </LINK>
+            <COMP relation="Opposite">
+              <REFOBJ>
+                <ID name="messageService" mc="Standard.AssociationEnd" uid="faa85ee4-c2ce-4f0b-b3f9-a959cf2ad750"/>
+              </REFOBJ>
+            </COMP>
+            <COMP relation="Association">
+              <OBJECT>
+                <ID name="" mc="Standard.Association" uid="c75db7b5-8080-4a11-bf83-aac1aec37c6b"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES></DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="activeChat" mc="Standard.AssociationEnd" uid="f3f46e29-0c02-4e5a-86ad-5a1306c4410a"/>
+          <ATTRIBUTES>
+            <ATT name="Aggregation">KindIsComposition</ATT>
+            <ATT name="IsChangeable">true</ATT>
+            <ATT name="Changeable">ReadWrite</ATT>
+            <ATT name="IsDerived">false</ATT>
+            <ATT name="IsOrdered">false</ATT>
+            <ATT name="IsUnique">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Visibility">Public</ATT>
+            <ATT name="IsClass">false</ATT>
+            <ATT name="IsAbstract">false</ATT>
+            <ATT name="Name"><![CDATA[activeChat]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Target">
+              <ID name="ClientTCP" mc="Standard.Class" uid="666df09f-2748-4800-8044-e61e4c11341c"/>
+            </LINK>
+            <COMP relation="Opposite">
+              <REFOBJ>
+                <ID name="messageService" mc="Standard.AssociationEnd" uid="23d7ff18-a594-43ce-a59e-3205d8b49ee2"/>
+              </REFOBJ>
+            </COMP>
+            <COMP relation="Association">
+              <OBJECT>
+                <ID name="" mc="Standard.Association" uid="45516206-8283-4810-8f5d-31dedb245723"/>
+                <ATTRIBUTES>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES></DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="messagePDU" mc="Standard.AssociationEnd" uid="d37a697a-7422-484f-8733-8428089bda0b"/>
           <ATTRIBUTES>
             <ATT name="Aggregation">KindIsAssociation</ATT>
             <ATT name="IsChangeable">true</ATT>
@@ -701,20 +898,20 @@
             <ATT name="IsOrdered">false</ATT>
             <ATT name="IsUnique">false</ATT>
             <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
-            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[*]]></ATT>
             <ATT name="Visibility">Public</ATT>
             <ATT name="IsClass">false</ATT>
             <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[TCPListener]]></ATT>
+            <ATT name="Name"><![CDATA[messagePDU]]></ATT>
             <ATT name="status">1970354901745664</ATT>
           </ATTRIBUTES>
           <DEPENDENCIES>
             <LINK relation="Target">
-              <ID name="NetworkTCPListener" mc="Standard.Class" uid="0391bed8-5ad9-4f6b-953e-bb8dd513cc5d"/>
+              <ID name="MessagePDU" mc="Standard.Class" uid="cb0cd549-8294-4729-9d3e-9a976ded3920"/>
             </LINK>
             <COMP relation="Opposite">
               <OBJECT>
-                <ID name="messageService" mc="Standard.AssociationEnd" uid="a19411e3-78c6-4704-b200-cc3cb2d87d96"/>
+                <ID name="" mc="Standard.AssociationEnd" uid="c1b55d97-3ef8-4398-bdac-d287eddb8968"/>
                 <ATTRIBUTES>
                   <ATT name="Aggregation">KindIsAssociation</ATT>
                   <ATT name="IsChangeable">true</ATT>
@@ -727,19 +924,16 @@
                   <ATT name="Visibility">Public</ATT>
                   <ATT name="IsClass">false</ATT>
                   <ATT name="IsAbstract">false</ATT>
-                  <ATT name="Name"><![CDATA[messageService]]></ATT>
+                  <ATT name="Name"></ATT>
                   <ATT name="status">1970354901745664</ATT>
                 </ATTRIBUTES>
                 <DEPENDENCIES>
-                  <LINK relation="Target">
-                    <ID name="MessageService" mc="Standard.Class" uid="67d0b9f1-4932-49de-9784-024f012e50e3"/>
-                  </LINK>
                   <COMP relation="Opposite">
-                    <COMPID name="TCPListener" mc="Standard.AssociationEnd" uid="4ef5d0e6-898b-4194-8cdd-d2072636938d"/>
+                    <COMPID name="messagePDU" mc="Standard.AssociationEnd" uid="d37a697a-7422-484f-8733-8428089bda0b"/>
                   </COMP>
                   <COMP relation="Association">
                     <OBJECT>
-                      <ID name="" mc="Standard.Association" uid="3d1e9c8f-1020-4cc0-b309-6706b812541f"/>
+                      <ID name="" mc="Standard.Association" uid="ceb343b5-817c-46d9-9fe2-1b0038f4c81e"/>
                       <ATTRIBUTES>
                         <ATT name="Name"></ATT>
                         <ATT name="status">1970354901745664</ATT>
@@ -751,51 +945,10 @@
               </OBJECT>
             </COMP>
             <COMP relation="Association">
-              <COMPID name="" mc="Standard.Association" uid="3d1e9c8f-1020-4cc0-b309-6706b812541f"/>
+              <COMPID name="" mc="Standard.Association" uid="ceb343b5-817c-46d9-9fe2-1b0038f4c81e"/>
             </COMP>
           </DEPENDENCIES>
         </OBJECT>
-        <OBJECT>
-          <ID name="UDPListener" mc="Standard.AssociationEnd" uid="bb782863-0af0-4f10-be20-c9076a03d133"/>
-          <ATTRIBUTES>
-            <ATT name="Aggregation">KindIsAssociation</ATT>
-            <ATT name="IsChangeable">true</ATT>
-            <ATT name="Changeable">ReadWrite</ATT>
-            <ATT name="IsDerived">false</ATT>
-            <ATT name="IsOrdered">false</ATT>
-            <ATT name="IsUnique">false</ATT>
-            <ATT name="MultiplicityMin"><![CDATA[0]]></ATT>
-            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
-            <ATT name="Visibility">Public</ATT>
-            <ATT name="IsClass">false</ATT>
-            <ATT name="IsAbstract">false</ATT>
-            <ATT name="Name"><![CDATA[UDPListener]]></ATT>
-            <ATT name="status">1970354901745664</ATT>
-          </ATTRIBUTES>
-          <DEPENDENCIES>
-            <LINK relation="Target">
-              <ID name="NetworkUDPListener" mc="Standard.Class" uid="5e98aa1f-0115-41da-b9d4-f8b2985f1c1b"/>
-            </LINK>
-            <COMP relation="Opposite">
-              <REFOBJ>
-                <ID name="messageService" mc="Standard.AssociationEnd" uid="6516c3ad-8288-4755-bf6d-009c4d4b2059"/>
-              </REFOBJ>
-            </COMP>
-            <COMP relation="Association">
-              <OBJECT>
-                <ID name="" mc="Standard.Association" uid="f397d2cb-b657-4701-aa9d-4f173e71253b"/>
-                <ATTRIBUTES>
-                  <ATT name="Name"></ATT>
-                  <ATT name="status">1970354901745664</ATT>
-                </ATTRIBUTES>
-                <DEPENDENCIES></DEPENDENCIES>
-              </OBJECT>
-            </COMP>
-          </DEPENDENCIES>
-        </OBJECT>
-        <REFOBJ>
-          <ID name="activeChat" mc="Standard.AssociationEnd" uid="0c1a6e9e-a8f9-4166-beb7-5dadaef57af6"/>
-        </REFOBJ>
       </COMP>
       <COMP relation="InternalStructure">
         <OBJECT>
@@ -1149,7 +1302,7 @@
           </ATTRIBUTES>
           <DEPENDENCIES>
             <LINK relation="Base">
-              <ID name="MessageRepository" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
+              <ID name="HistoryService" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
             </LINK>
             <COMP relation="Part">
               <OBJECT>

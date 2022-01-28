@@ -28,9 +28,8 @@
         <COMPID name="LoginView" mc="Standard.Class" uid="31f35923-3eaf-442b-8c14-af8b6ca437d2"/>
         <COMPID name="ChatView" mc="Standard.Class" uid="59c51e92-bc6f-4063-a8c4-c4978f621041"/>
         <COMPID name="MessageService" mc="Standard.Class" uid="67d0b9f1-4932-49de-9784-024f012e50e3"/>
-        <COMPID name="MessageRepository" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
+        <COMPID name="HistoryService" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
         <COMPID name="BaseView" mc="Standard.Class" uid="15839dba-3cf7-4d05-892f-ca3bb0649d7b"/>
-        <COMPID name="JFrame" mc="Standard.Class" uid="1926c911-6adc-41d2-8816-2f26457c2266"/>
         <COMPID name="JButton" mc="Standard.Class" uid="1ddab937-5559-489d-a405-35695c88eea0"/>
         <COMPID name="JTextField" mc="Standard.Class" uid="5f93ebf4-0549-4f92-a694-82028d9beb70"/>
         <COMPID name="JPanel" mc="Standard.Class" uid="3605af1f-7867-4f46-8824-58be32516cfe"/>
@@ -40,13 +39,19 @@
         <COMPID name="ClientTCP" mc="Standard.Class" uid="666df09f-2748-4800-8044-e61e4c11341c"/>
         <COMPID name="NetworkUDPListener" mc="Standard.Class" uid="5e98aa1f-0115-41da-b9d4-f8b2985f1c1b"/>
         <COMPID name="NetworkTCPListener" mc="Standard.Class" uid="0391bed8-5ad9-4f6b-953e-bb8dd513cc5d"/>
-        <COMPID name="ImAliveService" mc="Standard.Class" uid="4d90597b-e09a-48aa-8031-367690a803dc"/>
-        <COMPID name="MessagePDU" mc="Standard.Class" uid="01f4bb02-3b77-44fd-8635-da68a8877cd4"/>
         <COMPID name="Socket" mc="Standard.Class" uid="a9db6e29-cd10-413d-a27e-a443a992a02d"/>
         <COMPID name="DatagramSocket" mc="Standard.Class" uid="51c95040-04ff-4c84-a381-262599d57d31"/>
         <COMPID name="ServerSocket" mc="Standard.Class" uid="340f461c-670a-4b26-b0cf-8d9d44de6593"/>
         <COMPID name="ServerTCP" mc="Standard.Class" uid="02f9a049-6a61-4a9d-b481-4cc5d30d5fd4"/>
-        <COMPID name="Thread" mc="Standard.Class" uid="5a29ca84-d711-4e26-b5ac-37797dd3a976"/>
+        <COMPID name="ImAliveService" mc="Standard.Class" uid="58a38a4c-55ae-41a0-a951-5fd3f1e95097"/>
+        <COMPID name="JLabel" mc="Standard.Class" uid="da28677d-3b0a-46fc-9c80-c9f3af4b07aa"/>
+        <COMPID name="JScrollPane" mc="Standard.Class" uid="08952cf0-dc90-4116-9a40-c3eb9096792f"/>
+        <COMPID name="MessagePDU" mc="Standard.Class" uid="cb0cd549-8294-4729-9d3e-9a976ded3920"/>
+        <COMPID name="Status" mc="Standard.Class" uid="9060e1c6-e24b-4100-9ddb-e65b8fa0cc46"/>
+        <COMPID name="HashMap" mc="Standard.DataType" uid="7fc57fc2-62f9-4547-a561-ef56a179b8f1"/>
+        <COMPID name="ArrayList" mc="Standard.DataType" uid="2278495a-917f-4081-9d17-487cb4c8e087"/>
+        <COMPID name="DataOutputStream" mc="Standard.DataType" uid="0cdc7183-baef-4e0b-8373-2a0c916de71b"/>
+        <COMPID name="DataInputStream" mc="Standard.DataType" uid="e036af6f-e360-4325-bbf6-aef1d3c9fdff"/>
       </COMP>
       <COMP relation="Product">
         <COMPID name="Diagramme de cas d'utilisation chat" mc="Standard.UseCaseDiagram" uid="83f4b6f6-1b95-418e-ac3a-c373cb8ce290"/>

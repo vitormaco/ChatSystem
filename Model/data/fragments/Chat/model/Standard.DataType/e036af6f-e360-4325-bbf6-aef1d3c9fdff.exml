@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="DataInputStream" version="4">
+  <OBJECT>
+    <ID name="DataInputStream" mc="Standard.DataType" uid="e036af6f-e360-4325-bbf6-aef1d3c9fdff"/>
+    <PID name="chat" mc="Standard.Package" uid="cfa53605-1d69-4429-9890-f770057fc4a4"/>
+    <ATTRIBUTES>
+      <ATT name="IsElementary">true</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Private</ATT>
+      <ATT name="Name"><![CDATA[DataInputStream]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>

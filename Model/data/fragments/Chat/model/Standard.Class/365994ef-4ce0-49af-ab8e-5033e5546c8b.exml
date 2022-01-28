@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
-<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="MessageRepository" version="4">
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="HistoryService" version="4">
   <OBJECT>
-    <ID name="MessageRepository" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
+    <ID name="HistoryService" mc="Standard.Class" uid="365994ef-4ce0-49af-ab8e-5033e5546c8b"/>
     <PID name="chat" mc="Standard.Package" uid="cfa53605-1d69-4429-9890-f770057fc4a4"/>
     <ATTRIBUTES>
       <ATT name="IsActive">false</ATT>
@@ -11,7 +11,7 @@
       <ATT name="IsLeaf">false</ATT>
       <ATT name="IsRoot">false</ATT>
       <ATT name="Visibility">Public</ATT>
-      <ATT name="Name"><![CDATA[MessageRepository]]></ATT>
+      <ATT name="Name"><![CDATA[HistoryService]]></ATT>
       <ATT name="status">1970354901745664</ATT>
     </ATTRIBUTES>
     <DEPENDENCIES>

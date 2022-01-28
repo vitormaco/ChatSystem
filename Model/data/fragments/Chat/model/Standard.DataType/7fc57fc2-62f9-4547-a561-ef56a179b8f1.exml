@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="HashMap" version="4">
+  <OBJECT>
+    <ID name="HashMap" mc="Standard.DataType" uid="7fc57fc2-62f9-4547-a561-ef56a179b8f1"/>
+    <PID name="chat" mc="Standard.Package" uid="cfa53605-1d69-4429-9890-f770057fc4a4"/>
+    <ATTRIBUTES>
+      <ATT name="IsElementary">true</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[HashMap]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES></DEPENDENCIES>
+  </OBJECT>
+</EXT>
