@@ -43,7 +43,7 @@
             <directory>src/main/java</directory>
             <includes>
                 <include>utils/config.properties</include>
-                <include>static/login-icon.png</include>
+                <include>view/login-icon.png</include>
             </includes>
         </resource>
     </resources>
