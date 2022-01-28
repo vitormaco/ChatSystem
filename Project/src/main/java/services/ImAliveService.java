@@ -9,7 +9,7 @@ public class ImAliveService extends Thread {
     private boolean running;
     private MessageService messageService;
     private ConfigManager properties = new ConfigManager();
-    private int aliveTime = Integer.parseInt(properties.get("ALIVE_TIME"));
+    private int aliveTime = Integer.parseInt(properties.get("BROADCAST_IM_ALIVE_TIME"));
 
     public ImAliveService(MessageService messageService) {
         this.messageService = messageService;

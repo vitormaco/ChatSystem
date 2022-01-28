@@ -9,7 +9,7 @@ public class UserMessages {
 	private String addressIp;
 	private long lastSeenAlive;
 	private ConfigManager properties = new ConfigManager();
-	private int aliveTime = Integer.parseInt(properties.get("ALIVE_TIME"));
+	private int aliveTime = Integer.parseInt(properties.get("BROADCAST_IM_ALIVE_TIME"));
 
 	public UserMessages(String nickname, String adressIp) {
 		this.nickname = nickname;
