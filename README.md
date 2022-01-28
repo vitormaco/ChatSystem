@@ -20,6 +20,8 @@ All project requirements, for both function and non-functional requirements, as 
 ```
 Model - contains diagrams-related files
 
+DiagramImages - contains the same diagrams as in the Model folder, but in JPG format
+
 Project - contains project-related files
 │
 └───makefile - commands to build and run the project
@@ -36,10 +38,9 @@ The project conception and modelling was all done using the UML notation, more s
 
 For the purpose of time-management and accompaniment of the project development in respect to the project deadlines, the scrum agile method was applied, all the user-stories, tasks, sprints and more info can be seen [here](https://vitor-maco.atlassian.net/jira/software/projects/AG/boards/1)
 
-## Jenkins pipelines
-
-TODO
-
 ## Build and usage instructions
 
-TODO
+- Clone this Github Repository
+- Change the local network to be used in BASE_IP property of the file `/Project/src/main/java/utils/config.properties`
+- Run a `make` to run the programs, or a `make install` to generate the jar file
+- To use the database you should be connected to the INSA network, if you're not it is necessary to connect to it via a VPN.
