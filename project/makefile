@@ -1,5 +1,8 @@
 all: run
 
+install:
+	mvn clean install
+
 run: build
 	mvn exec:java
 
