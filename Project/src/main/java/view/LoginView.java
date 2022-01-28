@@ -7,11 +7,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 import models.MessagePDU;
 
 public class LoginView extends BaseView implements ActionListener {
-    static Dotenv dotenv = Dotenv.load();
+    static ConfigManager properties = new ConfigManager();
 
     private MessageService messageService;
     Container container = getContentPane();
@@ -36,7 +36,7 @@ public class LoginView extends BaseView implements ActionListener {
     private void seticonLabel() {
         try {
             iconLabel.setSize(100, 100);
-            String imagePath = dotenv.get("STATIC_FOLDER") + "/login-icon.png";
+            String imagePath = "static/login-icon.png";
             ImageIcon originalIcon = new ImageIcon(imagePath);
             ImageIcon scaledIcon = new ImageIcon(originalIcon.getImage()
                     .getScaledInstance(iconLabel.getWidth(), iconLabel.getHeight(), Image.SCALE_DEFAULT));
@@ -109,7 +109,8 @@ public class LoginView extends BaseView implements ActionListener {
             JOptionPane.showMessageDialog(this, "Network not configured correctly");
         }
 
-        if (!userText.isBlank() && this.messageService.validateAndAssingUserNickname(userText, MessagePDU.Status.CONNECTION)) {
+        if (!userText.isBlank()
+                && this.messageService.validateAndAssingUserNickname(userText, MessagePDU.Status.CONNECTION)) {
             dispose();
             this.messageService.setChatView();
         } else {

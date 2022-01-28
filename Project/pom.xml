@@ -28,13 +28,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/io.github.cdimascio/java-dotenv -->
-    <dependency>
-      <groupId>io.github.cdimascio</groupId>
-      <artifactId>java-dotenv</artifactId>
-      <version>5.2.2</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
     <dependency>
         <groupId>mysql</groupId>
@@ -45,6 +38,16 @@
   </dependencies>
 
   <build>
+      <resources>
+        <resource>
+            <directory>src/main/java</directory>
+            <includes>
+                <include>utils/config.properties</include>
+                <include>static/login-icon.png</include>
+            </includes>
+        </resource>
+    </resources>
+
     <pluginManagement>      <!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
@@ -74,7 +77,6 @@
             <archive>
               <manifest>
                 <addClasspath>true</addClasspath>
-                <classpathPrefix>lib/</classpathPrefix>
                 <mainClass>App</mainClass>
               </manifest>
             </archive>

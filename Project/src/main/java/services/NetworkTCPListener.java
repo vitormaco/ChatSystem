@@ -4,15 +4,15 @@ import java.net.*;
 
 import java.util.ArrayList;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 
 public class NetworkTCPListener extends Thread {
     private ServerSocket serverSocket;
     private boolean running;
     private MessageService messageService;
     private ArrayList<ServerTCPThread> myThreads;
-    private Dotenv dotenv = Dotenv.load();
-    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
+    private ConfigManager properties = new ConfigManager();
+    private int timeout = Integer.parseInt(properties.get("SOCKETS_TIMEOUT"));
 
     public NetworkTCPListener(int port, MessageService messageService) {
         try {

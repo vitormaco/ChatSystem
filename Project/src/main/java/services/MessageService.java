@@ -8,7 +8,7 @@ import models.MessagePDU;
 import java.net.ConnectException;
 import java.util.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 import view.ChatView;
 
 public class MessageService {
@@ -18,9 +18,9 @@ public class MessageService {
 	private NetworkUDPListener listener;
 	private NetworkTCPListener listenerTCP;
 	private ChatView chatView = null;
-	private Dotenv dotenv = Dotenv.load();
+	private ConfigManager properties = new ConfigManager();
 	private String myMac = NetworkUtils.getLocalMACAdress();
-	private boolean shouldUseDatabase = !dotenv.get("USE_DATABASE").isBlank();
+	private boolean shouldUseDatabase = !properties.get("USE_DATABASE").isBlank();
 	private ImAliveService aliveService;
 
 	public MessageService() {
@@ -38,12 +38,12 @@ public class MessageService {
 	}
 
 	private NetworkUDPListener getListenerThread() {
-		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
+		int broadcastPort = Integer.parseInt(properties.get("BROADCAST_PORT"));
 		return new NetworkUDPListener(broadcastPort, this);
 	}
 
 	private NetworkTCPListener getListenerTCPThread() {
-		int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+		int tcpPort = Integer.parseInt(properties.get("TCP_PORT"));
 		return new NetworkTCPListener(tcpPort, this);
 	}
 
@@ -191,7 +191,7 @@ public class MessageService {
 			}
 			if (this.usersList.containsKey(mac)) {
 				String hostname = usersList.get(mac).getAddressIp();
-				int tcpPort = Integer.parseInt(dotenv.get("TCP_PORT"));
+				int tcpPort = Integer.parseInt(properties.get("TCP_PORT"));
 				activeChat = new ClientTCP(hostname, tcpPort, this.myMac, this.nickname, NetworkUtils.getIPAddress());
 			}
 			if (this.shouldUseDatabase) {

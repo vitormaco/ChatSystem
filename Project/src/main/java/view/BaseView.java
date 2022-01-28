@@ -2,7 +2,7 @@ package view;
 
 import javax.swing.*;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 
 import java.awt.*;
 
@@ -11,13 +11,13 @@ public class BaseView extends JFrame {
     protected int windowHeight;
     protected int widthOffset;
     protected int heightOffset;
-    private Dotenv dotenv = Dotenv.load();
+    private ConfigManager properties = new ConfigManager();
 
     protected BaseView() {
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) size.getWidth();
         int screenHeight = (int) size.getHeight();
-        double scaleFactor = Double.parseDouble(dotenv.get("SCREEN_WINDOW_RATIO"));
+        double scaleFactor = Double.parseDouble(properties.get("SCREEN_WINDOW_RATIO"));
         windowWidth = (int) (screenWidth * scaleFactor);
         windowHeight = (int) (screenHeight * scaleFactor);
         widthOffset = (int) (screenWidth - windowWidth) / 2;

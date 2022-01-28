@@ -1,7 +1,7 @@
 package services;
 
 import java.net.*;
-import io.github.cdimascio.dotenv.Dotenv;
+import utils.ConfigManager;
 import models.MessagePDU;
 import utils.NetworkUtils;
 
@@ -10,8 +10,8 @@ public class NetworkUDPListener extends Thread {
     private boolean running = true;
     private byte[] buf = new byte[65536];
     private MessageService messageService;
-    private Dotenv dotenv = Dotenv.load();
-    private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
+    private ConfigManager properties = new ConfigManager();
+    private int timeout = Integer.parseInt(properties.get("SOCKETS_TIMEOUT"));
 
     public NetworkUDPListener(int port, MessageService messageService) {
         try {
