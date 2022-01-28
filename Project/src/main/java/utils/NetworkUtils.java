@@ -3,8 +3,6 @@ package utils;
 import java.net.*;
 import java.util.*;
 
-import utils.ConfigManager;
-
 public class NetworkUtils {
 	static ConfigManager properties = new ConfigManager();
 	static String networkIP = null;

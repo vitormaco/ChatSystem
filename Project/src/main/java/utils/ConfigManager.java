@@ -26,8 +26,6 @@ public class ConfigManager {
         properties.put("DATABASE_PASSWORD", mainProperties.getProperty("DATABASE_PASSWORD"));
         properties.put("USE_DATABASE", mainProperties.getProperty("USE_DATABASE"));
         properties.put("SOCKETS_TIMEOUT", mainProperties.getProperty("SOCKETS_TIMEOUT"));
-        properties.put("CHECKLIFE_TIMER", mainProperties.getProperty("CHECKLIFE_TIMER"));
-        properties.put("CHECKLIFE_MAX", mainProperties.getProperty("CHECKLIFE_MAX"));
         properties.put("ALIVE_TIME", mainProperties.getProperty("ALIVE_TIME"));
     }
 
