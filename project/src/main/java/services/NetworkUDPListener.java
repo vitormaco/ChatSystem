@@ -5,7 +5,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 import models.MessagePDU;
 import utils.NetworkUtils;
 
-public class NetworkListener extends Thread {
+public class NetworkUDPListener extends Thread {
     private DatagramSocket socket;
     private boolean running = true;
     private byte[] buf = new byte[65536];
@@ -13,7 +13,7 @@ public class NetworkListener extends Thread {
     private Dotenv dotenv = Dotenv.load();
     private int timeout = Integer.parseInt(dotenv.get("SOCKETS_TIMEOUT"));
 
-    public NetworkListener(int port, MessageService messageService) {
+    public NetworkUDPListener(int port, MessageService messageService) {
         try {
             socket = new DatagramSocket(port);
             this.messageService = messageService;

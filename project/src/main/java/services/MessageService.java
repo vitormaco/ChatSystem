@@ -15,7 +15,7 @@ public class MessageService {
 	private HashMap<String, UserMessages> usersList;
 	private String nickname;
 	private ClientTCP activeChat;
-	private NetworkListener listener;
+	private NetworkUDPListener listener;
 	private NetworkTCPListener listenerTCP;
 	private ChatView chatView = null;
 	private Dotenv dotenv = Dotenv.load();
@@ -37,9 +37,9 @@ public class MessageService {
 		return NetworkUtils.getIPAddress() != "-";
 	}
 
-	private NetworkListener getListenerThread() {
+	private NetworkUDPListener getListenerThread() {
 		int broadcastPort = Integer.parseInt(dotenv.get("BROADCAST_PORT"));
-		return new NetworkListener(broadcastPort, this);
+		return new NetworkUDPListener(broadcastPort, this);
 	}
 
 	private NetworkTCPListener getListenerTCPThread() {
